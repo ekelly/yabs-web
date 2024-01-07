@@ -10,14 +10,14 @@ export interface IBillState {
 export type PersonId = string;
 export interface IPerson {
     name: string; // Human readable, for keeping track of who is who
-    share: number; // The proportion of the bill which is due to this person, "in pennies"
+    share?: number; // The proportion of the bill which is due to this person, "in pennies"
     id: PersonId; // For internal tracking purposes
 }
 
 export interface IPersonContribution {
     id: string; // For internal tracking purposes
     name: string; // Human readable, for keeping track of who is who
-    personTotal: string; // The amount of $$ that this person must contribute to the bill
+    personTotal: number; // The amount of $$ that this person must contribute to the bill
 }
 
 export interface ITransaction {
@@ -28,7 +28,7 @@ export interface ITransaction {
 
 export interface IAdjustment {
     id: PersonId; // Identifier of the person being adjusted
-    adjustAmount: number; // Cost "in pennies" associated with this person
+    adjustPercentage: number; // Percentage of the transaction associated with this person
 }
 
 export type TransactionId = string;

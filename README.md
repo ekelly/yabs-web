@@ -5,6 +5,11 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 What the app should look like:
 https://excalidraw.com/#json=_udzmpko_rrNueTes9Yaj,b7hOPSRqsz933xn3TFhkKg
 
+## Starting
+
+bun install
+bun dev
+
 ## Getting Started
 
 First, run the development server:

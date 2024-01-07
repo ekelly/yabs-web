@@ -15,12 +15,19 @@ const createInitialState = () => ({
 
 const initialState: IBillState = createInitialState();
 
+type UpdateTransactionPayload = { transactionId: TransactionId, participantId: PersonId};
+type UpdateTransactionSharePayload = { transactionId: TransactionId, participantId: PersonId, share: number};
+
 export const slice = createSlice({
     name: "slice-name",
     initialState,
     reducers: {
-        addPerson: (state, action: PayloadAction<IPerson>) => {
-            state.participants.push(action.payload);
+        addPerson: (state, action: PayloadAction<string>) => {
+            console.log("Added a person!");
+            state.participants.push({
+                id: uuidv4(),
+                name: action.payload,
+            });
         },
         removePerson: (state, action: PayloadAction<PersonId>) => {
             state.participants = [...state.participants.filter((person) => person.id !== action.payload)];
@@ -34,6 +41,39 @@ export const slice = createSlice({
         removeTransaction: (state, action: PayloadAction<TransactionId>) => {
             state.transactions = [...state.transactions.filter((t) => t.id !== action.payload)];
         },
+        removeParticipantFromTransaction: (state, action: PayloadAction<UpdateTransactionPayload>) => {
+            const { participantId, transactionId } = action.payload;
+            state.transactions = [...state.transactions.map((t) => {
+                // TODO: When you remove a participant, make sure to divy up their
+                // proportion of the transaction accordingly
+                if (t.id === transactionId) {
+                    return {
+                        ...t,
+                        participants: t.participants.filter(p => p.id === participantId)
+                    }
+                }
+                return t;
+            })];
+        },
+        adjustParticipantShareOfTransaction: (state, action: PayloadAction<UpdateTransactionSharePayload>) => {
+            const { participantId, transactionId, share } = action.payload;
+            state.transactions = [...state.transactions.map((t) => {
+                // TODO: When you remove a participant, make sure to divy up their
+                // proportion of the transaction accordingly
+                if (t.id === transactionId) {
+                    return {
+                        ...t,
+                        participants: t.participants.map(p => {
+                            if (p.id === participantId) {
+                                return { ...p, adjustPercentage: share };
+                            }
+                            return p;
+                        })
+                    }
+                }
+                return t;
+            })];
+        },
         setBillTotal: (state, action: PayloadAction<number>) => {
             state.total = action.payload;
         },
@@ -45,13 +85,16 @@ export const slice = createSlice({
 });
 
 export const { 
-    addPerson, 
-    removePerson, 
+    addPerson,
+    removePerson,
     updatePerson,
-    addTransaction, 
-    removeTransaction, 
+    addTransaction,
+    removeTransaction,
+    removeParticipantFromTransaction,
+    adjustParticipantShareOfTransaction,
     setBillTotal, 
     setBillDescription, 
     clearBill
 } = slice.actions;
+
 export default slice.reducer;

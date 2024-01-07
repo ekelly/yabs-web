@@ -4,9 +4,19 @@ import { Fab } from "./ui/Fab";
 import { FilledButton } from "./ui/FilledButton";
 import { ChipSet } from "./ui/ChipSet";
 import { InputChip } from "./ui/InputChip";
+import { useAppDispatch } from "~/lib/hooks";
+import { addPerson } from "~/lib/features/core/billSlice";
+import StoreProvider from "./StoreProvider";
 
 export default function Page() {
+  // const dispatch = useAppDispatch();
+
+  const addPersonHandler = () => {
+    // dispatch(addPerson("New Person"));
+  };
+
   return (
+    <StoreProvider>
     <>
       {/* <label>
         Material 3<md-checkbox checked></md-checkbox>
@@ -15,12 +25,13 @@ export default function Page() {
       <md-outlined-button>Back</md-outlined-button>
       <md-filled-button>Next</md-filled-button> */}
       <FilledButton>button text</FilledButton>
-      <Fab></Fab>
+      <Fab onClick={addPersonHandler}></Fab>
       <ChipSet>
         <InputChip label="chip 1"></InputChip>
         <InputChip label="chip 2"></InputChip>
       </ChipSet>
     </>
+    </StoreProvider>
   );
 }
 
