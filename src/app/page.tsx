@@ -13,6 +13,7 @@ import {
 } from "~/lib/features/core";
 import { useSelector } from "react-redux";
 import { useCallback } from "react";
+import BillInfo from "./components/BillInfo";
 
 export default function Page() {
   const dispatch = useAppDispatch();
@@ -42,6 +43,10 @@ export default function Page() {
 
   return (
     <>
+      <BillInfo />
+      <br />
+      <br />
+      <br />
       {/* <label>
         Material 3<md-checkbox checked></md-checkbox>
       </label>
