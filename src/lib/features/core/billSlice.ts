@@ -42,8 +42,9 @@ export const slice = createSlice({
   reducers: {
     addPerson: (state, action: PayloadAction<string>) => {
       console.log("Added a person!");
-      state.participants.push({
-        id: uuidv4(),
+      const id = uuidv4();
+      state.participants.set(id, {
+        id,
         name: action.payload,
       });
     },
