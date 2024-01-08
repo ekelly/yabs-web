@@ -12,8 +12,7 @@ import {
   getParticipants,
 } from "~/lib/features/core";
 import { useSelector } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 
 export default function Page() {
   const dispatch = useAppDispatch();
@@ -22,17 +21,14 @@ export default function Page() {
 
   const addPersonHandler = useCallback(() => {
     dispatch(addPerson("New Person"));
-  }, []);
+  }, [dispatch]);
 
-  const people = useSelector(getParticipants);
-
-  const addTransactionHandler = () => {
-    const numPeople = Math.floor(Math.random() * (people.length - 1) + 1);
-    const involved = people.slice(0, numPeople);
+  const addTransactionHandler = useCallback(() => {
+    const numPeople = Math.floor(Math.random() * (participants.length - 1) + 1);
+    const involved = participants.slice(0, numPeople);
     console.log(`adding transaction with ${JSON.stringify(involved)}`);
     dispatch(
       addTransaction({
-        id: uuidv4(),
         amount: Math.round(Math.random() * 100),
         participants: involved.map((person) => {
           return {
@@ -42,7 +38,7 @@ export default function Page() {
         }),
       })
     );
-  };
+  }, [dispatch, participants]);
 
   return (
     <>
