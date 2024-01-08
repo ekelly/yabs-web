@@ -3,7 +3,7 @@ export interface IBillState {
     id: string; // An identifier corresponding to this bill
     description: string;
     total?: number; // The total cost of the bill, including tax & tip in pennies
-    participants: Map<PersonId, IPerson>; // The people involved in the bill splitting
+    participants: Record<PersonId, IPerson>; // The people involved in the bill splitting
     transactions: Array<ITransaction>; // The list of transactions
 }
 

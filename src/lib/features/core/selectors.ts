@@ -14,7 +14,7 @@ export const getTransactions = (state: RootState): IDisplayableTransaction[] => 
         ...t,
         participants: t.participants.map(a => ({
             ...a,
-            participantDisplayName: people.get(a.personId)?.name ?? ""
+            participantDisplayName: people[a.personId]?.name ?? ""
         }))
     }));
   };

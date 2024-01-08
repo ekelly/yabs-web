@@ -27,8 +27,8 @@ export default function Page() {
   }, [dispatch]);
 
   const addTransactionHandler = useCallback(() => {
-    const numPeople = Math.floor(Math.random() * (participants.size - 1) + 1);
-    const involved = Array.from(participants.entries()).slice(0, numPeople);
+    const numPeople = Math.floor(Math.random() * (Object.entries(participants).length - 1) + 1);
+    const involved = Array.from(Object.entries(participants)).slice(0, numPeople);
     console.log(`adding transaction with ${JSON.stringify(involved)}`);
     dispatch(
       addTransaction({

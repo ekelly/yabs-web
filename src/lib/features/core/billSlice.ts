@@ -9,13 +9,13 @@ import type {
 import { v4 as uuidv4 } from "uuid";
 
 const createInitialState = () => {
-    const participants = new Map<PersonId, IPerson>();
+    const participants: Record<PersonId, IPerson> = {};
     const participantId = uuidv4();
-    participants.set(participantId, {
+    participants[participantId] = {
         name: "Me",
         share: 0,
         id: participantId,
-    })
+    };
     return ({
         id: uuidv4(),
         description: "",
@@ -43,16 +43,16 @@ export const slice = createSlice({
     addPerson: (state, action: PayloadAction<string>) => {
       console.log("Added a person!");
       const id = uuidv4();
-      state.participants.set(id, {
+      state.participants[id] = {
         id,
         name: action.payload,
-      });
+      };
     },
     removePerson: (state, action: PayloadAction<PersonId>) => {
-        state.participants.delete(action.payload);
+        delete state.participants[action.payload];
     },
     updatePerson: (state, action: PayloadAction<IPerson>) => {
-        state.participants.set(action.payload.id, action.payload);
+        state.participants[action.payload.id] = action.payload;
     },
     addTransaction: (
       state,
