@@ -6,17 +6,15 @@ import { ChipSet } from "./ui/ChipSet";
 import { InputChip } from "./ui/InputChip";
 import { useAppDispatch } from "~/lib/hooks";
 import { addPerson } from "~/lib/features/core/billSlice";
-import StoreProvider from "./StoreProvider";
 
 export default function Page() {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const addPersonHandler = () => {
-    // dispatch(addPerson("New Person"));
+    dispatch(addPerson("New Person"));
   };
 
   return (
-    <StoreProvider>
     <>
       {/* <label>
         Material 3<md-checkbox checked></md-checkbox>
@@ -31,7 +29,6 @@ export default function Page() {
         <InputChip label="chip 2"></InputChip>
       </ChipSet>
     </>
-    </StoreProvider>
   );
 }
 
