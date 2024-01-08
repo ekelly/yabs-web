@@ -8,6 +8,6 @@ interface TransactionListProps {
 
 export default function TransactionList({ items }: TransactionListProps) {
     return (<ul>
-        {items.map((item) => <TransactionListItem item={item} />)}
+        {items.map((item) => <TransactionListItem key={item.id} item={item} />)}
     </ul>);
 }

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { IDisplayableTransaction, removeParticipantFromTransaction } from "~/lib/features/core";
+import { IDisplayableTransaction, removeParticipantFromTransaction, removeTransaction } from "~/lib/features/core";
 import { ChipSet } from "~/app/ui/ChipSet";
 import { InputChip } from "~/app/ui/InputChip";
 import { useAppDispatch } from "~/lib/hooks";
@@ -14,10 +14,14 @@ export default function TransactionListItem({ item }: TransactionListItemProps) 
     return <li key={item.id}>{item.amount}<br/><ChipSet>{item.participants.map(i => {
 
         const onClickHandler = () => {
-            dispatch(removeParticipantFromTransaction({
-                transactionId: item.id,
-                participantId: i.personId,
-            }));
+            if (item.participants.length === 1) {
+                dispatch(removeTransaction(item.id));
+            } else {
+                dispatch(removeParticipantFromTransaction({
+                    transactionId: item.id,
+                    participantId: i.personId,
+                }));
+            }
         };
 
         return <InputChip label={i.participantDisplayName} onClick={onClickHandler}></InputChip>;
