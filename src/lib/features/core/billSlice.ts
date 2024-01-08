@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { IBillState, IPerson, ITransaction, PersonId, TransactionId } from "./types";
 import { v4 as uuidv4 } from "uuid";
+import { RootState } from "~/lib/store";
 
 const createInitialState = () => ({
     id: uuidv4(),
@@ -83,6 +84,14 @@ export const slice = createSlice({
         clearBill: () => createInitialState()
     }
 });
+
+// Selectors
+
+export const getTransactions = (state: RootState) => {
+    return state.bill.transactions;
+}
+
+// Exports
 
 export const { 
     addPerson,

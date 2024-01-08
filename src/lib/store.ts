@@ -4,7 +4,7 @@ import { billReducer } from "~/lib/features/core";
 export const makeStore = () => {
     return configureStore({
         reducer: {
-            reducer: billReducer
+            bill: billReducer
         }
     })
   }

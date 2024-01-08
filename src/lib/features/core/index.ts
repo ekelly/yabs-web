@@ -8,7 +8,8 @@ export {
     removeParticipantFromTransaction,
     adjustParticipantShareOfTransaction,
     setBillTotal, 
-    setBillDescription, 
+    setBillDescription,
+    getTransactions,
     clearBill
 } from "./billSlice";
 

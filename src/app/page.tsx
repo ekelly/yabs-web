@@ -5,7 +5,8 @@ import { FilledButton } from "./ui/FilledButton";
 import { ChipSet } from "./ui/ChipSet";
 import { InputChip } from "./ui/InputChip";
 import { useAppDispatch } from "~/lib/hooks";
-import { addPerson } from "~/lib/features/core/billSlice";
+import { addPerson, getTransactions} from "~/lib/features/core/billSlice";
+import { useSelector } from "react-redux";
 
 export default function Page() {
   const dispatch = useAppDispatch();
@@ -13,6 +14,8 @@ export default function Page() {
   const addPersonHandler = () => {
     dispatch(addPerson("New Person"));
   };
+
+  const transactions = useSelector(getTransactions);
 
   return (
     <>
