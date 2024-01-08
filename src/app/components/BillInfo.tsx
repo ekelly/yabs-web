@@ -32,11 +32,13 @@ export default function BillInfo() {
     <>
       <div>
         <input
+          className="bg-white dark:bg-black text-black dark:text-white"
           placeholder="Bill Name"
           value={billDescription}
           onChange={updateBillNameHandler}
         />
         <input
+          className="bg-white dark:bg-black text-black dark:text-white"
           placeholder="Bill Total"
           value={billTotal ?? ""}
           onChange={updateBillTotalHandler}
