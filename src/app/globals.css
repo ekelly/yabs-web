@@ -6,6 +6,16 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  
+  --md-sys-color-primary: red;
+  --md-sys-color-primary-container: orange;
+  --md-sys-color-secondary: blue;
+  --md-sys-color-secondary-container: green;
+  --md-sys-color-background: yellow;
+  --md-sys-color-surface: purple;
+  --md-sys-color-surface-container: pink;
+  --md-sys-color-surface-container-high: white;
+  --md-sys-color-surface-container-low: gray;
 }
 
 @media (prefers-color-scheme: dark) {
