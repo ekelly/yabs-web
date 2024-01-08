@@ -22,3 +22,11 @@ export const getTransactions = (state: RootState): IDisplayableTransaction[] => 
   export const getParticipants = (state: RootState) => {
     return state.bill.participants;
   };
+
+  export const getBillDescription = (state: RootState) => {
+    return state.bill.description;
+  };
+
+  export const getBillTotal = (state: RootState) => {
+    return state.bill.total;
+  };

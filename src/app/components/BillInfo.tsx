@@ -4,7 +4,7 @@ import {
   getBillTotal,
   setBillDescription,
   setBillTotal,
-} from "~/lib/features/core/billSlice";
+} from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
 import { ChangeEvent, useCallback } from "react";
 
