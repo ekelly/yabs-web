@@ -10,8 +10,15 @@ export {
     setBillTotal, 
     setBillDescription,
     clearBill,
+} from "./billSlice";
+export {
     getTransactions,
     getParticipants,
-} from "./billSlice";
+    getBillDescription,
+    getBillTotal,
+} from "./selectors";
+export type {
+    IDisplayableTransaction
+} from "./selectors";
 
 export const billReducer = reducer;

@@ -3,7 +3,7 @@ export interface IBillState {
     id: string; // An identifier corresponding to this bill
     description: string;
     total?: number; // The total cost of the bill, including tax & tip in pennies
-    participants: Array<IPerson>; // The people involved in the bill splitting
+    participants: Map<PersonId, IPerson>; // The people involved in the bill splitting
     transactions: Array<ITransaction>; // The list of transactions
 }
 
@@ -27,7 +27,7 @@ export interface ITransaction {
 }
 
 export interface IAdjustment {
-    id: PersonId; // Identifier of the person being adjusted
+    personId: PersonId; // Identifier of the person being adjusted
     adjustPercentage: number; // Percentage of the transaction associated with this person
 }
 

@@ -7,20 +7,22 @@ import type {
   TransactionId,
 } from "./types";
 import { v4 as uuidv4 } from "uuid";
-import { RootState } from "~/lib/store";
 
-const createInitialState = () => ({
-  id: uuidv4(),
-  description: "",
-  participants: [
-    {
-      name: "Me",
-      share: 0,
-      id: uuidv4(),
-    },
-  ],
-  transactions: [],
-});
+const createInitialState = () => {
+    const participants = new Map<PersonId, IPerson>();
+    const participantId = uuidv4();
+    participants.set(participantId, {
+        name: "Me",
+        share: 0,
+        id: participantId,
+    })
+    return ({
+        id: uuidv4(),
+        description: "",
+        participants,
+        transactions: [],
+    });
+}
 
 const initialState: IBillState = createInitialState();
 
@@ -46,17 +48,10 @@ export const slice = createSlice({
       });
     },
     removePerson: (state, action: PayloadAction<PersonId>) => {
-      state.participants = [
-        ...state.participants.filter((person) => person.id !== action.payload),
-      ];
+        state.participants.delete(action.payload);
     },
     updatePerson: (state, action: PayloadAction<IPerson>) => {
-      state.participants = [
-        ...state.participants.filter(
-          (person) => person.id !== action.payload.id
-        ),
-        action.payload,
-      ];
+        state.participants.set(action.payload.id, action.payload);
     },
     addTransaction: (
       state,
@@ -86,7 +81,7 @@ export const slice = createSlice({
             return {
               ...t,
               participants: t.participants.filter(
-                (p) => p.id === participantId
+                (p) => p.personId === participantId
               ),
             };
           }
@@ -107,7 +102,7 @@ export const slice = createSlice({
             return {
               ...t,
               participants: t.participants.map((p) => {
-                if (p.id === participantId) {
+                if (p.personId === participantId) {
                   return { ...p, adjustPercentage: share };
                 }
                 return p;
@@ -127,24 +122,6 @@ export const slice = createSlice({
     clearBill: () => createInitialState(),
   },
 });
-
-// Selectors
-
-export const getTransactions = (state: RootState) => {
-  return state.bill.transactions;
-};
-
-export const getParticipants = (state: RootState) => {
-  return state.bill.participants;
-};
-
-export const getBillDescription = (state: RootState) => {
-  return state.bill.description;
-};
-
-export const getBillTotal = (state: RootState) => {
-  return state.bill.total;
-};
 
 // Exports
 
