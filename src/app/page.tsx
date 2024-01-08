@@ -5,17 +5,32 @@ import { FilledButton } from "./ui/FilledButton";
 import { ChipSet } from "./ui/ChipSet";
 import { InputChip } from "./ui/InputChip";
 import { useAppDispatch } from "~/lib/hooks";
-import { addPerson, getTransactions} from "~/lib/features/core/billSlice";
+import { addPerson, addTransaction, getTransactions, getParticipants } from "~/lib/features/core";
 import { useSelector } from "react-redux";
+import { useCallback, useRef } from "react";
 
 export default function Page() {
   const dispatch = useAppDispatch();
 
-  const addPersonHandler = () => {
-    dispatch(addPerson("New Person"));
-  };
-
   const transactions = useSelector(getTransactions);
+  const participants = useSelector(getParticipants);
+
+  const addPersonHandler = useCallback(() => {
+    dispatch(addPerson("New Person"));
+  }, []);
+
+  const amount = useRef(10);
+  const addTransactionHandler = useCallback(() => {
+    const randomNum = Math.floor(Math.random() * participants.length);
+    dispatch(addTransaction({
+      participants: [{
+        adjustPercentage: 100,
+        id: participants[randomNum].id
+      }],
+      amount: amount.current
+    }));
+    amount.current += 5;
+  }, [participants]);
 
   return (
     <>
@@ -26,7 +41,8 @@ export default function Page() {
       <md-outlined-button>Back</md-outlined-button>
       <md-filled-button>Next</md-filled-button> */}
       <FilledButton>button text</FilledButton>
-      <Fab onClick={addPersonHandler}></Fab>
+      <Fab onClick={addPersonHandler} label="+" />
+      <Fab onClick={addTransactionHandler} label="transaction" />
       <ChipSet>
         <InputChip label="chip 1"></InputChip>
         <InputChip label="chip 2"></InputChip>

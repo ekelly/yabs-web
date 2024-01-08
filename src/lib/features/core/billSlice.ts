@@ -36,8 +36,12 @@ export const slice = createSlice({
         updatePerson: (state, action: PayloadAction<IPerson>) => {
             state.participants = [...state.participants.filter((person) => person.id !== action.payload.id), action.payload];
         },
-        addTransaction: (state, action: PayloadAction<ITransaction>) => {
-            state.transactions.push(action.payload);
+        addTransaction: (state, action: PayloadAction<Omit<ITransaction, "id">>) => {
+            console.log("Added transaction " + JSON.stringify(action.payload));
+            state.transactions.push({
+                ...action.payload,
+                id: uuidv4()
+            });
         },
         removeTransaction: (state, action: PayloadAction<TransactionId>) => {
             state.transactions = [...state.transactions.filter((t) => t.id !== action.payload)];
@@ -89,6 +93,10 @@ export const slice = createSlice({
 
 export const getTransactions = (state: RootState) => {
     return state.bill.transactions;
+}
+
+export const getParticipants = (state: RootState) => {
+    return state.bill.participants;
 }
 
 // Exports

@@ -9,8 +9,9 @@ export {
     adjustParticipantShareOfTransaction,
     setBillTotal, 
     setBillDescription,
+    clearBill,
     getTransactions,
-    clearBill
+    getParticipants,
 } from "./billSlice";
 
 export const billReducer = reducer;
