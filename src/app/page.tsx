@@ -5,13 +5,18 @@ import { FilledButton } from "./ui/FilledButton";
 import { ChipSet } from "./ui/ChipSet";
 import { InputChip } from "./ui/InputChip";
 import { useAppDispatch } from "~/lib/hooks";
-import { addPerson, addTransaction, getTransactions, getParticipants } from "~/lib/features/core";
+import {
+  addPerson,
+  addTransaction,
+  getTransactions,
+  getParticipants,
+} from "~/lib/features/core";
 import { useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 import { useCallback, useRef } from "react";
 
 export default function Page() {
   const dispatch = useAppDispatch();
-
   const transactions = useSelector(getTransactions);
   const participants = useSelector(getParticipants);
 
@@ -19,18 +24,25 @@ export default function Page() {
     dispatch(addPerson("New Person"));
   }, []);
 
-  const amount = useRef(10);
-  const addTransactionHandler = useCallback(() => {
-    const randomNum = Math.floor(Math.random() * participants.length);
-    dispatch(addTransaction({
-      participants: [{
-        adjustPercentage: 100,
-        id: participants[randomNum].id
-      }],
-      amount: amount.current
-    }));
-    amount.current += 5;
-  }, [participants]);
+  const people = useSelector(getParticipants);
+
+  const addTransactionHandler = () => {
+    const numPeople = Math.floor(Math.random() * (people.length - 1) + 1);
+    const involved = people.slice(0, numPeople);
+    console.log(`adding transaction with ${JSON.stringify(involved)}`);
+    dispatch(
+      addTransaction({
+        id: uuidv4(),
+        amount: Math.round(Math.random() * 100),
+        participants: involved.map((person) => {
+          return {
+            id: person.id,
+            adjustPercentage: 1 / numPeople,
+          };
+        }),
+      })
+    );
+  };
 
   return (
     <>
@@ -47,6 +59,9 @@ export default function Page() {
         <InputChip label="chip 1"></InputChip>
         <InputChip label="chip 2"></InputChip>
       </ChipSet>
+      {transactions.map((transaction) => {
+        return <div key={transaction.id}>{JSON.stringify(transaction)}</div>;
+      })}
     </>
   );
 }
