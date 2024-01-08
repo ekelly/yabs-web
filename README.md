@@ -3,7 +3,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## Yet Another Bill Splitter (Web)
 
 What the app should look like:
-https://excalidraw.com/#json=_udzmpko_rrNueTes9Yaj,b7hOPSRqsz933xn3TFhkKg
+https://excalidraw.com/#json=-APgLzWU6TVGOd4_wqbWU,C3fKHuJeLGQ72BIIhP0cqg
 
 ## Starting
 
