@@ -7,6 +7,8 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import React from "react";
+import ColorThemeProvider from "./ColorThemeProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,9 +24,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AppRouterCacheProvider>
-          <CssBaseline>
-            <StoreProvider>{children}</StoreProvider>
-          </CssBaseline>
+          <ColorThemeProvider>
+            <CssBaseline>
+              <StoreProvider>{children}</StoreProvider>
+            </CssBaseline>
+          </ColorThemeProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
