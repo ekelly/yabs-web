@@ -17,6 +17,7 @@ import TransactionList from "./components/TransactionList";
 import { Button, Chip, Dialog, DialogActions, Fab } from "@mui/material";
 import { addToHistory } from "~/lib/features/history";
 import SummaryView from "~/app/components/SummaryView";
+import AddTransactionModal from "./components/AddTransactionModal";
 
 export default function Page() {
   const dispatch = useAppDispatch();
@@ -24,6 +25,7 @@ export default function Page() {
   const participants = useSelector(getParticipants);
   const billId = useSelector(getBillId);
 
+  const [showModal, setShowModal] = useState(false);
   const [summaryState, setSummaryState] = useState<string | null>(null);
 
   const addPersonHandler = useCallback(() => {
@@ -52,29 +54,6 @@ export default function Page() {
     );
   }, [dispatch, participants]);
 
-  const submitForm = (formData: FormData) => {
-    console.log(JSON.stringify(formData));
-    console.log(
-      `submitted with ${formData.get("amount")} and ${formData.get("person")}`
-    );
-    setShowModal(false);
-  };
-
-  const [showModal, setShowModal] = useState(false);
-  const modal = (
-    <>
-      <Dialog open={showModal} onClose={() => setShowModal(false)}>
-        <form action={submitForm}>
-          <input name="amount" placeholder="amount" />
-          <input name="person" placeholder="person" />
-          <DialogActions>
-            <button type="submit">Submit</button>
-          </DialogActions>
-        </form>
-      </Dialog>
-    </>
-  );
-
   const displayTransaction = (billId: string) => {
     setSummaryState(billId);
   };
@@ -89,19 +68,29 @@ export default function Page() {
   return (
     <>
       <BillInfo />
-      {modal}
+      <AddTransactionModal
+        showModal={showModal}
+        closeAction={() => setShowModal(false)}
+      />
       <br />
       <br />
+      <Chip label="chip filled" />
+      <Chip label="Chip Outlined" variant="outlined" />
       <br />
       <TransactionList items={transactions} />
 
-      <Button variant="outlined">button text</Button>
-      <Fab onClick={addPersonHandler}>+</Fab>
-      <Fab onClick={addTransactionHandler}>transaction</Fab>
-      <Fab onClick={() => setShowModal(true)}>transaction modal</Fab>
-      <Fab onClick={doneHandler}>done</Fab>
-      <Chip label="chip filled" />
-      <Chip label="Chip Outlined" variant="outlined" />
+      <Fab variant="extended" onClick={addPersonHandler}>
+        +
+      </Fab>
+      <Fab variant="extended" onClick={addTransactionHandler}>
+        transaction
+      </Fab>
+      <Fab variant="extended" onClick={() => setShowModal(true)}>
+        transaction modal
+      </Fab>
+      <Button variant="contained" onClick={doneHandler}>
+        done
+      </Button>
 
       {summaryState !== null ? <SummaryView id={summaryState} /> : null}
     </>
