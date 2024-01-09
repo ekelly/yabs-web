@@ -1,3 +1,4 @@
+"use client"
 import { configureStore } from "@reduxjs/toolkit";
 import { billReducer } from "~/lib/features/core";
 import { historyReducer } from "./features/history";
@@ -13,6 +14,7 @@ import {
     REGISTER,
   } from 'redux-persist';
 import storage from "redux-persist/lib/storage";
+import createWebStorage from "./localStorage";
 
 const rootReducer = combineReducers({
     bill: billReducer,
@@ -21,7 +23,7 @@ const rootReducer = combineReducers({
 
 const persistConfig = {
     key: 'root',
-    storage,
+    storage: createWebStorage(),
     debug: false
 };
 
