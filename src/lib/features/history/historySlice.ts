@@ -40,6 +40,8 @@ export const getHistoricalBill = (state: RootState, id: string): IHistoryItem | 
     return state.history.records.find(item => item.id === id);
 };
 
+export const getHistory = (state: RootState) => state.history;
+
 // Exports
 
 export const {

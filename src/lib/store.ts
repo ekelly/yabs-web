@@ -1,17 +1,44 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { billReducer } from "~/lib/features/core";
 import { historyReducer } from "./features/history";
+import { combineReducers } from "@reduxjs/toolkit";
+import {
+    persistStore,
+    persistReducer,
+    FLUSH,
+    REHYDRATE,
+    PAUSE,
+    PERSIST,
+    PURGE,
+    REGISTER,
+  } from 'redux-persist';
+import storage from "redux-persist/lib/storage";
+
+const rootReducer = combineReducers({
+    bill: billReducer,
+    history: historyReducer,
+});
+
+const persistConfig = {
+    key: 'root',
+    storage,
+    debug: false
+};
 
 export const makeStore = () => {
     return configureStore({
-        reducer: {
-            bill: billReducer,
-            history: historyReducer,
-        }
+        reducer: persistReducer(persistConfig, rootReducer),
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+            serializableCheck: {
+              ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+            },
+        }),
     })
-  }
+};
 
 export const store = makeStore();
+
+export const persistor = persistStore(store);
 
 // Infer the type of makeStore
 export type AppStore = ReturnType<typeof makeStore>;

@@ -18,14 +18,15 @@ import { Button, Chip, Dialog, DialogActions, Fab } from "@mui/material";
 import { addToHistory } from "~/lib/features/history";
 import SummaryView from "~/app/components/SummaryView";
 import AddTransactionModal from "./components/AddTransactionModal";
+import { getHistory } from "~/lib/features/history/historySlice";
 
 export default function Page() {
   const dispatch = useAppDispatch();
   const transactions = useShallowEqualSelector(getTransactions);
   const participants = useSelector(getParticipants);
   const billId = useSelector(getBillId);
+  const history = useSelector(getHistory);
 
-  const [showModal, setShowModal] = useState(false);
   const [summaryState, setSummaryState] = useState<string | null>(null);
 
   const addPersonHandler = useCallback(() => {
@@ -53,6 +54,29 @@ export default function Page() {
       })
     );
   }, [dispatch, participants]);
+
+  const submitForm = (formData: FormData) => {
+    console.log(JSON.stringify(formData));
+    console.log(
+      `submitted with ${formData.get("amount")} and ${formData.get("person")}`
+    );
+    setShowModal(false);
+  };
+
+  const [showModal, setShowModal] = useState(false);
+  const modal = (
+    <>
+      <Dialog open={showModal} onClose={() => setShowModal(false)}>
+        <form action={submitForm}>
+          <input name="amount" placeholder="amount" /> 
+          <input name="person" placeholder="person" />
+          <DialogActions>
+            <button type="submit">Submit</button>
+          </DialogActions>
+        </form>
+      </Dialog>
+    </>
+  );
 
   const displayTransaction = (billId: string) => {
     setSummaryState(billId);
@@ -93,6 +117,8 @@ export default function Page() {
       </Button>
 
       {summaryState !== null ? <SummaryView id={summaryState} /> : null}
+      <br />
+      <span>History size: {history.length}</span>
     </>
   );
 }
