@@ -7,6 +7,7 @@ import {
 } from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
 import { ChangeEvent, useCallback } from "react";
+import { TextField } from "@mui/material";
 
 export default function BillInfo() {
   const dispatch = useAppDispatch();
@@ -31,14 +32,12 @@ export default function BillInfo() {
   return (
     <>
       <div>
-        <input
-          className="bg-white dark:bg-black text-black dark:text-white"
+        <TextField
           placeholder="Bill Name"
           value={billDescription}
           onChange={updateBillNameHandler}
         />
-        <input
-          className="bg-white dark:bg-black text-black dark:text-white"
+        <TextField
           placeholder="Bill Total"
           value={billTotal ?? ""}
           onChange={updateBillTotalHandler}

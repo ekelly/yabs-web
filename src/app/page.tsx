@@ -1,9 +1,5 @@
 "use client";
 
-import { Fab } from "./ui/Fab";
-import { FilledButton } from "./ui/FilledButton";
-import { ChipSet } from "./ui/ChipSet";
-import { InputChip } from "./ui/InputChip";
 import { useAppDispatch } from "~/lib/hooks";
 import {
   addPerson,
@@ -18,7 +14,7 @@ import { useCallback, useState } from "react";
 import BillInfo from "./components/BillInfo";
 import { useShallowEqualSelector } from "~/lib/hooks";
 import TransactionList from "./components/TransactionList";
-import { Dialog } from "./ui/Dialog";
+import { Button, Chip, Dialog, DialogActions, Fab } from "@mui/material";
 import { addToHistory } from "~/lib/features/history";
 import SummaryView from "~/app/components/SummaryView";
 
@@ -27,7 +23,7 @@ export default function Page() {
   const transactions = useShallowEqualSelector(getTransactions);
   const participants = useSelector(getParticipants);
   const billId = useSelector(getBillId);
-  
+
   const [summaryState, setSummaryState] = useState<string | null>(null);
 
   const addPersonHandler = useCallback(() => {
@@ -61,21 +57,24 @@ export default function Page() {
     console.log(
       `submitted with ${formData.get("amount")} and ${formData.get("person")}`
     );
+    setShowModal(false);
   };
 
   const [showModal, setShowModal] = useState(false);
   const modal = (
     <>
       <Dialog open={showModal} onClose={() => setShowModal(false)}>
-        <form slot="content" action={submitForm}>
+        <form action={submitForm}>
           <input name="amount" placeholder="amount" />
           <input name="person" placeholder="person" />
-          <button type="submit">Submit</button>
+          <DialogActions>
+            <button type="submit">Submit</button>
+          </DialogActions>
         </form>
       </Dialog>
     </>
   );
-  
+
   const displayTransaction = (billId: string) => {
     setSummaryState(billId);
   };
@@ -96,17 +95,15 @@ export default function Page() {
       <br />
       <TransactionList items={transactions} />
 
-      <FilledButton>button text</FilledButton>
-      <Fab onClick={addPersonHandler} label="+" />
-      <Fab onClick={addTransactionHandler} label="transaction" />
-      <Fab onClick={() => setShowModal(true)} label="transaction modal" />
-      <Fab onClick={doneHandler} label="done" />
-      <ChipSet>
-        <InputChip label="chip 1"></InputChip>
-        <InputChip label="chip 2"></InputChip>
-      </ChipSet>
+      <Button variant="outlined">button text</Button>
+      <Fab onClick={addPersonHandler}>+</Fab>
+      <Fab onClick={addTransactionHandler}>transaction</Fab>
+      <Fab onClick={() => setShowModal(true)}>transaction modal</Fab>
+      <Fab onClick={doneHandler}>done</Fab>
+      <Chip label="chip filled" />
+      <Chip label="Chip Outlined" variant="outlined" />
 
-      { summaryState !== null ? <SummaryView id={summaryState} /> : null}
+      {summaryState !== null ? <SummaryView id={summaryState} /> : null}
     </>
   );
 }

@@ -1,29 +1,47 @@
+import { Chip } from "@mui/material";
 import * as React from "react";
-import { IDisplayableTransaction, removeParticipantFromTransaction, removeTransaction } from "~/lib/features/core";
-import { ChipSet } from "~/app/ui/ChipSet";
-import { InputChip } from "~/app/ui/InputChip";
+import {
+  IDisplayableTransaction,
+  removeParticipantFromTransaction,
+  removeTransaction,
+} from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
 
 interface TransactionListItemProps {
-    item: (IDisplayableTransaction),
+  item: IDisplayableTransaction;
 }
 
-export default function TransactionListItem({ item }: TransactionListItemProps) {
-    const dispatch = useAppDispatch();
+export default function TransactionListItem({
+  item,
+}: TransactionListItemProps) {
+  const dispatch = useAppDispatch();
 
-    return <li key={item.id}>{item.amount}<br/><ChipSet>{item.participants.map(i => {
-
-        const onClickHandler = () => {
-            if (item.participants.length === 1) {
-                dispatch(removeTransaction(item.id));
-            } else {
-                dispatch(removeParticipantFromTransaction({
-                    transactionId: item.id,
-                    participantId: i.personId,
-                }));
-            }
+  return (
+    <li key={item.id}>
+      {item.amount}
+      <br />
+      {item.participants.map((i) => {
+        const onDeleteHandler = () => {
+          if (item.participants.length === 1) {
+            dispatch(removeTransaction(item.id));
+          } else {
+            dispatch(
+              removeParticipantFromTransaction({
+                transactionId: item.id,
+                participantId: i.personId,
+              })
+            );
+          }
         };
 
-        return <InputChip key={item.id + i.personId} label={i.participantDisplayName} onClick={onClickHandler} />;
-    })}</ChipSet></li>
+        return (
+          <Chip
+            key={item.id + i.personId}
+            label={i.participantDisplayName}
+            onDelete={onDeleteHandler}
+          />
+        );
+      })}
+    </li>
+  );
 }
