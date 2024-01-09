@@ -16,9 +16,13 @@ export {
     getParticipants,
     getBillDescription,
     getBillTotal,
+    getBillId,
 } from "./selectors";
 export type {
     IDisplayableTransaction
 } from "./selectors";
+export type {
+    IBillState
+} from "./types";
 
 export const billReducer = reducer;

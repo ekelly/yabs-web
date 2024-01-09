@@ -24,6 +24,6 @@ export default function TransactionListItem({ item }: TransactionListItemProps) 
             }
         };
 
-        return <InputChip label={i.participantDisplayName} onClick={onClickHandler}></InputChip>;
+        return <InputChip key={item.id + i.personId} label={i.participantDisplayName} onClick={onClickHandler} />;
     })}</ChipSet></li>
 }

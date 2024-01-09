@@ -8,7 +8,7 @@ import type {
 } from "./types";
 import { v4 as uuidv4 } from "uuid";
 
-const createInitialState = () => {
+const createInitialParticipants = () => {
     const participants: Record<PersonId, IPerson> = {};
     const participantId = uuidv4();
     participants[participantId] = {
@@ -16,13 +16,15 @@ const createInitialState = () => {
         share: 0,
         id: participantId,
     };
-    return ({
-        id: uuidv4(),
-        description: "",
-        participants,
-        transactions: [],
-    });
-}
+    return participants;
+};
+
+const createInitialState = () => ({
+    id: uuidv4(),
+    description: "",
+    participants: createInitialParticipants(),
+    transactions: [],
+});
 
 const initialState: IBillState = createInitialState();
 
@@ -120,7 +122,13 @@ export const slice = createSlice({
     setBillDescription: (state, action: PayloadAction<string>) => {
       state.description = action.payload;
     },
-    clearBill: () => createInitialState(),
+    clearBill: (state) => {
+        state.total = undefined;
+        state.id = uuidv4();
+        state.description = "";
+        state.participants = createInitialParticipants();
+        state.transactions = [];
+    },
   },
 });
 

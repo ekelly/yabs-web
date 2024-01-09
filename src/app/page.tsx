@@ -10,6 +10,8 @@ import {
   addTransaction,
   getTransactions,
   getParticipants,
+  clearBill,
+  getBillId,
 } from "~/lib/features/core";
 import { useSelector } from "react-redux";
 import { useCallback, useState } from "react";
@@ -17,11 +19,16 @@ import BillInfo from "./components/BillInfo";
 import { useShallowEqualSelector } from "~/lib/hooks";
 import TransactionList from "./components/TransactionList";
 import { Dialog } from "./ui/Dialog";
+import { addToHistory } from "~/lib/features/history";
+import SummaryView from "~/app/components/SummaryView";
 
 export default function Page() {
   const dispatch = useAppDispatch();
   const transactions = useShallowEqualSelector(getTransactions);
   const participants = useSelector(getParticipants);
+  const billId = useSelector(getBillId);
+  
+  const [summaryState, setSummaryState] = useState<string | null>(null);
 
   const addPersonHandler = useCallback(() => {
     dispatch(addPerson("New Person"));
@@ -68,6 +75,17 @@ export default function Page() {
       </Dialog>
     </>
   );
+  
+  const displayTransaction = (billId: string) => {
+    setSummaryState(billId);
+  };
+
+  const doneHandler = useCallback(() => {
+    console.log("Saving bill state");
+    dispatch(addToHistory());
+    dispatch(clearBill());
+    displayTransaction(billId);
+  }, [dispatch, billId]);
 
   return (
     <>
@@ -82,10 +100,13 @@ export default function Page() {
       <Fab onClick={addPersonHandler} label="+" />
       <Fab onClick={addTransactionHandler} label="transaction" />
       <Fab onClick={() => setShowModal(true)} label="transaction modal" />
+      <Fab onClick={doneHandler} label="done" />
       <ChipSet>
         <InputChip label="chip 1"></InputChip>
         <InputChip label="chip 2"></InputChip>
       </ChipSet>
+
+      { summaryState !== null ? <SummaryView id={summaryState} /> : null}
     </>
   );
 }

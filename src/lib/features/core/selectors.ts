@@ -18,6 +18,8 @@ export const getTransactions = (state: RootState): IDisplayableTransaction[] => 
         }))
     }));
   };
+
+  export const getBillId = (state: RootState): string => state.bill.id;
   
   export const getParticipants = (state: RootState) => {
     return state.bill.participants;
