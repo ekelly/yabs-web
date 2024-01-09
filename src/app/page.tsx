@@ -12,10 +12,11 @@ import {
   getParticipants,
 } from "~/lib/features/core";
 import { useSelector } from "react-redux";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import BillInfo from "./components/BillInfo";
 import { useShallowEqualSelector } from "~/lib/hooks";
 import TransactionList from "./components/TransactionList";
+import { Dialog } from "./ui/Dialog";
 
 export default function Page() {
   const dispatch = useAppDispatch();
@@ -27,8 +28,13 @@ export default function Page() {
   }, [dispatch]);
 
   const addTransactionHandler = useCallback(() => {
-    const numPeople = Math.floor(Math.random() * (Object.entries(participants).length - 1) + 1);
-    const involved = Array.from(Object.entries(participants)).slice(0, numPeople);
+    const numPeople = Math.floor(
+      Math.random() * (Object.entries(participants).length - 1) + 1
+    );
+    const involved = Array.from(Object.entries(participants)).slice(
+      0,
+      numPeople
+    );
     console.log(`adding transaction with ${JSON.stringify(involved)}`);
     dispatch(
       addTransaction({
@@ -43,20 +49,39 @@ export default function Page() {
     );
   }, [dispatch, participants]);
 
+  const submitForm = (formData: FormData) => {
+    console.log(JSON.stringify(formData));
+    console.log(
+      `submitted with ${formData.get("amount")} and ${formData.get("person")}`
+    );
+  };
+
+  const [showModal, setShowModal] = useState(false);
+  const modal = (
+    <>
+      <Dialog open={showModal} onClose={() => setShowModal(false)}>
+        <form slot="content" action={submitForm}>
+          <input name="amount" placeholder="amount" />
+          <input name="person" placeholder="person" />
+          <button type="submit">Submit</button>
+        </form>
+      </Dialog>
+    </>
+  );
+
   return (
     <>
       <BillInfo />
+      {modal}
       <br />
       <br />
       <br />
       <TransactionList items={transactions} />
 
-
-
-
       <FilledButton>button text</FilledButton>
       <Fab onClick={addPersonHandler} label="+" />
       <Fab onClick={addTransactionHandler} label="transaction" />
+      <Fab onClick={() => setShowModal(true)} label="transaction modal" />
       <ChipSet>
         <InputChip label="chip 1"></InputChip>
         <InputChip label="chip 2"></InputChip>
