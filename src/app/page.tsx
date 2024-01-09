@@ -68,7 +68,7 @@ export default function Page() {
     <>
       <Dialog open={showModal} onClose={() => setShowModal(false)}>
         <form action={submitForm}>
-          <input name="amount" placeholder="amount" /> 
+          <input name="amount" placeholder="amount" />
           <input name="person" placeholder="person" />
           <DialogActions>
             <button type="submit">Submit</button>
@@ -118,7 +118,7 @@ export default function Page() {
 
       {summaryState !== null ? <SummaryView id={summaryState} /> : null}
       <br />
-      <span>History size: {history.length}</span>
+      <span>History size: {history.records.length}</span>
     </>
   );
 }
