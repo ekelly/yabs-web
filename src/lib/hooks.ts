@@ -8,6 +8,6 @@ export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 export const useAppStore: () => AppStore = useStore;
 
 // Use where the selector is returning a new object
-export function useShallowEqualSelector(selector: (state: RootState) => any) {
+export function useShallowEqualSelector<T>(selector: (state: RootState) => T): T {
   return useSelector(selector, shallowEqual);
 }

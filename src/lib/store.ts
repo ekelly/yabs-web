@@ -13,7 +13,6 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
 import createWebStorage from "./localStorage";
 
 const rootReducer = combineReducers({
@@ -27,16 +26,17 @@ const persistConfig = {
   debug: false,
 };
 
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 export const makeStore = () => {
-  return configureStore({
-    reducer: persistReducer(persistConfig, rootReducer),
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({
-        serializableCheck: {
-          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        },
-      }),
-  });
+    return configureStore({
+        reducer: persistedReducer,
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+            serializableCheck: {
+              ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+            },
+        }),
+    })
 };
 
 export const store = makeStore();

@@ -1,7 +1,7 @@
 import { Chip } from "@mui/material";
 import * as React from "react";
 import {
-  IDisplayableTransaction,
+  type IDisplayableTransaction,
   removeParticipantFromTransaction,
   removeTransaction,
 } from "~/lib/features/core";

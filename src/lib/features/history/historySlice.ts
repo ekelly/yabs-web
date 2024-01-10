@@ -1,22 +1,12 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "~/lib/store";
-import { IBillState } from "../core/types";
-import { IHistoryItem, IHistoryState } from "./types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { IHistoryState } from "./types";
+import { addToHistory } from "./actions";
 
 const createInitialState = () => ({
     records: []
 });
 
 const initialState: IHistoryState = createInitialState();
-
-// Using Redux-thunk is the cleanest way to get the bill state from
-// the other reducer.
-export const addToHistory = createAsyncThunk<IBillState, void>(
-    "history/addToHistory",
-    async (_arg, thunkAPI) => {
-      return (thunkAPI.getState() as RootState).bill;
-    }
-  );
 
 export const slice = createSlice({
   name: "history",
@@ -28,19 +18,11 @@ export const slice = createSlice({
     clearAllHistory: () => createInitialState(),
   },
   extraReducers: (builder) => {
-    builder.addCase(addToHistory.fulfilled, (state, action: PayloadAction<IBillState>) => {
+    builder.addCase(addToHistory.fulfilled, (state, action) => {
         state.records.push(action.payload);
     });
   }
 });
-
-// Selector
-
-export const getHistoricalBill = (state: RootState, id: string): IHistoryItem | undefined => {
-    return state.history.records.find(item => item.id === id);
-};
-
-export const getHistory = (state: RootState) => state.history;
 
 // Exports
 

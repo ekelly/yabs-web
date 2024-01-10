@@ -1,5 +1,5 @@
 import type { RootState } from "~/lib/store";
-import { IAdjustment, ITransaction } from "./types";
+import type { IAdjustment, ITransaction } from "./types";
 
 // Selectors
 

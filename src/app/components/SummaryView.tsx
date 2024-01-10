@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useCallback } from "react";
 import type { RootState } from "~/lib/store";
-import { getHistoricalBill } from "~/lib/features/history/historySlice";
+import { getHistoricalBill } from "~/lib/features/history";
 
 interface SummaryViewProps {
     id: string;

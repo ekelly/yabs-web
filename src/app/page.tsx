@@ -14,11 +14,10 @@ import { useCallback, useState } from "react";
 import BillInfo from "./components/BillInfo";
 import { useShallowEqualSelector } from "~/lib/hooks";
 import TransactionList from "./components/TransactionList";
-import { Button, Chip, Dialog, DialogActions, Fab } from "@mui/material";
-import { addToHistory } from "~/lib/features/history";
+import { Button, Chip, Fab } from "@mui/material";
+import { addToHistory, getHistory } from "~/lib/features/history";
 import SummaryView from "~/app/components/SummaryView";
 import AddTransactionModal from "./components/AddTransactionModal";
-import { getHistory } from "~/lib/features/history/historySlice";
 
 export default function Page() {
   const dispatch = useAppDispatch();
@@ -64,19 +63,6 @@ export default function Page() {
   };
 
   const [showModal, setShowModal] = useState(false);
-  const modal = (
-    <>
-      <Dialog open={showModal} onClose={() => setShowModal(false)}>
-        <form action={submitForm}>
-          <input name="amount" placeholder="amount" />
-          <input name="person" placeholder="person" />
-          <DialogActions>
-            <button type="submit">Submit</button>
-          </DialogActions>
-        </form>
-      </Dialog>
-    </>
-  );
 
   const displayTransaction = (billId: string) => {
     setSummaryState(billId);
