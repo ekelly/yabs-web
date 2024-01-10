@@ -54,14 +54,6 @@ export default function Page() {
     );
   }, [dispatch, participants]);
 
-  const submitForm = (formData: FormData) => {
-    console.log(JSON.stringify(formData));
-    console.log(
-      `submitted with ${formData.get("amount")} and ${formData.get("person")}`
-    );
-    setShowModal(false);
-  };
-
   const [showModal, setShowModal] = useState(false);
 
   const displayTransaction = (billId: string) => {
