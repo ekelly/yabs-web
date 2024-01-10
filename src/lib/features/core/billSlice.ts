@@ -7,6 +7,7 @@ import type {
   TransactionId,
 } from "./types";
 import { v4 as uuidv4 } from "uuid";
+import { stat } from "fs";
 
 const createInitialParticipants = () => {
     const participants: Record<PersonId, IPerson> = {};
@@ -116,7 +117,7 @@ export const slice = createSlice({
         }),
       ];
     },
-    setBillTotal: (state, action: PayloadAction<number>) => {
+    setBillTotal: (state, action: PayloadAction<number|undefined>) => {
       state.total = action.payload;
     },
     setBillDescription: (state, action: PayloadAction<string>) => {
