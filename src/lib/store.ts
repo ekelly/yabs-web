@@ -2,7 +2,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { billReducer } from "~/lib/features/core";
 import { historyReducer } from "./features/history";
-import { combineReducers } from "@reduxjs/toolkit";
 import {
   persistStore,
   persistReducer,
@@ -12,25 +11,24 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
+  persistCombineReducers,
 } from "redux-persist";
 import createWebStorage from "./localStorage";
 
-const rootReducer = combineReducers({
+const persistConfig = {
+    key: "root",
+    storage: createWebStorage(),
+    debug: false,
+  };
+
+const rootReducer = persistCombineReducers(persistConfig, {
   bill: billReducer,
   history: historyReducer,
 });
 
-const persistConfig = {
-  key: "root",
-  storage: createWebStorage(),
-  debug: false,
-};
-
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
 export const makeStore = () => {
     return configureStore({
-        reducer: persistedReducer,
+        reducer: rootReducer,
         middleware: (getDefaultMiddleware) => getDefaultMiddleware({
             serializableCheck: {
               ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
@@ -40,6 +38,9 @@ export const makeStore = () => {
 };
 
 export const store = makeStore();
+store.subscribe(() => {
+    console.log(`New state: ${JSON.stringify(store.getState())}`);
+})
 
 export const persistor = persistStore(store);
 

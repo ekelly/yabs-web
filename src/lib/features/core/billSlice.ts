@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, current } from "@reduxjs/toolkit";
 import type {
   IBillState,
   IPerson,
@@ -53,15 +53,13 @@ export const slice = createSlice({
       action: PayloadAction<Omit<ITransaction, "id">>
     ) => {
       console.log("Added transaction " + JSON.stringify(action.payload));
-      state.transactions.push({
+      void state.transactions.push({
         ...action.payload,
         id: uuidv4(),
       });
     },
     removeTransaction: (state, action: PayloadAction<TransactionId>) => {
-      state.transactions = [
-        ...state.transactions.filter((t) => t.id !== action.payload),
-      ];
+      state.transactions = state.transactions.filter((t) => t.id !== action.payload)
     },
     removeParticipantFromTransaction: (
       state,
@@ -114,14 +112,14 @@ export const slice = createSlice({
     setBillDescription: (state, action: PayloadAction<string>) => {
       state.description = action.payload;
     },
-    clearBill: (state) => {
-      state.total = undefined;
-      state.id = uuidv4();
-      state.description = "";
-      state.participants = createInitialParticipants();
-      state.transactions = [];
-    },
+    clearBill: () => createInitialState(),
   },
+  selectors: {
+    getBillId: (billState) => billState.id,
+    getBillParticipants: (billState) => billState.participants,
+    getBillDescription: (billState) => billState.description,
+    getBillTotal: (billState) => billState.total,
+  }
 });
 
 // Exports
@@ -137,5 +135,11 @@ export const {
   setBillDescription,
   clearBill,
 } = slice.actions;
+export const {
+  getBillDescription,
+  getBillId,
+  getBillParticipants,
+  getBillTotal
+} = slice.selectors;
 
 export default slice.reducer;
