@@ -43,13 +43,12 @@ export default function TabBar(props: TabBarProps) {
 
     return (
         <>
-    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} centered>
-            { ...props.items.map((item, index) => <Tab label={item.label} value={index} />) }
-            {/* <Tab label="New Bill" value={0} />
-            <Tab label="History" value={1} /> */}
-        </Tabs>
-    </Box>
-    { ...props.items.map((item, index) => <TabPanel children={item.component} index={index} value={value} />) }
-    </>);
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs value={value} onChange={handleChange} centered>
+                    { ...props.items.map((item, index) => <Tab label={item.label} value={index} />) }
+                </Tabs>
+            </Box>
+            { ...props.items.map((item, index) => <TabPanel children={item.component} index={index} value={value} />) }
+        </>
+    );
 }
