@@ -13,11 +13,11 @@ import {
   REGISTER,
   persistCombineReducers,
 } from "redux-persist";
-import createWebStorage from "./localStorage";
+import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
     key: "root",
-    storage: createWebStorage(),
+    storage,
     debug: false,
   };
 
@@ -38,9 +38,6 @@ export const makeStore = () => {
 };
 
 export const store = makeStore();
-store.subscribe(() => {
-    console.log(`New state: ${JSON.stringify(store.getState())}`);
-})
 
 export const persistor = persistStore(store);
 
