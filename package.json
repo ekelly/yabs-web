@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.8",
     "@material/web": "^1.1.1",
+    "@mui/icons-material": "^5.15.4",
     "@mui/material": "^5.15.3",
     "@mui/material-nextjs": "^5.15.3",
     "@reduxjs/toolkit": "^2.0.1",

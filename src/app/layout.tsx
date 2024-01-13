@@ -9,17 +9,19 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import React from "react";
 import ColorThemeProvider from "./ColorThemeProvider";
-import TabBar from "./components/TabBar";
+import DrawerAppBar from "./components/AppBar";
 import BillEntry from "./components/BillEntry";
 import HistoryView from "./components/HistoryView";
 
 const routes = [
   {
-    label: "Bill Entry",
+    label: "Home",
+    href: "home",
     component: <BillEntry />,
   },
   {
     label: "History",
+    href: "history",
     component: <HistoryView />,
   },
 ];
@@ -45,8 +47,9 @@ export default function RootLayout({
                       flex: 1,
                     }}
                   >
-                    <TabBar items={routes} />
-                    {children}
+                    <DrawerAppBar navItems={routes}>
+                      {children}
+                    </DrawerAppBar>
                   </Paper>
                 </Container>
               </StoreProvider>
