@@ -2,7 +2,7 @@
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
-import { Container, CssBaseline } from "@mui/material";
+import { Container, CssBaseline, Paper } from "@mui/material";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -36,9 +36,18 @@ export default function RootLayout({
           <ColorThemeProvider>
             <CssBaseline>
               <StoreProvider>
-                <Container maxWidth="sm">
-                  <TabBar items={routes} />
-                  {children}
+                <Container maxWidth="sm" sx={{ display: "flex", flex: 1 }}>
+                  <Paper
+                    elevation={4}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      flex: 1,
+                    }}
+                  >
+                    <TabBar items={routes} />
+                    {children}
+                  </Paper>
                 </Container>
               </StoreProvider>
             </CssBaseline>

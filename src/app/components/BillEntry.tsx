@@ -66,17 +66,16 @@ export default function BillEntry() {
         closeAction={() => setShowModal(false)}
       />
       <br />
-      <br />
-      <Chip label="chip filled" />
-      <Chip label="Chip Outlined" variant="outlined" />
-      <br />
       <TransactionList items={transactions} />
 
       <Fab variant="extended" onClick={addTransactionHandler}>
         transaction
       </Fab>
-      <Fab variant="extended" onClick={() => setShowModal(true)}>
-        transaction modal
+      <Fab
+        onClick={() => setShowModal(true)}
+        sx={{ position: "absolute", bottom: "16px", right: "16px" }}
+      >
+        +
       </Fab>
       <Button variant="contained" onClick={doneHandler}>
         done
