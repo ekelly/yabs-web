@@ -6,9 +6,8 @@ import {
   setBillTotal,
 } from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
-import { ChangeEvent, useCallback } from "react";
+import { ChangeEvent } from "react";
 import { TextField, Paper } from "@mui/material";
-import { Unstable_NumberInput as NumberInput } from '@mui/base/Unstable_NumberInput';
 
 export default function BillInfo() {
   const dispatch = useAppDispatch();
