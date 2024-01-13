@@ -6,6 +6,7 @@ import {
   removeTransaction,
 } from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
+import { PersonChip } from "./PersonChip";
 
 interface TransactionListItemProps {
   item: IDisplayableTransaction;
@@ -39,7 +40,8 @@ export default function TransactionListItem({
           };
 
           return (
-            <Chip
+            <PersonChip
+              id={i.personId}
               key={item.id + i.personId}
               label={i.participantDisplayName}
               onDelete={onDeleteHandler}

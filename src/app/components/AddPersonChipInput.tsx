@@ -32,7 +32,7 @@ export default function AddPersonChipInput({
     <>
       <Chip
         label="+"
-        variant="outlined"
+        variant="filled"
         onClick={() => {
           setShowNewParticipant(true);
         }}

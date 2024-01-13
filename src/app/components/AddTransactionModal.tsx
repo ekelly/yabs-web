@@ -14,6 +14,7 @@ import { addTransaction, getParticipants } from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
 import AddPersonChipInput from "./AddPersonChipInput";
 import { NumericFormat } from "react-number-format";
+import { PersonChip } from "./PersonChip";
 
 interface AddTransactionModalProps {
   showModal: boolean;
@@ -96,15 +97,16 @@ export default function AddTransactionModal({
             />
             <br />
             {Object.values(possibleParticipants).map((participant) => (
-              <Chip
+              <PersonChip
                 variant={
                   selectedParticipants.includes(participant.id)
-                    ? "filled"
-                    : "outlined"
+                    ? "outlined"
+                    : "filled"
                 }
                 key={participant.id}
                 label={participant.name}
                 onClick={() => setParticipantSelected(participant.id)}
+                id={participant.id}
               />
             ))}
             <AddPersonChipInput
