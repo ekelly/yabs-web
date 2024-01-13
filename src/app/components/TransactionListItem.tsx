@@ -17,7 +17,7 @@ export default function TransactionListItem({
   const dispatch = useAppDispatch();
 
   return (
-    <ListItem key={item.id}>
+    <ListItem key={item.id} divider>
       <ListItemText>
         {Intl.NumberFormat("en-US", {
           style: "currency",

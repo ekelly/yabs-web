@@ -65,8 +65,6 @@ export default function BillEntry() {
         showModal={showModal}
         closeAction={() => setShowModal(false)}
       />
-      <br />
-      <Typography variant="h6">Transactions</Typography>
       <TransactionList items={transactions} />
 
       <Button onClick={addTransactionHandler}>random transaction</Button>
