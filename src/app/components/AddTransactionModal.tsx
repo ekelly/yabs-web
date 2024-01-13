@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { addTransaction, getParticipants } from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
+import AddPersonChipInput from "./AddPersonChipInput";
 
 interface AddTransactionModalProps {
   showModal: boolean;
@@ -39,12 +40,15 @@ export default function AddTransactionModal({
 
   const submitFormHandler = (formData: FormData) => {
     console.log(JSON.stringify(formData));
-    console.log(`submitted with ${formData.get("amount")}}`);
+    const amount = Number(formData.get("itemAmount"));
+    if (isNaN(amount)) {
+      setError("Amount must be a valid number");
+      return;
+    }
     if (selectedParticipants.length === 0) {
       setError(MISSING_PARTICIPANTS_ERROR);
       return;
     }
-    const amount = Number(formData.get("amount"));
     dispatch(
       addTransaction({
         amount: amount,
@@ -57,7 +61,7 @@ export default function AddTransactionModal({
     closeForm();
   };
 
-  const toggleParticipant = (participantId: string) => {
+  const setParticipantSelected = (participantId: string) => {
     if (error === MISSING_PARTICIPANTS_ERROR) setError(undefined);
 
     if (selectedParticipants.includes(participantId)) {
@@ -74,7 +78,11 @@ export default function AddTransactionModal({
       <Dialog open={showModal} onClose={closeForm}>
         <form action={submitFormHandler}>
           <DialogContent>
-            <TextField name="amount" placeholder="amount" />
+            <TextField
+              name="itemAmount"
+              placeholder="amount"
+              inputMode="numeric"
+            />
             <br />
             {Object.values(possibleParticipants).map((participant) => (
               <Chip
@@ -85,11 +93,12 @@ export default function AddTransactionModal({
                 }
                 key={participant.id}
                 label={participant.name}
-                onClick={() => {
-                  toggleParticipant(participant.id);
-                }}
+                onClick={() => setParticipantSelected(participant.id)}
               />
             ))}
+            <AddPersonChipInput
+              setParticipantSelected={setParticipantSelected}
+            />
             <FormHelperText error>{error}</FormHelperText>
           </DialogContent>
           <DialogActions>

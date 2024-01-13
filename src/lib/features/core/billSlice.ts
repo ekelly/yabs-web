@@ -7,24 +7,23 @@ import type {
   TransactionId,
 } from "./types";
 import { v4 as uuidv4 } from "uuid";
-import { stat } from "fs";
 
 const createInitialParticipants = () => {
-    const participants: Record<PersonId, IPerson> = {};
-    const participantId = uuidv4();
-    participants[participantId] = {
-        name: "Me",
-        share: 0,
-        id: participantId,
-    };
-    return participants;
+  const participants: Record<PersonId, IPerson> = {};
+  const participantId = uuidv4();
+  participants[participantId] = {
+    name: "Me",
+    share: 0,
+    id: participantId,
+  };
+  return participants;
 };
 
 const createInitialState = () => ({
-    id: uuidv4(),
-    description: "",
-    participants: createInitialParticipants(),
-    transactions: [],
+  id: uuidv4(),
+  description: "",
+  participants: createInitialParticipants(),
+  transactions: [],
 });
 
 const initialState: IBillState = createInitialState();
@@ -43,19 +42,11 @@ export const slice = createSlice({
   name: "slice-name",
   initialState,
   reducers: {
-    addPerson: (state, action: PayloadAction<string>) => {
-      console.log("Added a person!");
-      const id = uuidv4();
-      state.participants[id] = {
-        id,
-        name: action.payload,
-      };
+    upsertPerson: (state, action: PayloadAction<IPerson>) => {
+      state.participants[action.payload.id] = action.payload;
     },
     removePerson: (state, action: PayloadAction<PersonId>) => {
-        delete state.participants[action.payload];
-    },
-    updatePerson: (state, action: PayloadAction<IPerson>) => {
-        state.participants[action.payload.id] = action.payload;
+      delete state.participants[action.payload];
     },
     addTransaction: (
       state,
@@ -117,18 +108,18 @@ export const slice = createSlice({
         }),
       ];
     },
-    setBillTotal: (state, action: PayloadAction<number|undefined>) => {
+    setBillTotal: (state, action: PayloadAction<number | undefined>) => {
       state.total = action.payload;
     },
     setBillDescription: (state, action: PayloadAction<string>) => {
       state.description = action.payload;
     },
     clearBill: (state) => {
-        state.total = undefined;
-        state.id = uuidv4();
-        state.description = "";
-        state.participants = createInitialParticipants();
-        state.transactions = [];
+      state.total = undefined;
+      state.id = uuidv4();
+      state.description = "";
+      state.participants = createInitialParticipants();
+      state.transactions = [];
     },
   },
 });
@@ -136,9 +127,8 @@ export const slice = createSlice({
 // Exports
 
 export const {
-  addPerson,
+  upsertPerson,
   removePerson,
-  updatePerson,
   addTransaction,
   removeTransaction,
   removeParticipantFromTransaction,
