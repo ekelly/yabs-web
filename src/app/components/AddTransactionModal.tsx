@@ -82,7 +82,7 @@ export default function AddTransactionModal({
             <TextField
               name="itemAmount"
               placeholder="amount"
-              inputMode="numeric"
+              inputMode="decimal"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">$</InputAdornment>

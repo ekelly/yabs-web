@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import {
   getBillDescription,
-  getBillTotal,
   setBillDescription,
   setBillTotal,
 } from "~/lib/features/core";
@@ -13,7 +12,6 @@ export default function BillInfo() {
   const dispatch = useAppDispatch();
 
   const billDescription = useSelector(getBillDescription);
-  const billTotal = useSelector(getBillTotal);
 
   const updateBillNameHandler = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(setBillDescription(e.currentTarget.value));
@@ -45,12 +43,11 @@ export default function BillInfo() {
           sx={{ width: "inherit" }}
         />
         <TextField
-          type="tel"
           placeholder="Bill Total"
-          value={billTotal ?? ""}
           InputProps={{
             startAdornment: <InputAdornment position="start">$</InputAdornment>,
           }}
+          inputMode="decimal"
           onChange={updateBillTotalHandler}
         />
       </Paper>
