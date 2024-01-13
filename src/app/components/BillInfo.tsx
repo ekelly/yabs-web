@@ -1,24 +1,33 @@
 import { useSelector } from "react-redux";
 import {
   getBillDescription,
+  getBillTotal,
   setBillDescription,
   setBillTotal,
 } from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { TextField, Paper, InputAdornment } from "@mui/material";
+import { NumericFormat } from "react-number-format";
 
 export default function BillInfo() {
   const dispatch = useAppDispatch();
 
   const billDescription = useSelector(getBillDescription);
+  const billTotal = useSelector(getBillTotal);
+
+  const [total, setTotal] = useState<string>(billTotal?.toString() ?? "");
+  useEffect(() => {
+    if (!billTotal) setTotal("");
+  }, [billTotal, setTotal]);
 
   const updateBillNameHandler = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(setBillDescription(e.currentTarget.value));
   };
 
-  const updateBillTotalHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(setBillTotal(Number(e.currentTarget.value)));
+  const updateBillTotal = () => {
+    setTotal(Number(total).toFixed(2));
+    dispatch(setBillTotal(Number(total)));
   };
 
   return (
@@ -42,13 +51,19 @@ export default function BillInfo() {
           onChange={updateBillNameHandler}
           sx={{ width: "inherit" }}
         />
-        <TextField
+        <NumericFormat
+          customInput={TextField}
           placeholder="Bill Total"
+          value={total}
           InputProps={{
             startAdornment: <InputAdornment position="start">$</InputAdornment>,
           }}
           inputMode="decimal"
-          onChange={updateBillTotalHandler}
+          onChange={(e) => setTotal(e.target.value)}
+          onBlur={updateBillTotal}
+          valueIsNumericString
+          decimalScale={2}
+          allowNegative={false}
         />
       </Paper>
     </>

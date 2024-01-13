@@ -19,7 +19,7 @@ const createInitialParticipants = () => {
   return participants;
 };
 
-const createInitialState = () => ({
+const createInitialState: () => IBillState = () => ({
   id: uuidv4(),
   description: "",
   participants: createInitialParticipants(),
@@ -59,7 +59,9 @@ export const slice = createSlice({
       });
     },
     removeTransaction: (state, action: PayloadAction<TransactionId>) => {
-      state.transactions = state.transactions.filter((t) => t.id !== action.payload)
+      state.transactions = state.transactions.filter(
+        (t) => t.id !== action.payload
+      );
     },
     removeParticipantFromTransaction: (
       state,
@@ -114,12 +116,6 @@ export const slice = createSlice({
     },
     clearBill: () => createInitialState(),
   },
-  selectors: {
-    getBillId: (billState) => billState.id,
-    getBillParticipants: (billState) => billState.participants,
-    getBillDescription: (billState) => billState.description,
-    getBillTotal: (billState) => billState.total,
-  }
 });
 
 // Exports
@@ -135,11 +131,5 @@ export const {
   setBillDescription,
   clearBill,
 } = slice.actions;
-export const {
-  getBillDescription,
-  getBillId,
-  getBillParticipants,
-  getBillTotal
-} = slice.selectors;
 
 export default slice.reducer;

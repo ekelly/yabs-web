@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { addTransaction, getParticipants } from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
 import AddPersonChipInput from "./AddPersonChipInput";
+import { NumericFormat } from "react-number-format";
 
 interface AddTransactionModalProps {
   showModal: boolean;
@@ -79,7 +80,8 @@ export default function AddTransactionModal({
       <Dialog open={showModal} onClose={closeForm}>
         <form action={submitFormHandler}>
           <DialogContent>
-            <TextField
+            <NumericFormat
+              customInput={TextField}
               name="itemAmount"
               placeholder="amount"
               inputMode="decimal"
@@ -88,6 +90,9 @@ export default function AddTransactionModal({
                   <InputAdornment position="start">$</InputAdornment>
                 ),
               }}
+              valueIsNumericString
+              decimalScale={2}
+              allowNegative={false}
             />
             <br />
             {Object.values(possibleParticipants).map((participant) => (

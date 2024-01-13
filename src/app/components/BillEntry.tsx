@@ -1,5 +1,5 @@
 "use client";
-import { Fab, Button, Typography } from "@mui/material";
+import { Fab, Button, Typography, FormHelperText } from "@mui/material";
 import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -8,6 +8,8 @@ import {
   getBillId,
   clearBill,
   addTransaction,
+  getBillDescription,
+  getBillTotal,
 } from "~/lib/features/core";
 import { addToHistory, getHistory } from "~/lib/features/history";
 import { useAppDispatch, useShallowEqualSelector } from "~/lib/hooks";
@@ -21,20 +23,32 @@ export default function BillEntry() {
   const transactions = useShallowEqualSelector(getTransactions);
   const participants = useSelector(getParticipants);
   const billId = useSelector(getBillId);
+  const billDescription = useSelector(getBillDescription);
+  const billTotal = useSelector(getBillTotal);
 
   const [showModal, setShowModal] = useState(false);
   const [summaryState, setSummaryState] = useState<string | null>(null);
+  const [error, setError] = useState<string | undefined>();
 
   const displayTransaction = (billId: string) => {
     setSummaryState(billId);
   };
 
   const doneHandler = useCallback(() => {
+    if (billDescription === "") {
+      setError("Bill must have a name");
+      return;
+    }
+    if (!billTotal || billTotal <= 0) {
+      setError("Bill total must be positive");
+      return;
+    }
     console.log("Saving bill state");
+    setError(undefined);
     dispatch(addToHistory());
     dispatch(clearBill());
     displayTransaction(billId);
-  }, [dispatch, billId]);
+  }, [dispatch, billId, billDescription, billTotal]);
 
   const addTransactionHandler = useCallback(() => {
     const numPeople = Math.floor(
@@ -72,6 +86,7 @@ export default function BillEntry() {
       <Button variant="contained" onClick={doneHandler}>
         done
       </Button>
+      <FormHelperText error>{error}</FormHelperText>
 
       <Fab
         onClick={() => setShowModal(true)}
