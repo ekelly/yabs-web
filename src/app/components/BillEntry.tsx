@@ -1,5 +1,5 @@
 "use client";
-import { Chip, Fab, Button } from "@mui/material";
+import { Fab, Button, Typography } from "@mui/material";
 import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -66,21 +66,21 @@ export default function BillEntry() {
         closeAction={() => setShowModal(false)}
       />
       <br />
+      <Typography variant="h6">Transactions</Typography>
       <TransactionList items={transactions} />
 
-      <Fab variant="extended" onClick={addTransactionHandler}>
-        transaction
-      </Fab>
+      <Button onClick={addTransactionHandler}>random transaction</Button>
+      <br />
+      <Button variant="contained" onClick={doneHandler}>
+        done
+      </Button>
+
       <Fab
         onClick={() => setShowModal(true)}
         sx={{ position: "absolute", bottom: "16px", right: "16px" }}
       >
         +
       </Fab>
-      <Button variant="contained" onClick={doneHandler}>
-        done
-      </Button>
-
       {summaryState !== null ? <SummaryView id={summaryState} /> : null}
     </>
   );
