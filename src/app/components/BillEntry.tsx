@@ -79,7 +79,7 @@ export default function BillEntry() {
       >
         +
       </Fab>
-      {summaryState !== null ? <SummaryView id={summaryState} /> : null}
+      <SummaryView id={summaryState} />
     </>
   );
 }

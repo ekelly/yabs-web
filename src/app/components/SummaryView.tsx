@@ -1,23 +1,54 @@
+import * as React from "react";
 import { useSelector } from "react-redux";
-import { useCallback } from "react";
 import type { RootState } from "~/lib/store";
 import { getHistoricalBill } from "~/lib/features/history";
+import { Snackbar, Alert } from "@mui/material";
 
 interface SummaryViewProps {
-    id: string;
+    id?: string | null;
+}
+
+const ErrorMessage = (props: {
+    open: boolean,
+    triggerError: (show: boolean) => void
+}) => {
+    const { open, triggerError } = props;
+    const handleClose = React.useCallback((_event?: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+
+        triggerError(false);
+    }, [triggerError]);
+
+    return <Snackbar
+        open={open}
+        autoHideDuration={5000}
+        onClose={handleClose}
+        message="Error finding bill details"
+        sx={{ bottom: { xs: 90, sm: 0 } }}
+    >
+        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+            Error finding bill details
+        </Alert>
+    </Snackbar>
 }
 
 export default function SummaryView({ id }: SummaryViewProps) {
-    const billDetails = useSelector(useCallback((state: RootState) => {
-        return getHistoricalBill(state, id);
-    }, [id]));
+    const [open, triggerError] = React.useState(false);
+    const billDetails = useSelector((state: RootState) => {
+        return id ? getHistoricalBill(state, id) : null;
+    });
 
-    if (!billDetails) {
-        return <div>Empty summary</div>;
-    }
+    React.useEffect(() => {
+        if (!billDetails && id) {
+            triggerError(true);
+        }
+    }, [billDetails, id, triggerError]);
 
     return (
         <>
+            <ErrorMessage open={open} triggerError={triggerError} />
             <div>
                 {billDetails?.description} - {billDetails?.total}
             </div>
