@@ -1,3 +1,4 @@
+"use client"
 import { Chip, Fab, Button } from "@mui/material";
 import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";

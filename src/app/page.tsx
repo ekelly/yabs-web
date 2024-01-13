@@ -1,7 +1,10 @@
 "use client";
 
-import BillEntry from "./components/BillEntry";
+import BillEntry from "~/app/components/BillEntry";
 
 export default function Page() {
-  return <BillEntry></BillEntry>
+
+  return (
+    <></>
+  )
 }
