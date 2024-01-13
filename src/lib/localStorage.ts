@@ -9,24 +9,27 @@ export default function createWebStorage(): WebStorage {
     const storage = window.localStorage;
     return {
         getItem: (key: string): Promise<string> => {
-        return new Promise((resolve, reject) => {
-            const value = storage.getItem(key);
-            if (value) {
-                resolve(value);
-            } else {
-                reject("Key not present");
-            }
-        })
+            console.log("KELERIC getItem");
+            return new Promise((resolve, reject) => {
+                const value = storage.getItem(key);
+                if (value) {
+                    resolve(value);
+                } else {
+                    reject("Key not present");
+                }
+            });
         },
         setItem: (key: string, item: string): Promise<void> => {
-        return new Promise((resolve) => {
-            resolve(storage.setItem(key, item));
-        })
+            console.log("KELERIC setItem");
+            return new Promise((resolve) => {
+                resolve(storage.setItem(key, item));
+            });
         },
         removeItem: (key: string): Promise<void> => {
-        return new Promise((resolve) => {
-            resolve(storage.removeItem(key));
-        })
+            console.log("KELERIC removeItem");
+            return new Promise((resolve) => {
+                resolve(storage.removeItem(key));
+            });
         },
     }
 }

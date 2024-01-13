@@ -45,7 +45,7 @@ export default function TabBar(props: TabBarProps) {
         <>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <Tabs value={value} onChange={handleChange} centered>
-                    { ...props.items.map((item, index) => <Tab label={item.label} value={index} />) }
+                    { ...props.items.map((item, index) => <Tab key={index} label={item.label} value={index} />) }
                 </Tabs>
             </Box>
             { ...props.items.map((item, index) => <TabPanel children={item.component} index={index} value={value} />) }
