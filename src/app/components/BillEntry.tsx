@@ -15,7 +15,7 @@ export default function BillEntry() {
     const transactions = useShallowEqualSelector(getTransactions);
     const participants = useSelector(getParticipants);
     const billId = useSelector(getBillId);
-    const history = useSelector(getHistory);
+    
     const [showModal, setShowModal] = useState(false);
     const [summaryState, setSummaryState] = useState<string | null>(null);
 
@@ -83,7 +83,5 @@ export default function BillEntry() {
       </Button>
 
       {summaryState !== null ? <SummaryView id={summaryState} /> : null}
-      <br />
-      <span>History size: {history.records.length}</span>
     </>);
 }

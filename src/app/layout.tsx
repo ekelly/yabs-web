@@ -11,6 +11,7 @@ import React from "react";
 import ColorThemeProvider from "./ColorThemeProvider";
 import TabBar from "./components/TabBar";
 import BillEntry from "./components/BillEntry";
+import HistoryView from "./components/HistoryView";
 
 const routes = [
   {
@@ -19,7 +20,7 @@ const routes = [
   },
   {
     label: "History",
-    component: <></>
+    component: <HistoryView />
   }
 ];
 
