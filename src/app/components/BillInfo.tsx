@@ -25,7 +25,7 @@ export default function BillInfo() {
     <>
       <Paper
         component="form"
-        elevation={4}
+        elevation={1}
         sx={{
           p: "2px 4px",
           display: "flex",

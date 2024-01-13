@@ -1,4 +1,4 @@
-import { Chip } from "@mui/material";
+import { Chip, ListItem, ListItemText } from "@mui/material";
 import * as React from "react";
 import {
   type IDisplayableTransaction,
@@ -17,31 +17,36 @@ export default function TransactionListItem({
   const dispatch = useAppDispatch();
 
   return (
-    <li key={item.id}>
-      {item.amount}
-      <br />
-      {item.participants.map((i) => {
-        const onDeleteHandler = () => {
-          if (item.participants.length === 1) {
-            dispatch(removeTransaction(item.id));
-          } else {
-            dispatch(
-              removeParticipantFromTransaction({
-                transactionId: item.id,
-                participantId: i.personId,
-              })
-            );
-          }
-        };
+    <ListItem key={item.id}>
+      <ListItemText>
+        {Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(item.amount)}
+        <br />
+        {item.participants.map((i) => {
+          const onDeleteHandler = () => {
+            if (item.participants.length === 1) {
+              dispatch(removeTransaction(item.id));
+            } else {
+              dispatch(
+                removeParticipantFromTransaction({
+                  transactionId: item.id,
+                  participantId: i.personId,
+                })
+              );
+            }
+          };
 
-        return (
-          <Chip
-            key={item.id + i.personId}
-            label={i.participantDisplayName}
-            onDelete={onDeleteHandler}
-          />
-        );
-      })}
-    </li>
+          return (
+            <Chip
+              key={item.id + i.personId}
+              label={i.participantDisplayName}
+              onDelete={onDeleteHandler}
+            />
+          );
+        })}
+      </ListItemText>
+    </ListItem>
   );
 }
