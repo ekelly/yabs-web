@@ -4,7 +4,6 @@ import { billReducer } from "~/lib/features/core";
 import { historyReducer } from "./features/history";
 import {
   persistStore,
-  persistReducer,
   FLUSH,
   REHYDRATE,
   PAUSE,
