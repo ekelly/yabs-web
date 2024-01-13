@@ -5,6 +5,7 @@ import {
   DialogActions,
   DialogContent,
   FormHelperText,
+  InputAdornment,
   TextField,
 } from "@mui/material";
 import { useState } from "react";
@@ -82,6 +83,11 @@ export default function AddTransactionModal({
               name="itemAmount"
               placeholder="amount"
               inputMode="numeric"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">$</InputAdornment>
+                ),
+              }}
             />
             <br />
             {Object.values(possibleParticipants).map((participant) => (

@@ -7,7 +7,7 @@ import {
 } from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
 import { ChangeEvent } from "react";
-import { TextField, Paper } from "@mui/material";
+import { TextField, Paper, InputAdornment } from "@mui/material";
 
 export default function BillInfo() {
   const dispatch = useAppDispatch();
@@ -25,20 +25,32 @@ export default function BillInfo() {
 
   return (
     <>
-      <Paper component="form"
-          elevation={4}
-          sx={{ p: '2px 4px', display: 'flex', marginTop: "5px", alignItems: 'center', width: "95%", marginLeft: "auto", marginRight: "auto" }}>
+      <Paper
+        component="form"
+        elevation={4}
+        sx={{
+          p: "2px 4px",
+          display: "flex",
+          marginTop: "5px",
+          alignItems: "center",
+          width: "95%",
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
         <TextField
           placeholder="Bill Name"
           value={billDescription}
           onChange={updateBillNameHandler}
           sx={{ width: "inherit" }}
         />
-        <span style={{ marginLeft: "5px" }}>$</span>
         <TextField
           type="tel"
           placeholder="Bill Total"
           value={billTotal ?? ""}
+          InputProps={{
+            startAdornment: <InputAdornment position="start">$</InputAdornment>,
+          }}
           onChange={updateBillTotalHandler}
         />
       </Paper>
