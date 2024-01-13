@@ -1,5 +1,5 @@
 
-export interface IBillState {
+export type IBillState = {
     id: string; // An identifier corresponding to this bill
     description: string;
     total?: number; // The total cost of the bill, including tax & tip in pennies

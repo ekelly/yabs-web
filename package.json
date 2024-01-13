@@ -19,6 +19,7 @@
     "@reduxjs/toolkit": "^2.0.1",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "@typescript-eslint/parser": "^6.18.1",
+    "material-swipeable-list": "^0.3.0",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
