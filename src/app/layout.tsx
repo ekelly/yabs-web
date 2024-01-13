@@ -1,8 +1,8 @@
-"use client"
+"use client";
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
-import { CssBaseline } from "@mui/material";
+import { Container, CssBaseline } from "@mui/material";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -16,12 +16,12 @@ import HistoryView from "./components/HistoryView";
 const routes = [
   {
     label: "Bill Entry",
-    component: <BillEntry />
+    component: <BillEntry />,
   },
   {
     label: "History",
-    component: <HistoryView />
-  }
+    component: <HistoryView />,
+  },
 ];
 
 export default function RootLayout({
@@ -36,8 +36,10 @@ export default function RootLayout({
           <ColorThemeProvider>
             <CssBaseline>
               <StoreProvider>
-                <TabBar items={routes} />
-                {children}
+                <Container maxWidth="sm">
+                  <TabBar items={routes} />
+                  {children}
+                </Container>
               </StoreProvider>
             </CssBaseline>
           </ColorThemeProvider>
