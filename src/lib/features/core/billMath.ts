@@ -20,7 +20,7 @@ export const calculateBillShares = (billState: IBillState) => {
             .reduce((acc, t) => acc + t.participants.reduce(
                 (acc, curr) => curr.personId === p.id ? (curr.adjustPercentage * t.amount) : acc,
                 0),
-            0);
+            0).toFixed(2);
         return {
             name: p.name,
             id: p.id,
