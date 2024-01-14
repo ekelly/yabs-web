@@ -2,7 +2,7 @@
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
-import { Container, CssBaseline, Paper } from "@mui/material";
+import { Container, CssBaseline, Paper, useMediaQuery } from "@mui/material";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
@@ -31,6 +31,12 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const phoneSized = useMediaQuery('(max-width:600px)');
+
+  const pageContents = <DrawerAppBar navItems={routes}>
+  {children}
+</DrawerAppBar>;
+
   return (
     <html lang="en">
       <body>
@@ -39,6 +45,7 @@ export default function RootLayout({
             <CssBaseline>
               <StoreProvider>
                 <Container maxWidth="sm" sx={{ display: "flex", flex: 1 }}>
+                  { phoneSized ? pageContents : 
                   <Paper
                     elevation={4}
                     sx={{
@@ -47,10 +54,9 @@ export default function RootLayout({
                       flex: 1,
                     }}
                   >
-                    <DrawerAppBar navItems={routes}>
-                      {children}
-                    </DrawerAppBar>
+                    {pageContents}
                   </Paper>
+                  }
                 </Container>
               </StoreProvider>
             </CssBaseline>
