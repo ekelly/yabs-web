@@ -7,6 +7,7 @@ import VenmoButton from "./VenmoButton";
 import ShareButton from "./ShareButton";
 import { NativeShareComponent, nativeShare } from "~/lib/features/api/share";
 import ShareIcon from '@mui/icons-material/Share';
+import { calculateBillShares } from "~/lib/features/core/billMath";
 
 interface SummaryViewProps {
     id?: string | null;
@@ -54,20 +55,21 @@ export default function SummaryView({ id }: SummaryViewProps) {
         return null;
     }
 
-    console.log(billDetails);
+    const displayableBill = billDetails ? calculateBillShares(billDetails) : null;
+    console.log(displayableBill);
 
     return (
         <>
             <ErrorMessage open={open} triggerError={triggerError} />
             <Container>
                 <Typography variant="h5" component="div">
-                    {billDetails?.description}
+                    {displayableBill?.description}
                 </Typography>
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    ${billDetails?.total}
+                    ${displayableBill?.total}
                 </Typography>
                 <List>
-                {billDetails?.participants ? Object.values(billDetails?.participants).map((p) => {
+                {displayableBill?.participants ? Object.values(displayableBill?.participants).map((p) => {
                     const share = 100;
                     return <ListItem divider sx={{ display: "flex", justifyContent: "space-between" }} key={p.id}>
                         <Typography component="span">{p.name}: ${p.share ?? 100}</Typography>

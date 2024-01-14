@@ -7,6 +7,7 @@ import type {
   TransactionId,
 } from "./types";
 import { v4 as uuidv4 } from "uuid";
+import { adjustTransactionPercentages } from "./billMath";
 
 const createInitialParticipants = () => {
   const participants: Record<PersonId, IPerson> = {};
@@ -52,9 +53,9 @@ export const slice = createSlice({
       state,
       action: PayloadAction<Omit<ITransaction, "id">>
     ) => {
-      console.log("Added transaction " + JSON.stringify(action.payload));
-      void state.transactions.push({
-        ...action.payload,
+      const transation = action.payload;
+      state.transactions.push({
+        ...transation,
         id: uuidv4(),
       });
     },
@@ -70,15 +71,8 @@ export const slice = createSlice({
       const { participantId, transactionId } = action.payload;
       state.transactions = [
         ...state.transactions.map((t) => {
-          // TODO: When you remove a participant, make sure to divy up their
-          // proportion of the transaction accordingly
           if (t.id === transactionId) {
-            return {
-              ...t,
-              participants: t.participants.filter(
-                (p) => p.personId === participantId
-              ),
-            };
+            return adjustTransactionPercentages(t, participantId);
           }
           return t;
         }),
