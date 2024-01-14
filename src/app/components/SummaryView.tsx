@@ -65,7 +65,7 @@ export default function SummaryView({ id }: SummaryViewProps) {
                 </Typography>
                 {billDetails?.participants ? Object.values(billDetails?.participants).map((p) => {
                     const share = 100;
-                    return <div>
+                    return <div key={p.id}>
                         <Typography variant="body2">{p.name}: ${p.share ?? 100}</Typography>
                         {share ? <VenmoButton amount={share} description={p.name} /> : null }
                     </div>;
