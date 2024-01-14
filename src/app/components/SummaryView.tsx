@@ -2,8 +2,9 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "~/lib/store";
 import { getHistoricalBill } from "~/lib/features/history";
-import { Snackbar, Alert, Container, Typography } from "@mui/material";
+import { Snackbar, Alert, Box, Container, Typography, List, ListItem } from "@mui/material";
 import VenmoButton from "./VenmoButton";
+import ShareButton from "./ShareButton";
 
 interface SummaryViewProps {
     id?: string | null;
@@ -63,13 +64,18 @@ export default function SummaryView({ id }: SummaryViewProps) {
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                     ${billDetails?.total}
                 </Typography>
+                <List>
                 {billDetails?.participants ? Object.values(billDetails?.participants).map((p) => {
                     const share = 100;
-                    return <div key={p.id}>
-                        <Typography variant="body2">{p.name}: ${p.share ?? 100}</Typography>
+                    return <ListItem divider sx={{ display: "flex", justifyContent: "space-between" }} key={p.id}>
+                        <Typography component="span">{p.name}: ${p.share ?? 100}</Typography>
+                        <Box sx={{ alignSelf: "flex-end" }}>
+                        {share ? <ShareButton sx={{ mr: "10px" }} title={p.name} description={`You owe $${share}`} /> : null}
                         {share ? <VenmoButton amount={share} description={p.name} /> : null }
-                    </div>;
+                        </Box>
+                    </ListItem>;
                 }) : null}
+                </List>
             </Container>
         </>
     );
