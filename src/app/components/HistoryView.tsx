@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { getHistory, removeFromHistory } from "~/lib/features/history";
-import { Card, CardContent, CardActions, Button } from "@mui/material";
+import { Card, CardContent, CardActions, Button, Container } from "@mui/material";
 import { Typography } from "@mui/material";
 import { IHistoryItem } from "~/lib/features/history/types";
 import SwipeableList from "material-swipeable-list";
@@ -42,6 +42,13 @@ export default function HistoryView() {
         const item = history.records[index];
         dispatch(removeFromHistory(item.id));
     }, []);
+
+    if (!history.records.length) {
+      return <Container disableGutters sx={{
+        flexDirection: "column",
+        justifyContent: "center"
+      }}><Typography textAlign="center" variant="h5">No History!</Typography></Container>
+    }
 
     return (
         <SwipeableList
