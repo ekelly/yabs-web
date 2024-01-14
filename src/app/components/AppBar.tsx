@@ -23,11 +23,13 @@ export default function DrawerAppBar(props: Props) {
               component="div"
               sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
             >
+              <Link sx={{ color: "inherit", textDecoration: "none" }} href={navItems[0].href}>
               YABS
+              </Link>
             </Typography>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                 <nav>
-                    {navItems.map((item) => (
+                    {navItems.slice(1).map((item) => (
                         <Button key={item.href} sx={{ color: '#fff' }} href={item.href} LinkComponent={Link}>
                         {item.label}
                         </Button>
