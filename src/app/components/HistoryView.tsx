@@ -1,11 +1,13 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { getHistory, removeFromHistory } from "~/lib/features/history";
-import { Card, CardContent, CardActions, Button, Container } from "@mui/material";
+import { Card, CardContent, CardActions, Button, Container, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Typography } from "@mui/material";
 import { IHistoryItem } from "~/lib/features/history/types";
 import SwipeableList from "material-swipeable-list";
 import { useAppDispatch } from "~/lib/hooks";
+import { isTouchEnabled } from "~/lib/utils";
 
 interface HistoryCardProps {
     historyItem: IHistoryItem;
@@ -13,6 +15,12 @@ interface HistoryCardProps {
 
 const HistoryCard = (props: HistoryCardProps) => {
     const { historyItem } = props;
+    const dispatch = useAppDispatch();
+
+    const handleDelete = () => {
+      dispatch(removeFromHistory(historyItem.id));
+    };
+
     return (
     <Card key={historyItem.id} sx={{ maxWidth: "98%", marginLeft: "5px", marginRight: "5px", display: "block", margin: "auto", marginBottom: "5px" }} variant="outlined">
       <CardContent>
@@ -28,8 +36,11 @@ const HistoryCard = (props: HistoryCardProps) => {
           })}
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
         <Button size="small">Share</Button>
+        { isTouchEnabled() ? null : 
+          <IconButton size="small" sx={{ alignSelf: "flex-end" }} onClick={handleDelete}><DeleteIcon /></IconButton>
+        }
       </CardActions>
     </Card>);
 };
