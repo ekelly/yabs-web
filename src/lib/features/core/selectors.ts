@@ -32,3 +32,5 @@ export const getBillDescription = (state: RootState) => {
 export const getBillTotal = (state: RootState) => {
   return state.bill.total;
 };
+
+export const getBillState = (state: RootState) => state.bill;

@@ -14,7 +14,7 @@ interface HistoryCardProps {
 const HistoryCard = (props: HistoryCardProps) => {
     const { historyItem } = props;
     return (
-    <Card sx={{ maxWidth: "98%", marginLeft: "5px", marginRight: "5px", display: "block", margin: "auto", marginBottom: "5px" }} variant="outlined">
+    <Card key={historyItem.id} sx={{ maxWidth: "98%", marginLeft: "5px", marginRight: "5px", display: "block", margin: "auto", marginBottom: "5px" }} variant="outlined">
       <CardContent>
         <Typography variant="h5" component="div">
           {historyItem.description}

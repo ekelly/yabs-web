@@ -16,6 +16,7 @@ export {
   getBillDescription,
   getBillTotal,
   getBillId,
+  getBillState,
 } from "./selectors";
 export type { IDisplayableTransaction } from "./selectors";
 export type { IBillState } from "./types";

@@ -4,42 +4,41 @@ import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import {
   getTransactions,
-  getParticipants,
-  getBillId,
   clearBill,
   addTransaction,
-  getBillDescription,
-  getBillTotal,
+  getBillState,
 } from "~/lib/features/core";
-import { addToHistory, getHistory } from "~/lib/features/history";
+import { addToHistory } from "~/lib/features/history";
 import { useAppDispatch, useShallowEqualSelector } from "~/lib/hooks";
 import AddTransactionModal from "./AddTransactionModal";
 import BillInfo from "./BillInfo";
-import SummaryView from "./SummaryView";
 import TransactionList from "./TransactionList";
+import { store } from "~/lib/store";
+import { useRouter } from "next/navigation";
 
 export default function BillEntry() {
   const dispatch = useAppDispatch();
   const transactions = useShallowEqualSelector(getTransactions);
-  const participants = useSelector(getParticipants);
-  const billId = useSelector(getBillId);
-  const billDescription = useSelector(getBillDescription);
-  const billTotal = useSelector(getBillTotal);
+  const billState = useSelector(getBillState);
+  const { participants, id, total, description } = billState;
 
   const [showModal, setShowModal] = useState(false);
   const [summaryState, setSummaryState] = useState<string | null>(null);
   const [error, setError] = useState<string | undefined>();
+  const router = useRouter();
 
   const displayTransaction = (billId: string) => {
-    setSummaryState(billId);
+    console.log(store.getState());
+    // setSummaryState(billId);
+    router.push("/summary?billId=" + billId);
   };
 
   const doneHandler = useCallback(() => {
-    if (billDescription === "") {
+    if (description === "") {
       setError("Bill must have a name");
       return;
     }
-    if (!billTotal || billTotal <= 0) {
+    if (!total || total <= 0) {
       setError("Bill total must be positive");
       return;
     }
@@ -47,8 +46,8 @@ export default function BillEntry() {
     setError(undefined);
     dispatch(addToHistory());
     dispatch(clearBill());
-    displayTransaction(billId);
-  }, [dispatch, billId, billDescription, billTotal]);
+    displayTransaction(id);
+  }, [dispatch, id, description, total]);
 
   const addTransactionHandler = useCallback(() => {
     const numPeople = Math.floor(
@@ -94,7 +93,7 @@ export default function BillEntry() {
       >
         +
       </Fab>
-      <SummaryView id={summaryState} />
+      
     </>
   );
 }

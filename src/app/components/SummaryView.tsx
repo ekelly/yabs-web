@@ -2,7 +2,8 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "~/lib/store";
 import { getHistoricalBill } from "~/lib/features/history";
-import { Snackbar, Alert } from "@mui/material";
+import { Snackbar, Alert, Container, Typography } from "@mui/material";
+import VenmoButton from "./VenmoButton";
 
 interface SummaryViewProps {
     id?: string | null;
@@ -31,7 +32,7 @@ const ErrorMessage = (props: {
         <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
             Error finding bill details
         </Alert>
-    </Snackbar>
+    </Snackbar>;
 }
 
 export default function SummaryView({ id }: SummaryViewProps) {
@@ -46,12 +47,30 @@ export default function SummaryView({ id }: SummaryViewProps) {
         }
     }, [billDetails, id, triggerError]);
 
+    if (!id) {
+        return null;
+    }
+
+    console.log(billDetails);
+
     return (
         <>
             <ErrorMessage open={open} triggerError={triggerError} />
-            <div>
-                {billDetails?.description} - {billDetails?.total}
-            </div>
+            <Container>
+                <Typography variant="h5" component="div">
+                    {billDetails?.description}
+                </Typography>
+                <Typography sx={{ mb: 1.5 }} color="text.secondary">
+                    ${billDetails?.total}
+                </Typography>
+                {billDetails?.participants ? Object.values(billDetails?.participants).map((p) => {
+                    const share = 100;
+                    return <div>
+                        <Typography variant="body2">{p.name}: ${p.share ?? 100}</Typography>
+                        {share ? <VenmoButton amount={share} description={p.name} /> : null }
+                    </div>;
+                }) : null}
+            </Container>
         </>
     );
 }
