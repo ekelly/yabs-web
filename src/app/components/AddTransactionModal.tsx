@@ -78,13 +78,14 @@ export default function AddTransactionModal({
 
   return (
     <>
-      <Dialog open={showModal} onClose={closeForm}>
+      <Dialog open={showModal} onClose={closeForm} maxWidth={"xs"} fullWidth>
         <form action={submitFormHandler}>
           <DialogContent>
             <NumericFormat
               customInput={TextField}
               name="itemAmount"
               placeholder="amount"
+              size="small"
               inputMode="decimal"
               InputProps={{
                 startAdornment: (
@@ -95,23 +96,24 @@ export default function AddTransactionModal({
               decimalScale={2}
               allowNegative={false}
             />
-            <br />
-            {Object.values(possibleParticipants).map((participant) => (
-              <PersonChip
-                variant={
-                  selectedParticipants.includes(participant.id)
-                    ? "outlined"
-                    : "filled"
-                }
-                key={participant.id}
-                label={participant.name}
-                onClick={() => setParticipantSelected(participant.id)}
-                id={participant.id}
+            <div>
+              {Object.values(possibleParticipants).map((participant) => (
+                <PersonChip
+                  variant={
+                    selectedParticipants.includes(participant.id)
+                      ? "outlined"
+                      : "filled"
+                  }
+                  key={participant.id}
+                  label={participant.name}
+                  onClick={() => setParticipantSelected(participant.id)}
+                  id={participant.id}
+                />
+              ))}
+              <AddPersonChipInput
+                setParticipantSelected={setParticipantSelected}
               />
-            ))}
-            <AddPersonChipInput
-              setParticipantSelected={setParticipantSelected}
-            />
+            </div>
             <FormHelperText error>{error}</FormHelperText>
           </DialogContent>
           <DialogActions>

@@ -39,3 +39,13 @@ body {
     )
     rgb(var(--background-start-rgb)); */
 }
+
+.BigChip {
+  width: 200px;
+  transition: width 1s !important;
+}
+
+.RegularChip {
+  width: 32px;
+  transition: width 0s !important;
+}
