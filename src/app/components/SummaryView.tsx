@@ -68,7 +68,17 @@ export default function SummaryView({ id }: SummaryViewProps) {
                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                     ${displayableBill?.total}
                 </Typography>
-                <List>
+                <NativeShareComponent>
+                    <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+                    <Fab
+                        onClick={() => nativeShare("title", "description")}
+                        sx={{ position: { xs: "absolute", sm: "relative" }, bottom: { xs: 16, sm: 40 }, right: { xs: 16, sm: -75 } }}
+                    >
+                        <ShareIcon />
+                    </Fab>
+                    </div>
+                </NativeShareComponent>
+                <List sx={{ bottom: { xs: 0, sm: 40 } }}>
                 {displayableBill?.participants ? Object.values(displayableBill?.participants).map((p) => {
                     const share = 100;
                     return <ListItem divider sx={{ display: "flex", justifyContent: "space-between" }} key={p.id}>
@@ -80,14 +90,7 @@ export default function SummaryView({ id }: SummaryViewProps) {
                     </ListItem>;
                 }) : null}
                 </List>
-                <NativeShareComponent>
-                    <Fab
-                        onClick={() => nativeShare("title", "description")}
-                        sx={{ position: "absolute", bottom: "16px", right: "16px" }}
-                    >
-                        <ShareIcon />
-                    </Fab>
-                </NativeShareComponent>
+                
             </Container>
         </>
     );
