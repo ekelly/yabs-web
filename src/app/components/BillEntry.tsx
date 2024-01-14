@@ -1,5 +1,5 @@
 "use client";
-import { Fab, Button, Typography, FormHelperText } from "@mui/material";
+import { Fab, Button, Typography, FormHelperText, Box } from "@mui/material";
 import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -78,7 +78,17 @@ export default function BillEntry() {
         showModal={showModal}
         closeAction={() => setShowModal(false)}
       />
-      <TransactionList items={transactions} />
+      <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+        <Fab
+          onClick={() => setShowModal(true)}
+          sx={{ position: { xs: "absolute", sm: "relative" }, bottom: { xs: 16, sm: 0 }, right: { xs: 16, sm: -52 }}}
+        >
+          +
+        </Fab>
+      </div>
+      <Box sx={{ top: { xs: 0, sm: -52 }, position: "relative" }}>
+        <TransactionList items={transactions} />
+      </Box>
 
       <Button onClick={addTransactionHandler}>random transaction</Button>
       <br />
@@ -86,13 +96,6 @@ export default function BillEntry() {
         done
       </Button>
       <FormHelperText error>{error}</FormHelperText>
-
-      <Fab
-        onClick={() => setShowModal(true)}
-        sx={{ position: "absolute", bottom: "16px", right: "16px" }}
-      >
-        +
-      </Fab>
       
     </>
   );
