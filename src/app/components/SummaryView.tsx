@@ -2,9 +2,11 @@ import * as React from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "~/lib/store";
 import { getHistoricalBill } from "~/lib/features/history";
-import { Snackbar, Alert, Box, Container, Typography, List, ListItem } from "@mui/material";
+import { Snackbar, Alert, Box, Container, Typography, List, ListItem, Fab } from "@mui/material";
 import VenmoButton from "./VenmoButton";
 import ShareButton from "./ShareButton";
+import { NativeShareComponent, nativeShare } from "~/lib/features/api/share";
+import ShareIcon from '@mui/icons-material/Share';
 
 interface SummaryViewProps {
     id?: string | null;
@@ -71,11 +73,19 @@ export default function SummaryView({ id }: SummaryViewProps) {
                         <Typography component="span">{p.name}: ${p.share ?? 100}</Typography>
                         <Box sx={{ alignSelf: "flex-end" }}>
                         {share ? <ShareButton sx={{ mr: "10px" }} title={p.name} description={`You owe $${share}`} /> : null}
-                        {share ? <VenmoButton amount={share} description={p.name} /> : null }
+                        {share ? <VenmoButton amount={share} description={p.name} /> : <span>No venmo</span> }
                         </Box>
                     </ListItem>;
                 }) : null}
                 </List>
+                <NativeShareComponent>
+                    <Fab
+                        onClick={() => nativeShare("title", "description")}
+                        sx={{ position: "absolute", bottom: "16px", right: "16px" }}
+                    >
+                        <ShareIcon />
+                    </Fab>
+                </NativeShareComponent>
             </Container>
         </>
     );

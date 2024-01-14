@@ -1,3 +1,6 @@
+import * as React from "react";
+import type { ReactElement } from "react";
+
 export const supportsShare = () => typeof navigator.share !== 'undefined' && navigator.share;
 
 export async function nativeShare(title: string, description: string, url?: string) {
@@ -7,4 +10,17 @@ export async function nativeShare(title: string, description: string, url?: stri
         console.log('Error sharing: ' + error);
         return;
     }
+}
+
+interface NativeShareComponentProps {
+    children: ReactElement;
+}
+export const NativeShareComponent = (props: NativeShareComponentProps) => {
+    const canShare = supportsShare();
+
+    if (!canShare) {
+        return null;
+    }
+
+    return props.children;
 }

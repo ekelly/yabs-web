@@ -1,6 +1,7 @@
-import { nativeShare, supportsShare } from "~/lib/features/api/share";
+import { NativeShareComponent } from "~/lib/features/api/share";
 import ShareIcon from '@mui/icons-material/Share';
 import { IconButton, SxProps, Theme } from '@mui/material';
+import { nativeShare } from "~/lib/features/api/share";
 
 interface ShareButtonProps {
     title: string,
@@ -11,8 +12,12 @@ interface ShareButtonProps {
 
 export default function ShareButton(props: ShareButtonProps) {
     const { title, description, sx } = props;
-    return supportsShare() || true ? <IconButton
-        onClick={() => nativeShare(title, description)}
-        sx={sx}
-    ><ShareIcon /></IconButton> : null;
+    return <NativeShareComponent>
+        <IconButton
+            onClick={() => nativeShare(title, description)}
+            sx={sx}
+        >
+            <ShareIcon />
+        </IconButton>
+    </NativeShareComponent>;
 }
