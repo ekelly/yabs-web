@@ -14,53 +14,54 @@ interface SummaryViewProps {
 }
 
 const ErrorMessage = (props: {
-    open: boolean,
-    triggerError: (show: boolean) => void
+    message: string,
+    triggerError: (show: string) => void
 }) => {
-    const { open, triggerError } = props;
+    const { message, triggerError } = props;
     const handleClose = React.useCallback((_event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
           return;
         }
 
-        triggerError(false);
+        triggerError("");
     }, [triggerError]);
 
     return <Snackbar
-        open={open}
+        open={!!message}
         autoHideDuration={5000}
         onClose={handleClose}
-        message="Error finding bill details"
+        message={message}
         sx={{ bottom: { xs: 90, sm: 0 } }}
     >
         <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-            Error finding bill details
+            {message}
         </Alert>
     </Snackbar>;
 }
 
 export default function SummaryView({ id }: SummaryViewProps) {
-    const [open, triggerError] = React.useState(false);
+    const [errorMessage, triggerError] = React.useState("");
     const billDetails = useSelector((state: RootState) => {
         return id ? getHistoricalBill(state, id) : null;
     });
 
+    const displayableBill = billDetails ? calculateBillShares(billDetails) : null;
+
     React.useEffect(() => {
-        if (!billDetails && id) {
-            triggerError(true);
+        if (!displayableBill && id) {
+            triggerError("Error finding bill details");
+        } else if (displayableBill?.totalSharesExceedsTotal) {
+            triggerError("Total bill split exceeds total cost");
         }
-    }, [billDetails, id, triggerError]);
+    }, [displayableBill, id, triggerError]);
 
     if (!id) {
         return null;
     }
 
-    const displayableBill = billDetails ? calculateBillShares(billDetails) : null;
-    console.log(displayableBill);
-
     return (
         <>
-            <ErrorMessage open={open} triggerError={triggerError} />
+            <ErrorMessage message={errorMessage} triggerError={triggerError} />
             <Container>
                 <Typography variant="h5" component="div">
                     {displayableBill?.description}
@@ -80,12 +81,15 @@ export default function SummaryView({ id }: SummaryViewProps) {
                 </NativeShareComponent>
                 <List sx={{ bottom: { xs: 0, sm: 40 } }}>
                 {displayableBill?.participants ? Object.values(displayableBill?.participants).map((p) => {
-                    const share = 100;
-                    return <ListItem divider sx={{ display: "flex", justifyContent: "space-between" }} key={p.id}>
-                        <Typography component="span">{p.name}: ${p.share ?? 100}</Typography>
-                        <Box sx={{ alignSelf: "flex-end" }}>
-                        {share ? <ShareButton sx={{ mr: "10px" }} title={p.name} description={`You owe $${share}`} /> : null}
-                        {share ? <VenmoButton amount={share} description={p.name} /> : <span>No venmo</span> }
+                    return <ListItem divider sx={{ display: "flex", flexDirection: "row" }} key={p.id}>
+                        <Typography component="span" sx={{ flexGrow: 3 }}>{p.name}: </Typography>
+                        <div>
+                        <Typography component="span" color="text.secondary">(${p.share})</Typography>
+                        <Typography component="span" sx={{ marginLeft: 2}}>${p.total}</Typography>
+                        </div>
+                        <Box sx={{ alignSelf: "flex-end", marginLeft: 4 }}>
+                        {p.share ? <ShareButton sx={{ mr: "10px" }} title={p.name} description={`You owe $${p.total}`} /> : null}
+                        {p.share ? <VenmoButton amount={p.total} description={p.name} /> : <span>No venmo</span> }
                         </Box>
                     </ListItem>;
                 }) : null}

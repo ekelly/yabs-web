@@ -3,7 +3,7 @@ import Image from "next/image";
 import { getVenmoDeeplink } from "~/lib/features/api/venmo";
 
 interface VenmoButtonProps {
-    amount: number,
+    amount: string,
     description?: string,
 }
 
