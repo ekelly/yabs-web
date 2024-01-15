@@ -49,9 +49,7 @@ export default function AddPersonChipInput({
       <div
         style={{
           width: "200px",
-          // height: "40px",
-          // display: "inline-flex",
-          // overflow: "auto",
+          display: "inline-flex",
         }}
       >
         <Chip
@@ -62,20 +60,14 @@ export default function AddPersonChipInput({
           }}
           className={showNewParticipant ? "BigChip" : "RegularChip"}
           sx={{
-            // width: "100%",
             marginTop: "2px",
             marginBottom: "2px",
             marginLeft: "1px",
             position: "absolute",
-            // ...(showNewParticipant && {
-            //   width: "200px",
-            // }),
           }}
         />
         {showNewParticipant && (
           <Input
-            // hidden={!showNewParticipant}
-            // hidden
             autoFocus
             disableUnderline
             value={newParticipantName}
@@ -92,7 +84,6 @@ export default function AddPersonChipInput({
               fontSize: theme.typography.pxToRem(13),
               padding: "4px 11px",
               width: "200px",
-              flex: "1",
             }}
           />
         )}

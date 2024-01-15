@@ -96,7 +96,12 @@ export default function AddTransactionModal({
               decimalScale={2}
               allowNegative={false}
             />
-            <div>
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+              }}
+            >
               {Object.values(possibleParticipants).map((participant) => (
                 <PersonChip
                   variant={
