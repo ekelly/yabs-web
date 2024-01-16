@@ -90,7 +90,7 @@ export default function SummaryView({ id }: SummaryViewProps) {
                             <Typography component="span" sx={{ marginLeft: 2}}>${p.total}</Typography>
                         </Box>
                         <NativeShareComponent>
-                            <Box sx={{ marginLeft: 4, order: { xs: 2, sm: 3 }, flex: "1 0px" }}>
+                            <Box sx={{ marginLeft: 4, minWidth: 115, order: { xs: 2, sm: 3 }, flex: "1 0px" }}>
                             {p.share ? <ShareButton sx={{ mr: "10px" }} billData={displayableBill} id={p.id} /> : null}
                             {p.share ? <VenmoButton amount={p.total} description={p.name} /> : null }
                             </Box>
