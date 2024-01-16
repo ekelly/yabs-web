@@ -22,16 +22,30 @@ export const PersonChip = styled(Chip)<ChipProps & { id: string }>(
       ...(variant === "outlined" && {
         border: `1px solid ${borderColor}`,
         backgroundColor: activeColor,
-        ":hover": {
-          backgroundColor: `${inactiveColor} !important`,
+        "@media (hover: hover)": {
+          ":hover": {
+            backgroundColor: `${inactiveColor} !important`,
+          },
+        },
+        "@media (hover: none)": {
+          ":hover": {
+            backgroundColor: `${activeColor} !important`,
+          },
         },
       }),
       ...(variant === "filled" && {
         color: "gray",
         backgroundColor: inactiveColor,
-        ":hover": {
-          color: theme.palette.text.primary,
-          backgroundColor: activeColor,
+        "@media (hover: hover)": {
+          ":hover": {
+            color: theme.palette.text.primary,
+            backgroundColor: activeColor,
+          },
+        },
+        "@media (hover: none)": {
+          ":hover": {
+            backgroundColor: `${inactiveColor} !important`,
+          },
         },
       }),
     };
