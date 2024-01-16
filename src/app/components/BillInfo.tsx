@@ -40,7 +40,7 @@ export default function BillInfo() {
           display: "flex",
           marginTop: "5px",
           alignItems: "center",
-          width: "95%",
+          width: { xs: "100%", sm: "95%" },
           marginLeft: "auto",
           marginRight: "auto",
         }}

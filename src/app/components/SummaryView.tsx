@@ -81,13 +81,13 @@ export default function SummaryView({ id }: SummaryViewProps) {
                 </NativeShareComponent>
                 <List sx={{ bottom: { xs: 0, sm: 40 } }}>
                 {displayableBill?.participants ? Object.values(displayableBill?.participants).map((p) => {
-                    return <ListItem divider sx={{ display: "flex", flexDirection: "row" }} key={p.id}>
-                        <Typography component="span" sx={{ flexGrow: 3 }}>{p.name}: </Typography>
-                        <div>
+                    return <ListItem disableGutters divider sx={{ display: "flex", flexDirection: "row", flexFlow: "row wrap", justifyContent: "flex-end" }} key={p.id}>
+                        <Typography component="span" sx={{ flex: "1 auto", flexGrow: 2 }}>{p.name}: </Typography>
+                        <Box sx={{ order: {sm: 2, xs: 3 }, flex: { xs: "1 100%", sm: "1 auto" }}}>
                         <Typography component="span" color="text.secondary">(${p.share})</Typography>
                         <Typography component="span" sx={{ marginLeft: 2}}>${p.total}</Typography>
-                        </div>
-                        <Box sx={{ alignSelf: "flex-end", marginLeft: 4 }}>
+                        </Box>
+                        <Box sx={{ marginLeft: 4, minWidth: 115, order: { xs: 2, sm: 3 }, flex: "1 0px" }}>
                         {p.share ? <ShareButton sx={{ mr: "10px" }} title={p.name} description={`You owe $${p.total}`} /> : null}
                         {p.share ? <VenmoButton amount={p.total} description={p.name} /> : <span>No venmo</span> }
                         </Box>
