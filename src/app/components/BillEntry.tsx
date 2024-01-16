@@ -1,5 +1,5 @@
 "use client";
-import { Fab, Button, Typography, FormHelperText, Box } from "@mui/material";
+import { Button, FormHelperText, Box } from "@mui/material";
 import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -10,11 +10,11 @@ import {
 } from "~/lib/features/core";
 import { addToHistory } from "~/lib/features/history";
 import { useAppDispatch, useShallowEqualSelector } from "~/lib/hooks";
-import AddTransactionModal from "./AddTransactionModal";
 import BillInfo from "./BillInfo";
 import TransactionList from "./TransactionList";
 import { store } from "~/lib/store";
 import { useRouter } from "next/navigation";
+import AddTransactionArea from "./AddTransactionArea";
 
 export default function BillEntry() {
   const dispatch = useAppDispatch();
@@ -22,7 +22,6 @@ export default function BillEntry() {
   const billState = useSelector(getBillState);
   const { participants, id, total, description } = billState;
 
-  const [showModal, setShowModal] = useState(false);
   const [summaryState, setSummaryState] = useState<string | null>(null);
   const [error, setError] = useState<string | undefined>();
   const router = useRouter();
@@ -74,20 +73,9 @@ export default function BillEntry() {
   return (
     <>
       <BillInfo />
-      <AddTransactionModal
-        showModal={showModal}
-        closeAction={() => setShowModal(false)}
-      />
-      <div style={{ display: "flex", flexDirection: "row-reverse" }}>
-        <Fab
-          onClick={() => setShowModal(true)}
-          sx={{ position: { xs: "absolute", sm: "relative" }, bottom: { xs: 16, sm: 0 }, right: { xs: 16, sm: -52 }}}
-        >
-          +
-        </Fab>
-      </div>
-      <Box sx={{ top: { xs: 0, sm: -52 }, position: "relative" }}>
+      <Box>
         <TransactionList items={transactions} />
+        <AddTransactionArea />
       </Box>
 
       <Button onClick={addTransactionHandler}>random transaction</Button>
@@ -96,7 +84,6 @@ export default function BillEntry() {
         done
       </Button>
       <FormHelperText error>{error}</FormHelperText>
-      
     </>
   );
 }
