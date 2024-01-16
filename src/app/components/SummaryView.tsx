@@ -5,7 +5,7 @@ import { getHistoricalBill } from "~/lib/features/history";
 import { Snackbar, Alert, Box, Container, Typography, List, ListItem, Fab } from "@mui/material";
 import VenmoButton from "./VenmoButton";
 import ShareButton from "./ShareButton";
-import { NativeShareComponent, nativeShare } from "~/lib/features/api/share";
+import { NativeShareComponent, shareToNative } from "~/lib/features/api/share";
 import ShareIcon from '@mui/icons-material/Share';
 import { calculateBillShares } from "~/lib/features/core/billMath";
 
@@ -71,12 +71,14 @@ export default function SummaryView({ id }: SummaryViewProps) {
                 </Typography>
                 <NativeShareComponent>
                     <div style={{ display: "flex", flexDirection: "row-reverse" }}>
+                        { displayableBill ? 
                     <Fab
-                        onClick={() => nativeShare("title", "description")}
+                        onClick={() => shareToNative(displayableBill)}
                         sx={{ position: { xs: "absolute", sm: "relative" }, bottom: { xs: 16, sm: 40 }, right: { xs: 16, sm: -75 } }}
                     >
                         <ShareIcon />
                     </Fab>
+                    : null}
                     </div>
                 </NativeShareComponent>
                 <List sx={{ bottom: { xs: 0, sm: 40 } }}>
@@ -88,7 +90,7 @@ export default function SummaryView({ id }: SummaryViewProps) {
                         <Typography component="span" sx={{ marginLeft: 2}}>${p.total}</Typography>
                         </Box>
                         <Box sx={{ marginLeft: 4, minWidth: 115, order: { xs: 2, sm: 3 }, flex: "1 0px" }}>
-                        {p.share ? <ShareButton sx={{ mr: "10px" }} title={p.name} description={`You owe $${p.total}`} /> : null}
+                        {p.share ? <ShareButton sx={{ mr: "10px" }} billData={displayableBill} id={p.id} /> : null}
                         {p.share ? <VenmoButton amount={p.total} description={p.name} /> : <span>No venmo</span> }
                         </Box>
                     </ListItem>;
