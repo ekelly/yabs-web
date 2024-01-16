@@ -38,12 +38,16 @@ export default function BillEntry() {
       setError("Bill total must be positive");
       return;
     }
+    if (transactions.length <= 0) {
+      setError("Bill must have transactions");
+      return;
+    }
     console.log("Saving bill state");
     setError(undefined);
     dispatch(addToHistory());
     dispatch(clearBill());
     displayTransaction(id);
-  }, [dispatch, id, description, total]);
+  }, [dispatch, id, description, total, transactions]);
 
   return (
     <>
