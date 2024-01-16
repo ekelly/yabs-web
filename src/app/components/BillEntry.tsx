@@ -31,7 +31,7 @@ export default function BillEntry() {
 
   const doneHandler = useCallback(() => {
     if (description === "") {
-      setError("Bill must have a name");
+      setError("Bill must have a description");
       return;
     }
     if (!total || total <= 0) {

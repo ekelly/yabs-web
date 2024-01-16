@@ -46,7 +46,7 @@ export default function BillInfo() {
         }}
       >
         <TextField
-          placeholder="Bill Name"
+          placeholder="Bill Description"
           value={billDescription}
           onChange={updateBillNameHandler}
           sx={{ width: "inherit" }}
