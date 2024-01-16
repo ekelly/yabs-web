@@ -44,7 +44,7 @@ export default function RootLayout({
           <ColorThemeProvider>
             <CssBaseline>
               <StoreProvider>
-                <Container maxWidth="sm" sx={{ display: "flex", flex: 1 }}>
+                <Container maxWidth={phoneSized ? false : "sm"} sx={{ display: "flex", flex: 1 }}>
                   { phoneSized ? pageContents : 
                   <Paper
                     elevation={4}

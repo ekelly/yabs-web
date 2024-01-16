@@ -14,20 +14,20 @@ export default function DrawerAppBar(props: Props) {
     const { children, navItems } = props;
   
     return (
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', width: "100%" }}>
         <CssBaseline />
         <AppBar component="nav">
           <Toolbar>
             <Typography
               variant="h6"
               component="div"
-              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+              sx={{ flexGrow: 1, display: "block" }}
             >
               <Link sx={{ color: "inherit", textDecoration: "none" }} href={navItems[0].href}>
               YABS
               </Link>
             </Typography>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <Box sx={{ display: "block" }}>
                 <nav>
                     {navItems.slice(1).map((item) => (
                         <Button key={item.href} sx={{ color: '#fff' }} href={item.href} LinkComponent={Link}>
