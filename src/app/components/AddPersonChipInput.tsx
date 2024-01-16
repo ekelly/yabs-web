@@ -1,23 +1,8 @@
-import {
-  Chip,
-  Input,
-  TextField,
-  TextFieldProps,
-  styled,
-  useTheme,
-} from "@mui/material";
-import { forwardRef, useMemo, useState } from "react";
+import { Chip, Input, useTheme } from "@mui/material";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { upsertPerson } from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
-
-// const InputChip = styled(TextField)<TextFieldProps<"standard">>(({ theme }) => {
-//   console.log(theme);
-//   return {
-//     fontSize: theme.typography.body1,
-//     // ...theme.components?.MuiChip?.defaultProps,
-//   };
-// });
 
 export default function AddPersonChipInput({
   setParticipantSelected,

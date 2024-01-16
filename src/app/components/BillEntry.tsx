@@ -2,16 +2,11 @@
 import { Button, FormHelperText, Box } from "@mui/material";
 import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
-import {
-  getTransactions,
-  clearBill,
-  getBillState,
-} from "~/lib/features/core";
+import { getTransactions, clearBill, getBillState } from "~/lib/features/core";
 import { addToHistory } from "~/lib/features/history";
 import { useAppDispatch, useShallowEqualSelector } from "~/lib/hooks";
 import BillInfo from "./BillInfo";
 import TransactionList from "./TransactionList";
-import { store } from "~/lib/store";
 import { useRouter } from "next/navigation";
 import AddTransactionArea from "./AddTransactionArea";
 
@@ -23,11 +18,6 @@ export default function BillEntry() {
 
   const [error, setError] = useState<string | undefined>();
   const router = useRouter();
-
-  const displayTransaction = (billId: string) => {
-    console.log(store.getState());
-    router.push("/summary?billId=" + billId);
-  };
 
   const doneHandler = useCallback(() => {
     if (description === "") {
@@ -46,8 +36,8 @@ export default function BillEntry() {
     setError(undefined);
     dispatch(addToHistory());
     dispatch(clearBill());
-    displayTransaction(id);
-  }, [dispatch, id, description, total, transactions]);
+    router.push("/summary?billId=" + id);
+  }, [description, total, transactions.length, dispatch, router, id]);
 
   return (
     <>

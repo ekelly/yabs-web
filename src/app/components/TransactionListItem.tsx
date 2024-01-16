@@ -1,4 +1,4 @@
-import { Chip, ListItem, ListItemText } from "@mui/material";
+import { ListItem, ListItemText } from "@mui/material";
 import * as React from "react";
 import {
   type IDisplayableTransaction,

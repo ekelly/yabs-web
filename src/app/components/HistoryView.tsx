@@ -94,10 +94,13 @@ export default function HistoryView() {
   const history = useSelector(getHistory);
   const dispatch = useAppDispatch();
 
-  const deleteHandler = React.useCallback((index: number) => {
-    const item = history.records[index];
-    dispatch(removeFromHistory(item.id));
-  }, []);
+  const deleteHandler = React.useCallback(
+    (index: number) => {
+      const item = history.records[index];
+      dispatch(removeFromHistory(item.id));
+    },
+    [dispatch, history.records]
+  );
 
   if (!history.records.length) {
     return (
