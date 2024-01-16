@@ -40,7 +40,7 @@ interface NativeShareComponentProps {
     children: ReactElement;
 }
 export const NativeShareComponent = (props: NativeShareComponentProps) => {
-    const canShare = supportsShare() || true;
+    const canShare = supportsShare();
 
     if (!canShare) {
         return null;
