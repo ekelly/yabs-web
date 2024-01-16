@@ -1,5 +1,7 @@
 import * as React from "react";
 import type { ReactElement } from "react";
+import { SettingKey, getSetting } from "../settings";
+import { getVenmoPayDeeplink } from "./venmo";
 
 export const supportsShare = () => typeof navigator.share !== 'undefined' && navigator.share;
 
@@ -18,15 +20,23 @@ type IBillData = {
     participants: { name: string; total: string, id: string }[]
 };
 function getShareDescription(billData: IBillData, id?: string) {
+    const venmoUsername = getSetting(SettingKey.venmoUsername);
     if (id) {
         const person = billData.participants.find(personContribution => id === personContribution.id);
         if (person) {
-            return `You owe ${person.total} for ${billData.description}`;
+            let message = `You owe ${person.total} for ${billData.description}`;
+            if (venmoUsername) {
+                message += `\n${getVenmoPayDeeplink(venmoUsername, billData.description, person.total)}`;
+            }
+            return message;
         }
     }
     let outputString = `Bill splitting totals for ${billData.description}:`;
     billData.participants.forEach((personContribution) => {
         outputString += `\n${personContribution.name}: $${personContribution.total}`;
+        if (venmoUsername) {
+            outputString += `\n${getVenmoPayDeeplink(venmoUsername, billData.description, personContribution.total)}\n`;
+        }
     });
     return outputString;
 };

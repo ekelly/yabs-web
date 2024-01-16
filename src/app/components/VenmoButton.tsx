@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import Image from "next/image";
-import { getVenmoDeeplink } from "~/lib/features/api/venmo";
+import { getVenmoChargeDeeplink } from "~/lib/features/api/venmo";
 
 interface VenmoButtonProps {
     amount: string,
@@ -16,6 +16,6 @@ export default function VenmoButton(props: VenmoButtonProps) {
             '&:hover': {
                 backgroundColor: "#0072cf",
           }, }}
-        href={getVenmoDeeplink(props.amount, props.description)}
+        href={getVenmoChargeDeeplink(props.amount, props.description)}
     ><Image width={48} height={12} alt="Venmo" src="./Venmo_Logo_White_small.png" /></Button> : null;
 }

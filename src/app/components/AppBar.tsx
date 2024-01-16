@@ -1,17 +1,20 @@
-import { Box, Typography, CssBaseline, AppBar, Toolbar, Button } from "@mui/material";
+import { Box, Typography, CssBaseline, AppBar, Toolbar, Button, IconButton } from "@mui/material";
 import * as React from "react";
+import SettingsIcon from '@mui/icons-material/Settings';
 import Link from "~/lib/Link";
+import { useRouter } from "next/navigation";
 
 interface Props {
     children?: React.ReactNode;
     navItems: Array<{
-        label: string;
+        label: string | React.ReactNode;
         href: string;
     }>;
 }
 
 export default function DrawerAppBar(props: Props) {
     const { children, navItems } = props;
+    const router = useRouter();
   
     return (
       <Box sx={{ display: 'flex', width: "100%" }}>
@@ -34,6 +37,9 @@ export default function DrawerAppBar(props: Props) {
                         {item.label}
                         </Button>
                     ))}
+                    <IconButton onClick={() => router.push("/settings")}>
+                      <SettingsIcon />
+                    </IconButton> 
                 </nav>
             </Box>
           </Toolbar>
