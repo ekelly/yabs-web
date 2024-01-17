@@ -2,7 +2,7 @@ import type { ReactElement } from "react";
 import { SettingKey, getSetting } from "../settings";
 import { getVenmoPayDeeplink } from "./venmo";
 
-export const supportsShare = () =>
+export const supportsNativeShare = () =>
   typeof navigator.share !== "undefined" && navigator.share;
 
 async function nativeShare(title: string, description: string) {
@@ -51,16 +51,22 @@ function getShareDescription(billData: IBillData, id?: string) {
   return outputString;
 }
 
-export async function shareToNative(billData: IBillData, id?: string) {
+function shareToClipboard(text: string) {
+  navigator.clipboard.writeText(text);
+}
+
+export async function shareText(billData: IBillData, id?: string) {
   const description = getShareDescription(billData, id);
-  return nativeShare(billData.description, description);
+  return supportsNativeShare()
+    ? nativeShare(billData.description, description)
+    : shareToClipboard(description);
 }
 
 interface NativeShareComponentProps {
   children: ReactElement;
 }
 export const NativeShareComponent = (props: NativeShareComponentProps) => {
-  const canShare = supportsShare();
+  const canShare = supportsNativeShare();
 
   if (!canShare) {
     return null;
