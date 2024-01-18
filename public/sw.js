@@ -1,3 +1,3 @@
-addEventListener("fetch", (event) => { fetch(event.request)});
+addEventListener("fetch", (event) => {});
 
 onfetch = (event) => {};
