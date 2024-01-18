@@ -31,32 +31,57 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const phoneSized = useMediaQuery('(max-width:600px)');
+  const phoneSized = useMediaQuery("(max-width:600px)");
 
-  const pageContents = <DrawerAppBar navItems={routes}>
-  {children}
-</DrawerAppBar>;
+  const pageContents = (
+    <DrawerAppBar navItems={routes}>{children}</DrawerAppBar>
+  );
+
+  React.useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      // Register a service worker hosted at the root of the
+      // site using the default scope.
+      navigator.serviceWorker.register("/sw.js").then(
+        (registration) => {
+          console.log("Service worker registration succeeded:", registration);
+        },
+        (error) => {
+          console.error(`Service worker registration failed: ${error}`);
+        }
+      );
+    } else {
+      console.error("Service workers are not supported.");
+    }
+  });
 
   return (
     <html lang="en">
+      <head>
+        <link rel="manifest" href="manifest.json" />
+      </head>
       <body>
         <AppRouterCacheProvider>
           <ColorThemeProvider>
             <CssBaseline>
               <StoreProvider>
-                <Container maxWidth={phoneSized ? false : "sm"} sx={{ display: "flex", flex: 1 }}>
-                  { phoneSized ? pageContents : 
-                  <Paper
-                    elevation={4}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      flex: 1,
-                    }}
-                  >
-                    {pageContents}
-                  </Paper>
-                  }
+                <Container
+                  maxWidth={phoneSized ? false : "sm"}
+                  sx={{ display: "flex", flex: 1 }}
+                >
+                  {phoneSized ? (
+                    pageContents
+                  ) : (
+                    <Paper
+                      elevation={4}
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        flex: 1,
+                      }}
+                    >
+                      {pageContents}
+                    </Paper>
+                  )}
                 </Container>
               </StoreProvider>
             </CssBaseline>

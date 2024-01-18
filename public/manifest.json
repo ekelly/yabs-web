@@ -1,0 +1,15 @@
+{
+    "name": "Yet Another Bill Splitter",
+    "short_name": "YABS",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#fff",
+    "description": "A faster bill Splitter",
+    "icons": [
+      {
+        "src": "icons/icons8-bill-ios-17-glyph-96.png",
+        "type": "image/png",
+        "sizes": "96x96"
+      }
+    ]
+}
