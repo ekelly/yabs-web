@@ -1,4 +1,3 @@
-import type { ReactElement } from "react";
 import { SettingKey, getSetting } from "../settings";
 import { getVenmoPayDeeplink } from "./venmo";
 
@@ -61,16 +60,3 @@ export async function shareText(billData: IBillData, id?: string) {
     ? nativeShare(billData.description, description)
     : shareToClipboard(description);
 }
-
-interface NativeShareComponentProps {
-  children: ReactElement;
-}
-export const NativeShareComponent = (props: NativeShareComponentProps) => {
-  const canShare = supportsNativeShare();
-
-  if (!canShare) {
-    return null;
-  }
-
-  return props.children;
-};

@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import VenmoButton from "./VenmoButton";
 import ShareButton from "./ShareButton";
-import { NativeShareComponent, shareText } from "~/lib/features/api/share";
+import { shareText } from "~/lib/features/api/share";
 import ShareIcon from "@mui/icons-material/Share";
 import { calculateBillShares } from "~/lib/features/core/billMath";
 
