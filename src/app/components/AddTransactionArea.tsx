@@ -1,10 +1,12 @@
 import {
   Button,
+  Chip,
   FormHelperText,
+  Input,
   InputAdornment,
   TextField,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { addTransaction, getParticipants } from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
@@ -13,6 +15,12 @@ import { PersonChip } from "./PersonChip";
 import { NumericFormat } from "react-number-format";
 
 const MISSING_PARTICIPANTS_ERROR = "Must select at least one participant";
+
+enum AddTransactionMode {
+  INACTIVE,
+  ACTIVE,
+  EXPANDED,
+}
 
 export default function AddTransactionArea() {
   const dispatch = useAppDispatch();
@@ -23,11 +31,16 @@ export default function AddTransactionArea() {
   );
   const [itemAmount, setItemAmount] = useState<string>("");
   const [error, setError] = useState<string | undefined>();
+  const [mode, setMode] = useState(AddTransactionMode.INACTIVE);
+  const inputRef = useRef<any>(null);
 
   const resetForm = () => {
     setSelectedParticipants([]);
     setError(undefined);
     setItemAmount("");
+
+    // Set the focus back to inputting new transaction amounts
+    inputRef.current?.focus();
   };
 
   const submitFormHandler = () => {
@@ -68,8 +81,13 @@ export default function AddTransactionArea() {
     }
   };
 
-  return (
-    <>
+  const handleOnClick = (participantId: string) => {
+    setParticipantSelected(participantId);
+    submitFormHandler();
+  };
+
+  const renderAmountInput = () => {
+    return (
       <NumericFormat
         customInput={TextField}
         name="itemAmount"
@@ -83,11 +101,20 @@ export default function AddTransactionArea() {
         decimalScale={2}
         allowNegative={false}
         value={itemAmount}
+        onFocus={() => setMode(AddTransactionMode.ACTIVE)}
         onChange={(e) => setItemAmount(e.currentTarget.value)}
+        inputRef={inputRef}
       />
-      <Button type="submit" onClick={submitFormHandler}>
-        Submit
-      </Button>
+    );
+  };
+
+  if (mode === AddTransactionMode.INACTIVE) {
+    return renderAmountInput();
+  }
+
+  return (
+    <>
+      {renderAmountInput()}
       <div
         style={{
           display: "flex",
@@ -103,11 +130,28 @@ export default function AddTransactionArea() {
             }
             key={participant.id}
             label={participant.name}
-            onClick={() => setParticipantSelected(participant.id)}
+            onClick={() => handleOnClick(participant.id)}
             id={participant.id}
           />
         ))}
         <AddPersonChipInput setParticipantSelected={setParticipantSelected} />
+        <Chip
+          label={mode === AddTransactionMode.EXPANDED ? "👥" : "👤"}
+          variant="filled"
+          onClick={() =>
+            setMode(
+              mode === AddTransactionMode.EXPANDED
+                ? AddTransactionMode.ACTIVE
+                : AddTransactionMode.EXPANDED
+            )
+          }
+          sx={{
+            marginTop: "2px",
+            marginBottom: "2px",
+            marginLeft: "1px",
+            position: "relative",
+          }}
+        />
       </div>
       <FormHelperText error>{error}</FormHelperText>
     </>
