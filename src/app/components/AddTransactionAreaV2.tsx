@@ -1,11 +1,4 @@
-import {
-  Button,
-  Chip,
-  FormHelperText,
-  Input,
-  InputAdornment,
-  TextField,
-} from "@mui/material";
+import { FormHelperText, InputAdornment, TextField } from "@mui/material";
 import { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { addTransaction, getParticipants } from "~/lib/features/core";
@@ -32,7 +25,7 @@ export default function AddTransactionArea() {
   const [itemAmount, setItemAmount] = useState<string>("");
   const [error, setError] = useState<string | undefined>();
   const [mode, setMode] = useState(AddTransactionMode.INACTIVE);
-  const inputRef = useRef<any>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const resetForm = () => {
     setSelectedParticipants([]);

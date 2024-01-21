@@ -43,7 +43,7 @@ export default function BillEntry() {
     dispatch(addToHistory());
     dispatch(clearBill());
     router.push("/summary?billId=" + id);
-  }, [description, total, transactions.length, dispatch, router, id]);
+  }, [description, total, transactions, dispatch, router, id]);
 
   return (
     <>

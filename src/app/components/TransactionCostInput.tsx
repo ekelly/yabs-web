@@ -27,7 +27,7 @@ export const TransactionCostInput = forwardRef<
     initialAmount
   );
   const [error, setError] = useState<string | undefined>();
-  const inputRef = useRef<any>(null);
+  const inputRef = useRef(null);
 
   const resetForm = () => {
     setError(undefined);
@@ -98,3 +98,4 @@ export const TransactionCostInput = forwardRef<
     </>
   );
 });
+TransactionCostInput.displayName = "TransactionCostInput";
