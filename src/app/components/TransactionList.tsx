@@ -1,7 +1,13 @@
 import * as React from "react";
 import TransactionListItem from "./TransactionListItemV2";
-import type { IBillState, IDisplayableTransaction } from "~/lib/features/core";
-import { List } from "@mui/material";
+import {
+  removeTransaction,
+  type IBillState,
+  type IDisplayableTransaction,
+} from "~/lib/features/core";
+import SwipeableList from "material-swipeable-list";
+import { useCallback } from "react";
+import { useAppDispatch } from "~/lib/hooks";
 
 interface TransactionListProps {
   items: IDisplayableTransaction[];
@@ -12,15 +18,28 @@ export default function TransactionList({
   items,
   participants,
 }: TransactionListProps) {
+  const dispatch = useAppDispatch();
+
+  const deleteHandler = useCallback(
+    (index: number) => {
+      const item = items[index];
+      dispatch(removeTransaction(item.id));
+    },
+    [dispatch, items]
+  );
+
   return (
-    <List>
-      {items.map((item) => (
+    <SwipeableList
+      items={items}
+      onChange={deleteHandler}
+      generateListItem={(item: IDisplayableTransaction) => (
         <TransactionListItem
           key={item.id}
           item={item}
           billParticipants={participants}
         />
-      ))}
-    </List>
+      )}
+      generateKey={(item: IDisplayableTransaction) => item.id}
+    />
   );
 }

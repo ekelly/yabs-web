@@ -12,6 +12,7 @@ import { PersonChip } from "./PersonChip";
 import { useState } from "react";
 import { TransactionCostInput } from "./TransactionCostInput";
 import CloseIcon from "@mui/icons-material/Close";
+import { isTouchEnabled } from "~/lib/utils";
 
 interface TransactionListItemProps {
   item: IDisplayableTransaction;
@@ -86,14 +87,15 @@ export default function TransactionListItem({
       divider
       sx={{ flexDirection: "column", alignItems: "flex-start" }}
     >
-      <IconButton
-        size="small"
-        sx={{ alignSelf: "flex-end", position: "absolute" }}
-        onClick={handleDelete}
-      >
-        <CloseIcon />
-      </IconButton>
-
+      {isTouchEnabled() ? null : (
+        <IconButton
+          size="small"
+          sx={{ alignSelf: "flex-end", position: "absolute" }}
+          onClick={handleDelete}
+        >
+          <CloseIcon />
+        </IconButton>
+      )}
       {amountComponent}
       <Box sx={{ flex: "1 100%" }}>
         {Object.keys(billParticipants).map((personId) => {
