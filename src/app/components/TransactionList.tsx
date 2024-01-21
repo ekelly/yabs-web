@@ -37,6 +37,7 @@ export default function TransactionList({
           key={item.id}
           item={item}
           billParticipants={participants}
+          editable={true}
         />
       )}
       generateKey={(item: IDisplayableTransaction) => item.id}
