@@ -7,24 +7,22 @@ function hueFromId(id: string) {
 }
 
 export const PersonChip = styled(Chip)<ChipProps & { id: string }>(
-  ({ variant, id }) => {
+  ({ variant, id, onClick }) => {
     const theme = useTheme();
     const hue = hueFromId(id);
+    const editable = !!onClick;
     const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
     const activeColor = `hsl(${hue}, 75%, ${prefersDarkMode ? "40%" : "75%"})`;
     const inactiveColor = `hsl(${hue}, 20%, 85%)`;
     const borderColor = `hsl(${hue}, 50%, 30%)`;
-    return {
-      margin: "2px 1px",
-      ...(variant === undefined && {
-        backgroundColor: activeColor,
-      }),
-      ...(variant === "outlined" && {
-        border: `1px solid ${borderColor}`,
-        backgroundColor: activeColor,
+
+    const hoverEffect = {
+      outlined: {
         "@media (hover: hover)": {
           ":hover": {
-            backgroundColor: `${inactiveColor} !important`,
+            backgroundColor: editable
+              ? `${inactiveColor} !important`
+              : `${activeColor} !important`,
           },
         },
         "@media (hover: none)": {
@@ -32,10 +30,8 @@ export const PersonChip = styled(Chip)<ChipProps & { id: string }>(
             backgroundColor: `${activeColor} !important`,
           },
         },
-      }),
-      ...(variant === "filled" && {
-        color: "gray",
-        backgroundColor: inactiveColor,
+      },
+      filled: {
         "@media (hover: hover)": {
           ":hover": {
             color: theme.palette.text.primary,
@@ -44,9 +40,28 @@ export const PersonChip = styled(Chip)<ChipProps & { id: string }>(
         },
         "@media (hover: none)": {
           ":hover": {
-            backgroundColor: `${inactiveColor} !important`,
+            backgroundColor: editable
+              ? `${inactiveColor} !important`
+              : `${activeColor} !important`,
           },
         },
+      },
+    };
+
+    return {
+      margin: "2px 1px",
+      ...(variant === undefined && {
+        backgroundColor: activeColor,
+      }),
+      ...(variant === "outlined" && {
+        border: `1px solid ${borderColor}`,
+        backgroundColor: activeColor,
+        ...hoverEffect.outlined,
+      }),
+      ...(variant === "filled" && {
+        color: "gray",
+        backgroundColor: inactiveColor,
+        ...hoverEffect.filled,
       }),
     };
   }
