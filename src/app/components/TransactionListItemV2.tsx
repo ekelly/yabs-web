@@ -17,11 +17,13 @@ import { isTouchEnabled } from "~/lib/utils";
 interface TransactionListItemProps {
   item: IDisplayableTransaction;
   billParticipants: IBillState["participants"];
+  editable?: boolean;
 }
 
 export default function TransactionListItem({
   item,
   billParticipants,
+  editable,
 }: TransactionListItemProps) {
   const dispatch = useAppDispatch();
   const [editMode, setEditMode] = useState(false);
@@ -35,6 +37,9 @@ export default function TransactionListItem({
   const handleDelete = () => dispatch(removeTransaction(item.id));
 
   const handleOnClick = (personId: string) => {
+    if (!editable) {
+      return;
+    }
     if (isParticipantInTransaction(personId)) {
       dispatch(
         removeParticipantFromTransaction({
@@ -81,13 +86,18 @@ export default function TransactionListItem({
     </ListItemText>
   );
 
+  let participants = Object.keys(billParticipants);
+  if (!editable) {
+    participants = participants.filter(isParticipantInTransaction);
+  }
+
   return (
     <ListItem
       key={item.id}
       divider
       sx={{ flexDirection: "column", alignItems: "flex-start" }}
     >
-      {isTouchEnabled() ? null : (
+      {isTouchEnabled() || !editable ? null : (
         <IconButton
           size="small"
           sx={{ alignSelf: "flex-end", position: "absolute" }}
@@ -98,7 +108,7 @@ export default function TransactionListItem({
       )}
       {amountComponent}
       <Box sx={{ flex: "1 100%" }}>
-        {Object.keys(billParticipants).map((personId) => {
+        {participants.map((personId) => {
           return (
             <PersonChip
               id={personId}
@@ -107,7 +117,7 @@ export default function TransactionListItem({
               }
               key={item.id + personId}
               label={billParticipants[personId].name}
-              onClick={() => handleOnClick(personId)}
+              onClick={editable ? () => handleOnClick(personId) : undefined}
             />
           );
         })}

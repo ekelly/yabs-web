@@ -11,12 +11,18 @@ import {
   List,
   ListItem,
   Fab,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
 } from "@mui/material";
 import VenmoButton from "./VenmoButton";
 import ShareButton from "./ShareButton";
 import { shareText } from "~/lib/features/api/share";
 import ShareIcon from "@mui/icons-material/Share";
 import { calculateBillShares } from "~/lib/features/core/billMath";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import TransactionListItem from "~/app/components/TransactionListItemV2";
+import { getDisplayableTransactions } from "~/lib/features/history/utils";
 
 interface SummaryViewProps {
   id?: string | null;
@@ -72,6 +78,11 @@ export default function SummaryView({ id }: SummaryViewProps) {
   if (!id) {
     return null;
   }
+
+  const transactions = billDetails
+    ? getDisplayableTransactions(billDetails)
+    : null;
+  const participants = billDetails?.participants;
 
   return (
     <>
@@ -155,6 +166,35 @@ export default function SummaryView({ id }: SummaryViewProps) {
               })
             : null}
         </List>
+        {transactions && participants ? (
+          <>
+            <br />
+            <br />
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ArrowDropDownIcon />}
+                aria-controls="panel1-content"
+                id="panel1-header"
+              >
+                <Typography>Transactions</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <List>
+                  {transactions.map((item) => {
+                    return (
+                      <TransactionListItem
+                        key={item.id}
+                        item={item}
+                        editable={false}
+                        billParticipants={participants}
+                      />
+                    );
+                  })}
+                </List>
+              </AccordionDetails>
+            </Accordion>
+          </>
+        ) : null}
       </Container>
     </>
   );
