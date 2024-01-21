@@ -10,6 +10,8 @@ import {
   IconButton,
   CardActionArea,
   Link,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Typography } from "@mui/material";
@@ -18,17 +20,25 @@ import { useAppDispatch } from "~/lib/hooks";
 import { isTouchEnabled } from "~/lib/utils";
 import NextLink from "next/link";
 import type { IDisplayableHistoricalBill } from "~/lib/features/history/selectors";
+import { shareText } from "~/lib/features/api/share";
+import { useState } from "react";
 
 interface HistoryCardProps {
   historyItem: IDisplayableHistoricalBill;
+  triggerInfoPopup: () => void;
 }
 
 const HistoryCard = (props: HistoryCardProps) => {
-  const { historyItem } = props;
+  const { historyItem, triggerInfoPopup } = props;
   const dispatch = useAppDispatch();
 
   const handleDelete = () => {
     dispatch(removeFromHistory(historyItem.id));
+  };
+
+  const handleShare = () => {
+    shareText(historyItem, historyItem.id);
+    triggerInfoPopup();
   };
 
   return (
@@ -75,7 +85,9 @@ const HistoryCard = (props: HistoryCardProps) => {
         </Link>
       </CardActionArea>
       <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Button size="small">Share</Button>
+        <Button size="small" onClick={handleShare}>
+          Share
+        </Button>
         {isTouchEnabled() ? null : (
           <IconButton
             size="small"
@@ -92,6 +104,7 @@ const HistoryCard = (props: HistoryCardProps) => {
 
 export default function HistoryView() {
   const history = useSelector(getHistory);
+  const [message, setMessage] = useState("");
   const dispatch = useAppDispatch();
 
   const deleteHandler = React.useCallback(
@@ -118,14 +131,35 @@ export default function HistoryView() {
     );
   }
 
+  const handleClose = () => {
+    setMessage("");
+  };
+
   return (
-    <SwipeableList
-      items={history}
-      onChange={deleteHandler}
-      generateListItem={(item: IDisplayableHistoricalBill) => (
-        <HistoryCard key={item.id} historyItem={item} />
-      )}
-      generateKey={(item: IDisplayableHistoricalBill) => item.id}
-    />
+    <>
+      <Snackbar
+        open={!!message}
+        autoHideDuration={4000}
+        onClose={handleClose}
+        message={message}
+        sx={{ bottom: { xs: 90, sm: 0 } }}
+      >
+        <Alert onClose={handleClose} severity="info" sx={{ width: "100%" }}>
+          {message}
+        </Alert>
+      </Snackbar>
+      <SwipeableList
+        items={history}
+        onChange={deleteHandler}
+        generateListItem={(item: IDisplayableHistoricalBill) => (
+          <HistoryCard
+            key={item.id}
+            historyItem={item}
+            triggerInfoPopup={() => setMessage("Copied to clipboard!")}
+          />
+        )}
+        generateKey={(item: IDisplayableHistoricalBill) => item.id}
+      />
+    </>
   );
 }
