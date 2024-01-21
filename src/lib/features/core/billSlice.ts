@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type {
+  IAdjustment,
   IBillState,
   IPerson,
   ITransaction,
@@ -29,14 +30,22 @@ const createInitialState: () => IBillState = () => ({
 
 const initialState: IBillState = createInitialState();
 
-type UpdateTransactionPayload = {
+type RemoveParticipantFromTransactionPayload = {
   transactionId: TransactionId;
   participantId: PersonId;
+};
+type UpdateTransactionParticipantsPayload = {
+  transactionId: TransactionId;
+  participants: IAdjustment[];
 };
 type UpdateTransactionSharePayload = {
   transactionId: TransactionId;
   participantId: PersonId;
   share: number;
+};
+type UpdateTransactionAmountPayload = {
+  transactionId: TransactionId;
+  amount: number;
 };
 
 export const slice = createSlice({
@@ -59,14 +68,42 @@ export const slice = createSlice({
         id: uuidv4(),
       });
     },
+    updateTransactionAmount: (
+      state,
+      action: PayloadAction<UpdateTransactionAmountPayload>
+    ) => {
+      const { transactionId, amount } = action.payload;
+      state.transactions = state.transactions.map((transaction) => {
+        if (transaction.id === transactionId) {
+          return { ...transaction, amount };
+        }
+        return transaction;
+      });
+    },
     removeTransaction: (state, action: PayloadAction<TransactionId>) => {
       state.transactions = state.transactions.filter(
         (t) => t.id !== action.payload
       );
     },
+    updateTransactionParticipants: (
+      state,
+      action: PayloadAction<UpdateTransactionParticipantsPayload>
+    ) => {
+      const { participants, transactionId } = action.payload;
+      state.transactions = state.transactions.map((t) => {
+        if (t.id === transactionId) {
+          return {
+            ...t,
+            participants,
+          };
+        } else {
+          return t;
+        }
+      });
+    },
     removeParticipantFromTransaction: (
       state,
-      action: PayloadAction<UpdateTransactionPayload>
+      action: PayloadAction<RemoveParticipantFromTransactionPayload>
     ) => {
       const { participantId, transactionId } = action.payload;
       state.transactions = [
@@ -118,9 +155,11 @@ export const {
   upsertPerson,
   removePerson,
   addTransaction,
+  updateTransactionAmount,
   removeTransaction,
   removeParticipantFromTransaction,
   adjustParticipantShareOfTransaction,
+  updateTransactionParticipants,
   setBillTotal,
   setBillDescription,
   clearBill,

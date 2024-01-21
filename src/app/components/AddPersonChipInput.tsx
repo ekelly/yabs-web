@@ -4,11 +4,13 @@ import { v4 as uuidv4 } from "uuid";
 import { upsertPerson } from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
 
+interface AddPersonChipInputProps {
+  setParticipantSelected: (participantId: string) => void;
+}
+
 export default function AddPersonChipInput({
   setParticipantSelected,
-}: {
-  setParticipantSelected: (participantId: string) => void;
-}) {
+}: AddPersonChipInputProps) {
   const dispatch = useAppDispatch();
   const theme = useTheme();
 
@@ -25,6 +27,11 @@ export default function AddPersonChipInput({
       dispatch(upsertPerson(person));
       setParticipantSelected(person.id);
     }
+    setShowNewParticipant(false);
+    setNewParticipantName("");
+  };
+
+  const cancelAddingParticipant = () => {
     setShowNewParticipant(false);
     setNewParticipantName("");
   };
@@ -62,7 +69,7 @@ export default function AddPersonChipInput({
                 addParticipant();
               }
             }}
-            onBlur={() => addParticipant()}
+            onBlur={() => cancelAddingParticipant()}
             sx={{
               position: "absolute",
               ...theme.typography.body2,
