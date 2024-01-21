@@ -1,5 +1,5 @@
 "use client";
-import { Button, FormHelperText, Box } from "@mui/material";
+import { Zoom, FormHelperText, Box, Fab, useTheme } from "@mui/material";
 import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { getTransactions, clearBill, getBillState } from "~/lib/features/core";
@@ -9,11 +9,13 @@ import BillInfo from "./BillInfo";
 import TransactionList from "./TransactionList";
 import { useRouter } from "next/navigation";
 import AddTransactionArea from "./AddTransactionAreaV2";
+import SaveIcon from "@mui/icons-material/Save";
 
 export default function BillEntry() {
   const dispatch = useAppDispatch();
   const transactions = useShallowEqualSelector(getTransactions);
   const billState = useSelector(getBillState);
+  const theme = useTheme();
   const { id, total, description, participants } = billState;
 
   const [error, setError] = useState<string | undefined>();
@@ -45,17 +47,46 @@ export default function BillEntry() {
     router.push("/summary?billId=" + id);
   }, [description, total, transactions, dispatch, router, id]);
 
+  const transitionDuration = {
+    enter: theme.transitions.duration.enteringScreen,
+    exit: theme.transitions.duration.leavingScreen,
+  };
+
   return (
     <>
       <BillInfo />
-      <Box>
+      <Zoom
+        key={"save"}
+        in={transactions.length > 0}
+        timeout={transitionDuration}
+        style={{
+          transitionDelay: `${
+            transactions.length > 0 ? transitionDuration.exit : 0
+          }ms`,
+        }}
+        unmountOnExit
+      >
+        <Fab
+          onClick={doneHandler}
+          sx={{
+            position: { xs: "absolute", sm: "relative" },
+            bottom: { xs: 16, sm: 20 },
+            right: { xs: 16, sm: -500 },
+          }}
+        >
+          <SaveIcon />
+        </Fab>
+      </Zoom>
+      <Box
+        sx={{
+          top: { sm: transactions.length > 0 ? -40 : 0 },
+          position: "relative",
+        }}
+      >
         <TransactionList items={transactions} participants={participants} />
         <AddTransactionArea />
       </Box>
       <br />
-      <Button variant="contained" onClick={doneHandler}>
-        done
-      </Button>
       <FormHelperText error>{error}</FormHelperText>
     </>
   );

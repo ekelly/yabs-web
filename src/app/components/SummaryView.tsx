@@ -108,7 +108,7 @@ export default function SummaryView({ id }: SummaryViewProps) {
             </Fab>
           ) : null}
         </Box>
-        <List>
+        <List sx={{ position: "relative", top: { sm: -40 } }}>
           {displayableBill?.participants
             ? Object.values(displayableBill?.participants).map((p) => {
                 return (
