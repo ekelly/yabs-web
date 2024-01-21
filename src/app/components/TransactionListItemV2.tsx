@@ -76,7 +76,7 @@ export default function TransactionListItem({
   ) : (
     <ListItemText
       onClick={() => {
-        setEditMode(true);
+        setEditMode(!!editable && true);
       }}
     >
       {Intl.NumberFormat("en-US", {
