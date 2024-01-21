@@ -13,14 +13,14 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Typography } from "@mui/material";
-import { IHistoryItem } from "~/lib/features/history/types";
 import SwipeableList from "material-swipeable-list";
 import { useAppDispatch } from "~/lib/hooks";
 import { isTouchEnabled } from "~/lib/utils";
 import NextLink from "next/link";
+import type { IDisplayableHistoricalBill } from "~/lib/features/history/selectors";
 
 interface HistoryCardProps {
-  historyItem: IHistoryItem;
+  historyItem: IDisplayableHistoricalBill;
 }
 
 const HistoryCard = (props: HistoryCardProps) => {
@@ -96,13 +96,13 @@ export default function HistoryView() {
 
   const deleteHandler = React.useCallback(
     (index: number) => {
-      const item = history.records[index];
+      const item = history[index];
       dispatch(removeFromHistory(item.id));
     },
-    [dispatch, history.records]
+    [dispatch, history]
   );
 
-  if (!history.records.length) {
+  if (!history.length) {
     return (
       <Container
         disableGutters
@@ -120,12 +120,12 @@ export default function HistoryView() {
 
   return (
     <SwipeableList
-      items={history.records}
+      items={history}
       onChange={deleteHandler}
-      generateListItem={(item: IHistoryItem) => (
+      generateListItem={(item: IDisplayableHistoricalBill) => (
         <HistoryCard key={item.id} historyItem={item} />
       )}
-      generateKey={(item: IHistoryItem) => item.id}
+      generateKey={(item: IDisplayableHistoricalBill) => item.id}
     />
   );
 }
