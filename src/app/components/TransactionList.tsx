@@ -23,7 +23,11 @@ export default function TransactionList({
   const deleteHandler = useCallback(
     (index: number) => {
       const item = items[index];
-      dispatch(removeTransaction(item.id));
+      if (item) {
+        dispatch(removeTransaction(item.id));
+      } else {
+        console.warn(`Cannot find item ${index} in ${JSON.stringify(items)}`);
+      }
     },
     [dispatch, items]
   );

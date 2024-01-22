@@ -1,5 +1,5 @@
-import { FormHelperText, InputAdornment, TextField } from "@mui/material";
-import { useState, useRef } from "react";
+import { Box, FormHelperText, InputAdornment, TextField } from "@mui/material";
+import React, { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { addTransaction, getParticipants } from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
@@ -122,11 +122,23 @@ export default function AddTransactionArea() {
   };
 
   if (mode === AddTransactionMode.INACTIVE) {
-    return renderAmountInput();
+    return (
+      <Box
+        sx={{
+          paddingLeft: "16px",
+        }}
+      >
+        {renderAmountInput()}
+      </Box>
+    );
   }
 
   return (
-    <>
+    <Box
+      sx={{
+        paddingLeft: "16px",
+      }}
+    >
       {renderAmountInput()}
       <br />
       <div
@@ -151,6 +163,6 @@ export default function AddTransactionArea() {
         <AddPersonChipInput setParticipantSelected={handleOnClick} />
       </div>
       <FormHelperText error>{error}</FormHelperText>
-    </>
+    </Box>
   );
 }
