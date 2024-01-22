@@ -88,3 +88,37 @@ export const adjustTransactionPercentages = (
     return transaction;
   }
 };
+
+export type IPersonTotals = {
+  [key: string]: {
+    id: string;
+    name: string;
+    total: number;
+  };
+};
+export const calculatePersonTotals = (billState: IBillState): IPersonTotals => {
+  return Object.values(billState.participants)
+    .map((p) => {
+      const personShare: number = billState.transactions.reduce(
+        (acc, t) =>
+          acc +
+          t.participants.reduce(
+            (acc, curr) =>
+              curr.personId === p.id ? curr.adjustPercentage * t.amount : acc,
+            0
+          ),
+        0
+      );
+      return {
+        name: p.name,
+        id: p.id,
+        total: personShare,
+      };
+    })
+    .reduce(
+      (acc: IPersonTotals, pt: { name: string; id: string; total: number }) => {
+        return { ...acc, [pt.id]: pt };
+      },
+      {}
+    );
+};
