@@ -1,5 +1,14 @@
 "use client";
-import { Zoom, FormHelperText, Box, Fab, useTheme } from "@mui/material";
+import {
+  Zoom,
+  FormHelperText,
+  Box,
+  Fab,
+  useTheme,
+  Slide,
+  Paper,
+  Typography,
+} from "@mui/material";
 import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { getTransactions, clearBill, getBillState } from "~/lib/features/core";
@@ -86,8 +95,34 @@ export default function BillEntry() {
         <TransactionList items={transactions} participants={participants} />
         <AddTransactionArea />
       </Box>
-      <br />
+      {transactions.length ? <hr /> : null}
       <FormHelperText error>{error}</FormHelperText>
+      <Slide
+        direction="up"
+        in={transactions.length > 0}
+        mountOnEnter
+        unmountOnExit
+      >
+        <Paper
+          sx={{
+            m: 1,
+            width: "95%",
+            height: "auto",
+            display: "flex",
+            padding: "10px",
+          }}
+          elevation={4}
+        >
+          <Box sx={{ flexGrow: 2 }}>
+            <Typography variant="body1">Subtotal:</Typography>
+          </Box>
+          <Box sx={{ flexGrow: 1, textAlign: "end" }}>
+            <Typography variant="body1">
+              ${transactions.reduce((acc, t) => acc + t.amount, 0).toFixed(2)}
+            </Typography>
+          </Box>
+        </Paper>
+      </Slide>
     </>
   );
 }
