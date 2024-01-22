@@ -11,7 +11,6 @@ import {
 import * as React from "react";
 import SettingsIcon from "@mui/icons-material/Settings";
 import NextLink from "next/link";
-import { useRouter } from "next/navigation";
 
 interface Props {
   children?: React.ReactNode;
@@ -23,7 +22,6 @@ interface Props {
 
 export default function DrawerAppBar(props: Props) {
   const { children, navItems } = props;
-  const router = useRouter();
 
   return (
     <Box sx={{ display: "flex", width: "100%" }}>
@@ -55,7 +53,7 @@ export default function DrawerAppBar(props: Props) {
                   {item.label}
                 </Button>
               ))}
-              <IconButton onClick={() => router.push("/settings")}>
+              <IconButton LinkComponent={NextLink} href="/settings">
                 <SettingsIcon />
               </IconButton>
             </nav>
