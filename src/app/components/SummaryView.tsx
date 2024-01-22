@@ -21,7 +21,7 @@ import { shareText } from "~/lib/features/api/share";
 import ShareIcon from "@mui/icons-material/Share";
 import { calculateBillShares } from "~/lib/features/core/billMath";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import TransactionListItem from "~/app/components/TransactionListItem";
+import TransactionListItem from "~/app/components/TransactionListItemV2";
 import { getDisplayableTransactions } from "~/lib/features/history/utils";
 
 interface SummaryViewProps {

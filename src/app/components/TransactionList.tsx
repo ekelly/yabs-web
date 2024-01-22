@@ -1,5 +1,5 @@
 import * as React from "react";
-import TransactionListItem from "./TransactionListItem";
+import TransactionListItem from "./TransactionListItemV2";
 import {
   removeTransaction,
   type IBillState,
