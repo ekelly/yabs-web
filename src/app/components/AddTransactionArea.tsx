@@ -1,5 +1,5 @@
-import { Chip, FormHelperText, InputAdornment, TextField } from "@mui/material";
-import { useState, useRef } from "react";
+import { Box, FormHelperText, InputAdornment, TextField } from "@mui/material";
+import React, { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { addTransaction, getParticipants } from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
@@ -36,30 +36,42 @@ export default function AddTransactionArea() {
     inputRef.current?.focus();
   };
 
-  const submitFormHandler = () => {
-    const amount = Number(itemAmount);
+  // Run validation checks
+  const validate = (amount: number, selectedParticipants: string[]) => {
     if (isNaN(amount)) {
       setError("Amount must be a valid number");
-      return;
+      return false;
     }
     if (amount === 0) {
       setError("Amount must be positive");
-      return;
+      return false;
     }
     if (selectedParticipants.length === 0) {
       setError(MISSING_PARTICIPANTS_ERROR);
-      return;
+      return false;
     }
+    return true;
+  };
+
+  // Return true on successful submission, false otherwise
+  const submitFormHandler = (selectedParticipants: string[]): boolean => {
+    const amount = Number(itemAmount);
+    if (!validate(amount, selectedParticipants)) {
+      return false;
+    }
+    const dedupedParticipants = new Set<string>();
+    selectedParticipants.forEach((p) => dedupedParticipants.add(p));
     dispatch(
       addTransaction({
         amount: amount,
-        participants: selectedParticipants.map((participant) => ({
+        participants: Array.from(dedupedParticipants).map((participant) => ({
           personId: participant,
-          adjustPercentage: 1 / selectedParticipants.length,
+          adjustPercentage: 1 / dedupedParticipants.size,
         })),
       })
     );
     resetForm();
+    return true;
   };
 
   const setParticipantSelected = (participantId: string) => {
@@ -75,8 +87,11 @@ export default function AddTransactionArea() {
   };
 
   const handleOnClick = (participantId: string) => {
-    setParticipantSelected(participantId);
-    submitFormHandler();
+    if (!submitFormHandler([...selectedParticipants, participantId])) {
+      // If the form did not submit, we want to make sure the
+      // selected participants array is updated
+      setParticipantSelected(participantId);
+    }
   };
 
   const renderAmountInput = () => {
@@ -96,18 +111,36 @@ export default function AddTransactionArea() {
         value={itemAmount}
         onFocus={() => setMode(AddTransactionMode.ACTIVE)}
         onChange={(e) => setItemAmount(e.currentTarget.value)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            submitFormHandler(selectedParticipants);
+          }
+        }}
         inputRef={inputRef}
       />
     );
   };
 
   if (mode === AddTransactionMode.INACTIVE) {
-    return renderAmountInput();
+    return (
+      <Box
+        sx={{
+          paddingLeft: "16px",
+        }}
+      >
+        {renderAmountInput()}
+      </Box>
+    );
   }
 
   return (
-    <>
+    <Box
+      sx={{
+        paddingLeft: "16px",
+      }}
+    >
       {renderAmountInput()}
+      <br />
       <div
         style={{
           display: "flex",
@@ -127,26 +160,9 @@ export default function AddTransactionArea() {
             id={participant.id}
           />
         ))}
-        <AddPersonChipInput setParticipantSelected={setParticipantSelected} />
-        <Chip
-          label={mode === AddTransactionMode.EXPANDED ? "👥" : "👤"}
-          variant="filled"
-          onClick={() =>
-            setMode(
-              mode === AddTransactionMode.EXPANDED
-                ? AddTransactionMode.ACTIVE
-                : AddTransactionMode.EXPANDED
-            )
-          }
-          sx={{
-            marginTop: "2px",
-            marginBottom: "2px",
-            marginLeft: "1px",
-            position: "relative",
-          }}
-        />
+        <AddPersonChipInput setParticipantSelected={handleOnClick} />
       </div>
       <FormHelperText error>{error}</FormHelperText>
-    </>
+    </Box>
   );
 }
