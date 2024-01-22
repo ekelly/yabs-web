@@ -92,6 +92,11 @@ export const TransactionCostInput = forwardRef<
         value={itemAmount}
         onBlur={handleOnBlur}
         onChange={(e) => setItemAmount(e.currentTarget.value)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            handleOnBlur();
+          }
+        }}
         inputRef={inputRef}
       />
       <FormHelperText error>{error}</FormHelperText>
