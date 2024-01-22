@@ -111,7 +111,7 @@ export default function BillEntry() {
             display: "flex",
             padding: "10px",
           }}
-          elevation={4}
+          elevation={1}
         >
           <Box sx={{ flexGrow: 2 }}>
             <Typography variant="body1">Subtotal:</Typography>
