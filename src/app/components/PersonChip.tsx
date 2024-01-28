@@ -6,8 +6,16 @@ function hueFromId(id: string) {
   return idAsNumber % 360;
 }
 
-export const PersonChip = styled(Chip)<ChipProps & { id: string }>(
-  ({ variant, id, onClick }) => {
+type PersonChipProps = {
+  id: string;
+  colorOverrides?: {
+    background: string;
+    hover: string;
+  };
+};
+
+export const PersonChip = styled(Chip)<ChipProps & PersonChipProps>(
+  ({ variant, id, onClick, colorOverrides }) => {
     const theme = useTheme();
     const hue = hueFromId(id);
     const editable = !!onClick;
@@ -46,6 +54,20 @@ export const PersonChip = styled(Chip)<ChipProps & { id: string }>(
           },
         },
       },
+      override: {
+        "@media (hover: hover)": {
+          ":hover": {
+            backgroundColor: colorOverrides?.hover,
+          },
+        },
+        "@media (hover: none)": {
+          ":hover": {
+            backgroundColor: editable
+              ? `${colorOverrides?.hover} !important`
+              : `${colorOverrides?.background} !important`,
+          },
+        },
+      },
     };
 
     return {
@@ -63,6 +85,12 @@ export const PersonChip = styled(Chip)<ChipProps & { id: string }>(
         backgroundColor: inactiveColor,
         ...hoverEffect.filled,
       }),
+      ...(colorOverrides
+        ? {
+            backgroundColor: colorOverrides.background,
+            ...hoverEffect.override,
+          }
+        : {}),
     };
   }
 );

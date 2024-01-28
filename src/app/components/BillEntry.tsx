@@ -1,22 +1,8 @@
 "use client";
-import {
-  Zoom,
-  FormHelperText,
-  Box,
-  Fab,
-  useTheme,
-  Slide,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Zoom, FormHelperText, Box, Fab, useTheme } from "@mui/material";
 import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
-import {
-  getTransactions,
-  clearBill,
-  getBillState,
-  removePerson,
-} from "~/lib/features/core";
+import { getTransactions, clearBill, getBillState } from "~/lib/features/core";
 import { addToHistory } from "~/lib/features/history";
 import { useAppDispatch, useShallowEqualSelector } from "~/lib/hooks";
 import BillInfo from "./BillInfo";
@@ -24,9 +10,8 @@ import TransactionList from "./TransactionList";
 import { useRouter } from "next/navigation";
 import AddTransactionArea from "./AddTransactionAreaV2";
 import SaveIcon from "@mui/icons-material/Save";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { PersonChip } from "./PersonChip";
 import { calculatePersonTotals } from "~/lib/features/core/billMath";
+import SubtotalView from "./SubtotalView";
 
 export default function BillEntry() {
   const dispatch = useAppDispatch();
@@ -107,49 +92,11 @@ export default function BillEntry() {
       </Box>
       {transactions.length ? <hr /> : null}
       <FormHelperText error>{error}</FormHelperText>
-      <Slide
-        direction="up"
-        in={transactions.length > 0}
-        mountOnEnter
-        unmountOnExit
-      >
-        <Paper
-          sx={{
-            m: 1,
-            width: "95%",
-            height: "auto",
-            padding: "10px",
-          }}
-          elevation={1}
-        >
-          <Box sx={{ display: "flex" }}>
-            <Box sx={{ flexGrow: 2 }}>
-              <Typography variant="body1">Subtotal:</Typography>
-            </Box>
-            <Box sx={{ flexGrow: 1, textAlign: "end" }}>
-              <Typography variant="body1">
-                ${transactions.reduce((acc, t) => acc + t.amount, 0).toFixed(2)}
-              </Typography>
-            </Box>
-          </Box>
-          <Box sx={{ marginTop: "10px" }}>
-            {Object.values(billState.participants).map((participant) => {
-              console.log(`${JSON.stringify(personTotals)}`);
-              const share = personTotals[participant.id].total;
-              return (
-                <PersonChip
-                  variant="filled"
-                  key={participant.id}
-                  label={`${participant.name}: ${share ?? 0}`}
-                  deleteIcon={<DeleteIcon />}
-                  onDelete={() => dispatch(removePerson(participant.id))}
-                  id={participant.id}
-                />
-              );
-            })}
-          </Box>
-        </Paper>
-      </Slide>
+      <SubtotalView
+        transactions={transactions}
+        participants={billState.participants}
+        personTotals={personTotals}
+      />
     </>
   );
 }
