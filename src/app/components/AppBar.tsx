@@ -53,7 +53,11 @@ export default function DrawerAppBar(props: Props) {
                   {item.label}
                 </Button>
               ))}
-              <IconButton LinkComponent={NextLink} href="/settings">
+              <IconButton
+                LinkComponent={NextLink}
+                href="/settings"
+                sx={{ color: "#fff" }}
+              >
                 <SettingsIcon />
               </IconButton>
             </nav>
