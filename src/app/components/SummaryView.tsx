@@ -119,7 +119,7 @@ export default function SummaryView({ id }: SummaryViewProps) {
                       sx={{
                         marginLeft: "4px",
                         order: { xs: 2, sm: 3 },
-                        flex: "1 0px",
+                        minWidth: "fit-content",
                       }}
                     >
                       <ShareButton
