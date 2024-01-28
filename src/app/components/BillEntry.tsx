@@ -60,23 +60,23 @@ export default function BillEntry() {
   return (
     <>
       <BillInfo />
-      <Zoom
-        key={"save"}
-        in={transactions.length > 0}
-        timeout={transitionDuration}
-        style={{
-          transitionDelay: `${
-            transactions.length > 0 ? transitionDuration.exit : 0
-          }ms`,
+      <Box
+        sx={{
+          position: { xs: "fixed", sm: "relative" },
+          bottom: { xs: 16, sm: 20 },
+          right: { xs: 16, sm: -500 },
         }}
-        unmountOnExit
       >
-        <Box
-          sx={{
-            position: { xs: "fixed", sm: "relative" },
-            bottom: { xs: 16, sm: 20 },
-            right: { xs: 16, sm: -500 },
+        <Zoom
+          key={"save"}
+          in={transactions.length > 0}
+          timeout={transitionDuration}
+          style={{
+            transitionDelay: `${
+              transactions.length > 0 ? transitionDuration.exit : 0
+            }ms`,
           }}
+          unmountOnExit
         >
           <Fab
             onClick={doneHandler}
@@ -87,8 +87,8 @@ export default function BillEntry() {
           >
             <SaveIcon />
           </Fab>
-        </Box>
-      </Zoom>
+        </Zoom>
+      </Box>
       <TransactionList items={transactions} participants={participants} />
       <AddTransactionArea />
       {transactions.length ? <hr /> : null}
