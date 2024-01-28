@@ -22,7 +22,7 @@ export const PersonChip = styled(Chip)<ChipProps & PersonChipProps>(
     const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
     const activeColor = `hsl(${hue}, 75%, ${prefersDarkMode ? "40%" : "75%"})`;
     const inactiveColor = `hsl(${hue}, 20%, 85%)`;
-    const borderColor = `hsl(${hue}, 50%, 30%)`;
+    const borderColor = `hsl(${hue}, 50%, ${prefersDarkMode ? "70%" : "30%"})`;
 
     const hoverEffect = {
       outlined: {
