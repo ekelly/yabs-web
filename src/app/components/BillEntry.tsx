@@ -1,5 +1,5 @@
 "use client";
-import { Zoom, FormHelperText, Box, Fab, useTheme } from "@mui/material";
+import { Zoom, Box, Fab, useTheme } from "@mui/material";
 import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { getTransactions, clearBill, getBillState } from "~/lib/features/core";
@@ -12,6 +12,7 @@ import AddTransactionArea from "./AddTransactionAreaV2";
 import SaveIcon from "@mui/icons-material/Save";
 import { calculatePersonTotals } from "~/lib/features/core/billMath";
 import SubtotalView from "./SubtotalView";
+import { ErrorMessage } from "./ErrorMessage";
 
 export default function BillEntry() {
   const dispatch = useAppDispatch();
@@ -91,7 +92,7 @@ export default function BillEntry() {
         <AddTransactionArea />
       </Box>
       {transactions.length ? <hr /> : null}
-      <FormHelperText error>{error}</FormHelperText>
+      <ErrorMessage message={error} triggerError={setError} />
       <SubtotalView
         transactions={transactions}
         participants={billState.participants}

@@ -3,8 +3,6 @@ import { useSelector } from "react-redux";
 import type { RootState } from "~/lib/store";
 import { getHistoricalBill } from "~/lib/features/history";
 import {
-  Snackbar,
-  Alert,
   Box,
   Container,
   Typography,
@@ -23,41 +21,11 @@ import { calculateBillShares } from "~/lib/features/core/billMath";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import TransactionListItem from "~/app/components/TransactionListItemV2";
 import { getDisplayableTransactions } from "~/lib/features/history/utils";
+import { ErrorMessage } from "./ErrorMessage";
 
 interface SummaryViewProps {
   id?: string | null;
 }
-
-const ErrorMessage = (props: {
-  message: string;
-  triggerError: (show: string) => void;
-}) => {
-  const { message, triggerError } = props;
-  const handleClose = React.useCallback(
-    (_event?: React.SyntheticEvent | Event, reason?: string) => {
-      if (reason === "clickaway") {
-        return;
-      }
-
-      triggerError("");
-    },
-    [triggerError]
-  );
-
-  return (
-    <Snackbar
-      open={!!message}
-      autoHideDuration={5000}
-      onClose={handleClose}
-      message={message}
-      sx={{ bottom: { xs: 90, sm: 0 } }}
-    >
-      <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-        {message}
-      </Alert>
-    </Snackbar>
-  );
-};
 
 export default function SummaryView({ id }: SummaryViewProps) {
   const [errorMessage, triggerError] = React.useState("");
