@@ -37,3 +37,6 @@ next-env.d.ts
 
 # Bun
 bun.lockb
+
+# service workers
+public/sw.js.map
