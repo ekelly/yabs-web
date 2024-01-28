@@ -57,8 +57,10 @@ export default function BillInfo() {
           value={total}
           InputProps={{
             startAdornment: <InputAdornment position="start">$</InputAdornment>,
+            inputProps: {
+              inputMode: "decimal",
+            },
           }}
-          inputMode="decimal"
           onChange={(e) => setTotal(e.target.value)}
           onBlur={updateBillTotal}
           valueIsNumericString

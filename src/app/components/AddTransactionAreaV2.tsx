@@ -101,9 +101,11 @@ export default function AddTransactionArea() {
         name="itemAmount"
         placeholder="amount"
         size="small"
-        inputMode="decimal"
         InputProps={{
           startAdornment: <InputAdornment position="start">$</InputAdornment>,
+          inputProps: {
+            inputMode: "decimal",
+          },
         }}
         valueIsNumericString
         decimalScale={2}

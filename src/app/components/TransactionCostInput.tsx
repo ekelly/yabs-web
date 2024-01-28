@@ -82,9 +82,11 @@ export const TransactionCostInput = forwardRef<
         name="itemAmount"
         placeholder={initialAmount}
         size="small"
-        inputMode="decimal"
         InputProps={{
           startAdornment: <InputAdornment position="start">$</InputAdornment>,
+          inputProps: {
+            inputMode: "decimal",
+          },
         }}
         valueIsNumericString
         decimalScale={2}
