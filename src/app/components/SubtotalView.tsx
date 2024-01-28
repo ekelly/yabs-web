@@ -42,6 +42,7 @@ export default function SubtotalView(props: SubtotalViewProps) {
           width: "95%",
           height: "auto",
           padding: "10px",
+          marginBottom: { xs: "60px" }, // Needed to provide room for the save button
         }}
         elevation={1}
       >

@@ -74,7 +74,7 @@ export default function BillEntry() {
         <Fab
           onClick={doneHandler}
           sx={{
-            position: { xs: "absolute", sm: "relative" },
+            position: { xs: "fixed", sm: "relative" },
             bottom: { xs: 16, sm: 20 },
             right: { xs: 16, sm: -500 },
           }}
