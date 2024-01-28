@@ -1,4 +1,4 @@
-import { Chip, Input, useTheme } from "@mui/material";
+import { Box, Chip, Input, useTheme } from "@mui/material";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { upsertPerson } from "~/lib/features/core";
@@ -37,48 +37,46 @@ export default function AddPersonChipInput({
   };
 
   return (
-    <>
-      <div
-        style={{
-          width: "200px",
-          display: "inline-flex",
+    <Box
+      sx={{
+        width: "200px",
+        display: "inline-flex",
+      }}
+    >
+      <Chip
+        label={showNewParticipant ? "" : "+"}
+        variant="filled"
+        onClick={() => {
+          setShowNewParticipant(true);
         }}
-      >
-        <Chip
-          label={showNewParticipant ? "" : "+"}
-          variant="filled"
-          onClick={() => {
-            setShowNewParticipant(true);
+        className={showNewParticipant ? "BigChip" : "RegularChip"}
+        sx={{
+          marginTop: "2px",
+          marginBottom: "2px",
+          marginLeft: "1px",
+        }}
+      />
+      {showNewParticipant && (
+        <Input
+          autoFocus
+          disableUnderline
+          value={newParticipantName}
+          onChange={(e) => setNewParticipantName(e.currentTarget.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              addParticipant();
+            }
           }}
-          className={showNewParticipant ? "BigChip" : "RegularChip"}
+          onBlur={() => cancelAddingParticipant()}
           sx={{
-            marginTop: "2px",
-            marginBottom: "2px",
-            marginLeft: "1px",
+            position: "absolute",
+            ...theme.typography.body2,
+            fontSize: theme.typography.pxToRem(13),
+            padding: "4px 11px",
+            width: "200px",
           }}
         />
-        {showNewParticipant && (
-          <Input
-            autoFocus
-            disableUnderline
-            value={newParticipantName}
-            onChange={(e) => setNewParticipantName(e.currentTarget.value)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                addParticipant();
-              }
-            }}
-            onBlur={() => cancelAddingParticipant()}
-            sx={{
-              position: "absolute",
-              ...theme.typography.body2,
-              fontSize: theme.typography.pxToRem(13),
-              padding: "4px 11px",
-              width: "200px",
-            }}
-          />
-        )}
-      </div>
-    </>
+      )}
+    </Box>
   );
 }

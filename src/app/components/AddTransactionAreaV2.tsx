@@ -144,8 +144,8 @@ export default function AddTransactionArea() {
     >
       {renderAmountInput()}
       <br />
-      <div
-        style={{
+      <Box
+        sx={{
           display: "flex",
           flexWrap: "wrap",
         }}
@@ -164,7 +164,7 @@ export default function AddTransactionArea() {
           />
         ))}
         <AddPersonChipInput setParticipantSelected={handleOnClick} />
-      </div>
+      </Box>
       <FormHelperText error>{error}</FormHelperText>
     </Box>
   );
