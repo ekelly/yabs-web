@@ -128,7 +128,7 @@ export default function AddTransactionArea() {
     return (
       <Box
         sx={{
-          paddingLeft: "16px",
+          paddingLeft: { sm: "16px" },
         }}
       >
         {renderAmountInput()}
@@ -139,7 +139,7 @@ export default function AddTransactionArea() {
   return (
     <Box
       sx={{
-        paddingLeft: "16px",
+        paddingLeft: { sm: "16px" },
       }}
     >
       {renderAmountInput()}
