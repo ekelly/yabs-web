@@ -71,26 +71,26 @@ export default function BillEntry() {
         }}
         unmountOnExit
       >
-        <Fab
-          onClick={doneHandler}
+        <Box
           sx={{
             position: { xs: "fixed", sm: "relative" },
             bottom: { xs: 16, sm: 20 },
             right: { xs: 16, sm: -500 },
           }}
         >
-          <SaveIcon />
-        </Fab>
+          <Fab
+            onClick={doneHandler}
+            sx={{
+              position: { sm: "fixed" },
+              top: { sm: 150 },
+            }}
+          >
+            <SaveIcon />
+          </Fab>
+        </Box>
       </Zoom>
-      <Box
-        sx={{
-          top: { sm: transactions.length > 0 ? -40 : 0 },
-          position: "relative",
-        }}
-      >
-        <TransactionList items={transactions} participants={participants} />
-        <AddTransactionArea />
-      </Box>
+      <TransactionList items={transactions} participants={participants} />
+      <AddTransactionArea />
       {transactions.length ? <hr /> : null}
       <ErrorMessage message={error} triggerError={setError} />
       <SubtotalView
