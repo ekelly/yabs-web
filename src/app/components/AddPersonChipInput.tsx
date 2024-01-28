@@ -55,7 +55,6 @@ export default function AddPersonChipInput({
             marginTop: "2px",
             marginBottom: "2px",
             marginLeft: "1px",
-            position: "absolute",
           }}
         />
         {showNewParticipant && (
