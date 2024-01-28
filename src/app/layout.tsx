@@ -16,12 +16,12 @@ import HistoryView from "./components/HistoryView";
 const routes = [
   {
     label: "Home",
-    href: "home",
+    href: "/",
     component: <BillEntry />,
   },
   {
     label: "History",
-    href: "history",
+    href: "/history",
     component: <HistoryView />,
   },
 ];

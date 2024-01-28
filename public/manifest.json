@@ -1,7 +1,7 @@
 {
     "name": "Yet Another Bill Splitter",
     "short_name": "YABS",
-    "start_url": "/home",
+    "start_url": "/",
     "display": "standalone",
     "background_color": "#fff",
     "description": "A faster bill Splitter",
