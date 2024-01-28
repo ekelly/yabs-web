@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { getTransactions, clearBill, getBillState } from "~/lib/features/core";
 import { addToHistory } from "~/lib/features/history";
-import { useAppDispatch, useShallowEqualSelector } from "~/lib/hooks";
+import { useAppDispatch } from "~/lib/hooks";
 import BillInfo from "./BillInfo";
 import TransactionList from "./TransactionList";
 import { useRouter } from "next/navigation";
@@ -15,7 +15,7 @@ import SubtotalView from "./SubtotalView";
 
 export default function BillEntry() {
   const dispatch = useAppDispatch();
-  const transactions = useShallowEqualSelector(getTransactions);
+  const transactions = useSelector(getTransactions);
   const billState = useSelector(getBillState);
   const theme = useTheme();
   const { id, total, description, participants } = billState;

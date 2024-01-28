@@ -8,7 +8,7 @@ import type {
   TransactionId,
 } from "./types";
 import { v4 as uuidv4 } from "uuid";
-import { adjustTransactionPercentages } from "./billMath";
+import { adjustTransactionPercentagesAfterRemovingParticipant } from "./billMath";
 
 const createInitialParticipants = () => {
   const participants: Record<PersonId, IPerson> = {};
@@ -56,7 +56,18 @@ export const slice = createSlice({
       state.participants[action.payload.id] = action.payload;
     },
     removePerson: (state, action: PayloadAction<PersonId>) => {
-      delete state.participants[action.payload];
+      const newParticipants = {
+        ...state.participants,
+      };
+      delete newParticipants[action.payload];
+      state.participants = newParticipants;
+      const updateTransactions = (transaction: ITransaction) => {
+        return adjustTransactionPercentagesAfterRemovingParticipant(
+          transaction,
+          action.payload
+        );
+      };
+      state.transactions = state.transactions.map(updateTransactions);
     },
     addTransaction: (
       state,
@@ -109,7 +120,10 @@ export const slice = createSlice({
       state.transactions = [
         ...state.transactions.map((t) => {
           if (t.id === transactionId) {
-            return adjustTransactionPercentages(t, participantId);
+            return adjustTransactionPercentagesAfterRemovingParticipant(
+              t,
+              participantId
+            );
           }
           return t;
         }),
@@ -122,13 +136,14 @@ export const slice = createSlice({
       const { participantId, transactionId, share } = action.payload;
       state.transactions = [
         ...state.transactions.map((t) => {
-          // TODO: When you remove a participant, make sure to divy up their
-          // proportion of the transaction accordingly
           if (t.id === transactionId) {
             return {
               ...t,
               participants: t.participants.map((p) => {
                 if (p.personId === participantId) {
+                  // TODO: make sure to divy up their
+                  // proportion of the transaction accordingly.
+                  // The total should sum to 1 (100%)
                   return { ...p, adjustPercentage: share };
                 }
                 return p;

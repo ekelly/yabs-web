@@ -52,7 +52,7 @@ export const calculateBillShares = (
   };
 };
 
-export const adjustTransactionPercentages = (
+export const adjustTransactionPercentagesAfterRemovingParticipant = (
   transaction: ITransaction,
   participantToRemove: string
 ): ITransaction => {
