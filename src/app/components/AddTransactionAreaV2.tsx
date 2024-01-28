@@ -117,6 +117,7 @@ export default function AddTransactionArea() {
           }
         }}
         inputRef={inputRef}
+        autoComplete="off"
       />
     );
   };

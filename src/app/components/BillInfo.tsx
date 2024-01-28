@@ -64,6 +64,7 @@ export default function BillInfo() {
           valueIsNumericString
           decimalScale={2}
           allowNegative={false}
+          autoComplete="off"
         />
       </Paper>
     </>
