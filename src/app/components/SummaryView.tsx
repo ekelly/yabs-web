@@ -22,6 +22,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import TransactionListItem from "~/app/components/TransactionListItemV2";
 import { getDisplayableTransactions } from "~/lib/features/history/utils";
 import { ErrorMessage } from "./ErrorMessage";
+import { useMemo } from "react";
 
 interface SummaryViewProps {
   id?: string | null;
@@ -33,7 +34,10 @@ export default function SummaryView({ id }: SummaryViewProps) {
     return id ? getHistoricalBill(state, id) : null;
   });
 
-  const displayableBill = billDetails ? calculateBillShares(billDetails) : null;
+  const displayableBill = useMemo(
+    () => (billDetails ? calculateBillShares(billDetails) : null),
+    [billDetails]
+  );
 
   React.useEffect(() => {
     if (!displayableBill && id) {
@@ -113,21 +117,17 @@ export default function SummaryView({ id }: SummaryViewProps) {
                     </Box>
                     <Box
                       sx={{
-                        marginLeft: 4,
+                        marginLeft: "4px",
                         order: { xs: 2, sm: 3 },
                         flex: "1 0px",
                       }}
                     >
-                      {p.share ? (
-                        <ShareButton
-                          sx={{ mr: "10px" }}
-                          billData={displayableBill}
-                          id={p.id}
-                        />
-                      ) : null}
-                      {p.share ? (
-                        <VenmoButton amount={p.total} description={p.name} />
-                      ) : null}
+                      <ShareButton
+                        sx={{ mr: "10px" }}
+                        billData={displayableBill}
+                        id={p.id}
+                      />
+                      <VenmoButton amount={p.total} description={p.name} />
                     </Box>
                   </ListItem>
                 );
