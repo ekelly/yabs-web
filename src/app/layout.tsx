@@ -37,28 +37,17 @@ export default function RootLayout({
     <DrawerAppBar navItems={routes}>{children}</DrawerAppBar>
   );
 
-  // React.useEffect(() => {
-  //   if ("serviceWorker" in navigator) {
-  //     // Register a service worker hosted at the root of the
-  //     // site using the default scope.
-  //     navigator.serviceWorker.register("/sw.js").then(
-  //       (registration) => {
-  //         console.log("Service worker registration succeeded:", registration);
-  //       },
-  //       (error) => {
-  //         console.error(`Service worker registration failed: ${error}`);
-  //       }
-  //     );
-  //   } else {
-  //     console.error("Service workers are not supported.");
-  //   }
-  // });
-
   return (
     <html lang="en">
       <head>
         <link rel="manifest" href="manifest.json" />
-        <link rel="apple-touch-icon" href="icons/main-logo-192.png" />
+        <link rel="apple-touch-icon" href="ios/120.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="ios/152.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="ios/180.png" />
+        <link rel="apple-touch-icon" sizes="167x167" href="ios/167.png" />
+        <meta name="apple-mobile-web-app-title" content="YABS" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
       </head>
       <body>
         <AppRouterCacheProvider>
