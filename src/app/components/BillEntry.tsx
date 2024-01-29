@@ -1,5 +1,5 @@
 "use client";
-import { Zoom, Box, Fab, useTheme, Divider } from "@mui/material";
+import { Divider } from "@mui/material";
 import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { getTransactions, clearBill, getBillState } from "~/lib/features/core";
@@ -9,16 +9,15 @@ import BillInfo from "./BillInfo";
 import TransactionList from "./TransactionList";
 import { useRouter } from "next/navigation";
 import AddTransactionArea from "./AddTransactionAreaV2";
-import SaveIcon from "@mui/icons-material/Save";
 import { calculatePersonTotals } from "~/lib/features/core/billMath";
 import SubtotalView from "./SubtotalView";
 import { ErrorMessage } from "./ErrorMessage";
+import SaveFAB from "./SaveFAB";
 
 export default function BillEntry() {
   const dispatch = useAppDispatch();
   const transactions = useSelector(getTransactions);
   const billState = useSelector(getBillState);
-  const theme = useTheme();
   const { id, total, description, participants } = billState;
 
   const [error, setError] = useState<string | undefined>();
@@ -52,44 +51,14 @@ export default function BillEntry() {
     router.push("/summary?billId=" + id);
   }, [description, total, transactions, dispatch, router, id]);
 
-  const transitionDuration = {
-    enter: theme.transitions.duration.enteringScreen,
-    exit: theme.transitions.duration.leavingScreen,
-  };
-
   return (
     <>
       <BillInfo />
       <Divider />
-      <Box
-        sx={{
-          position: { xs: "fixed", sm: "relative" },
-          bottom: { xs: 16, sm: 20 },
-          right: { xs: 16, sm: -500 },
-        }}
-      >
-        <Zoom
-          key={"save"}
-          in={transactions.length > 0}
-          timeout={transitionDuration}
-          style={{
-            transitionDelay: `${
-              transactions.length > 0 ? transitionDuration.exit : 0
-            }ms`,
-          }}
-          unmountOnExit
-        >
-          <Fab
-            onClick={doneHandler}
-            sx={{
-              position: { sm: "fixed" },
-              top: { sm: 150 },
-            }}
-          >
-            <SaveIcon />
-          </Fab>
-        </Zoom>
-      </Box>
+      <SaveFAB
+        doneHandler={doneHandler}
+        hasTransactions={transactions.length > 0}
+      />
       <TransactionList items={transactions} participants={participants} />
       <AddTransactionArea />
       {transactions.length ? <hr /> : null}
