@@ -14,6 +14,10 @@ export default function ColorThemeProvider({
       createTheme({
         palette: {
           mode: prefersDarkMode ? "dark" : "light",
+          primary: {
+            main: "#228E13",
+            // note: gray color from icon is #DAD8D8
+          },
         },
       }),
     [prefersDarkMode]
