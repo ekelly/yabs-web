@@ -47,7 +47,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" sizes="167x167" href="ios/167.png" />
         <meta name="apple-mobile-web-app-title" content="YABS" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <link rel="shortcut icon" sizes="32x32" href="ios/32.png" />
         <link
           rel="shortcut icon"
