@@ -40,7 +40,7 @@ export default function DrawerAppBar(props: Props) {
             href={navItems[0].href}
           >
             <Image
-              src="icons/Yabs-Icon-1024.svg"
+              src="icons/Yabs-Icon-1024-transparent.webp"
               alt="Logo"
               width={30}
               height={30}
