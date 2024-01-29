@@ -7,7 +7,7 @@ import {
 } from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
 import { ChangeEvent, useEffect, useState } from "react";
-import { TextField, Paper, InputAdornment } from "@mui/material";
+import { TextField, InputAdornment, Box } from "@mui/material";
 import { NumericFormat } from "react-number-format";
 
 export default function BillInfo() {
@@ -32,17 +32,14 @@ export default function BillInfo() {
 
   return (
     <>
-      <Paper
-        component="form"
-        elevation={4}
+      <Box
         sx={{
-          p: "2px 4px",
           display: "flex",
-          marginTop: "5px",
           alignItems: "center",
           width: { xs: "100%", sm: "95%" },
-          marginLeft: "auto",
-          marginRight: "auto",
+          mx: "auto",
+          my: 2,
+          gap: 1,
         }}
       >
         <TextField
@@ -68,7 +65,7 @@ export default function BillInfo() {
           allowNegative={false}
           autoComplete="off"
         />
-      </Paper>
+      </Box>
     </>
   );
 }

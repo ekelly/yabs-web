@@ -1,5 +1,5 @@
 "use client";
-import { Zoom, Box, Fab, useTheme } from "@mui/material";
+import { Zoom, Box, Fab, useTheme, Divider } from "@mui/material";
 import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { getTransactions, clearBill, getBillState } from "~/lib/features/core";
@@ -60,6 +60,7 @@ export default function BillEntry() {
   return (
     <>
       <BillInfo />
+      <Divider />
       <Box
         sx={{
           position: { xs: "fixed", sm: "relative" },

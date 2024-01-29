@@ -67,7 +67,7 @@ export default function DrawerAppBar(props: Props) {
       <Box
         component="main"
         sx={{
-          paddingY: 3,
+          pb: 3,
           paddingX: { xs: 0, sm: 3 },
           width: "100%",
         }}
