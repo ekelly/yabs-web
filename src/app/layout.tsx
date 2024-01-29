@@ -54,6 +54,7 @@ export default function RootLayout({
           sizes="167x167"
           href="icons/Yabs-Icon-1024.svg"
         />
+        <title>YABS</title>
       </head>
       <body>
         <AppRouterCacheProvider>
