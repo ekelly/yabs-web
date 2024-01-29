@@ -9,6 +9,7 @@ import {
   Link,
 } from "@mui/material";
 import * as React from "react";
+import Image from "next/image";
 import SettingsIcon from "@mui/icons-material/Settings";
 import NextLink from "next/link";
 
@@ -28,19 +29,29 @@ export default function DrawerAppBar(props: Props) {
       <CssBaseline />
       <AppBar component="nav">
         <Toolbar>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: "block" }}
+          <Link
+            component={NextLink}
+            sx={{
+              color: "inherit",
+              textDecoration: "none",
+              flexGrow: 1,
+              display: "block",
+            }}
+            href={navItems[0].href}
           >
-            <Link
-              component={NextLink}
-              sx={{ color: "inherit", textDecoration: "none" }}
-              href={navItems[0].href}
-            >
+            <Image
+              src="icons/Yabs-Icon-1024.svg"
+              alt="Logo"
+              width={30}
+              height={30}
+              style={{
+                float: "left",
+              }}
+            />
+            <Typography variant="h6" component="div">
               YABS
-            </Link>
-          </Typography>
+            </Typography>
+          </Link>
           <Box sx={{ display: "block" }}>
             <nav>
               {navItems.slice(1).map((item) => (
