@@ -8,13 +8,13 @@ import { useAppDispatch } from "~/lib/hooks";
 import BillInfo from "./BillInfo";
 import TransactionList from "./TransactionList";
 import { useRouter } from "next/navigation";
-import AddTransactionArea from "./AddTransactionAreaV2";
+import { AddTransactionArea } from "./AddTransactionArea";
 import { calculatePersonTotals } from "~/lib/features/core/billMath";
 import SubtotalView from "./SubtotalView";
 import { ErrorMessage } from "./ErrorMessage";
 import SaveFAB from "./SaveFAB";
 
-export default function BillEntry() {
+export const BillEntry: React.FC = () => {
   const dispatch = useAppDispatch();
   const transactions = useSelector(getTransactions);
   const billState = useSelector(getBillState);
@@ -70,4 +70,4 @@ export default function BillEntry() {
       />
     </>
   );
-}
+};

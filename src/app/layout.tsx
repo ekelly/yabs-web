@@ -9,20 +9,16 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import React from "react";
 import ColorThemeProvider from "./ColorThemeProvider";
-import DrawerAppBar from "./components/AppBar";
-import BillEntry from "./components/BillEntry";
-import HistoryView from "./components/HistoryView";
+import { YabsAppBar } from "./components/AppBar";
 
 const routes = [
   {
     label: "Home",
     href: "/",
-    component: <BillEntry />,
   },
   {
     label: "History",
     href: "/history",
-    component: <HistoryView />,
   },
 ];
 
@@ -33,9 +29,7 @@ export default function RootLayout({
 }) {
   const phoneSized = useMediaQuery("(max-width:600px)");
 
-  const pageContents = (
-    <DrawerAppBar navItems={routes}>{children}</DrawerAppBar>
-  );
+  const pageContents = <YabsAppBar navItems={routes}>{children}</YabsAppBar>;
 
   return (
     <html lang="en">

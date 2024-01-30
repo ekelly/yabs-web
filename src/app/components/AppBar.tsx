@@ -1,3 +1,4 @@
+"use client";
 import {
   Box,
   Typography,
@@ -21,9 +22,7 @@ interface Props {
   }>;
 }
 
-export default function DrawerAppBar(props: Props) {
-  const { children, navItems } = props;
-
+export const YabsAppBar: React.FC<Props> = ({ children, navItems }) => {
   return (
     <Box sx={{ display: "flex", width: "100%" }}>
       <CssBaseline />
@@ -88,4 +87,4 @@ export default function DrawerAppBar(props: Props) {
       </Box>
     </Box>
   );
-}
+};

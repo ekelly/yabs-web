@@ -1,5 +1,6 @@
+"use client";
 import { Box, Chip, Input, useTheme } from "@mui/material";
-import { useState } from "react";
+import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { upsertPerson } from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
@@ -8,14 +9,23 @@ interface AddPersonChipInputProps {
   setParticipantSelected: (participantId: string) => void;
 }
 
-export default function AddPersonChipInput({
+/**
+ * This component is an "input" type of "Chip" from material components.
+ * It is used for adding a new person to the bill.
+ */
+export const AddPersonChipInput: React.FC<AddPersonChipInputProps> = ({
   setParticipantSelected,
-}: AddPersonChipInputProps) {
+}) => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
 
   const [showNewParticipant, setShowNewParticipant] = useState(false);
   const [newParticipantName, setNewParticipantName] = useState<string>("");
+
+  const resetChip = () => {
+    setShowNewParticipant(false);
+    setNewParticipantName("");
+  };
 
   const addParticipant = () => {
     if (newParticipantName !== "") {
@@ -23,17 +33,10 @@ export default function AddPersonChipInput({
         id: uuidv4(),
         name: newParticipantName,
       };
-      console.log(`adding ${JSON.stringify(person)}`);
       dispatch(upsertPerson(person));
       setParticipantSelected(person.id);
     }
-    setShowNewParticipant(false);
-    setNewParticipantName("");
-  };
-
-  const cancelAddingParticipant = () => {
-    setShowNewParticipant(false);
-    setNewParticipantName("");
+    resetChip();
   };
 
   return (
@@ -46,9 +49,7 @@ export default function AddPersonChipInput({
       <Chip
         label={showNewParticipant ? "" : "+"}
         variant="filled"
-        onClick={() => {
-          setShowNewParticipant(true);
-        }}
+        onClick={() => setShowNewParticipant(true)}
         className={showNewParticipant ? "BigChip" : "RegularChip"}
         sx={{
           marginTop: "2px",
@@ -67,7 +68,7 @@ export default function AddPersonChipInput({
               addParticipant();
             }
           }}
-          onBlur={() => cancelAddingParticipant()}
+          onBlur={resetChip}
           sx={{
             position: "absolute",
             ...theme.typography.body2,
@@ -79,4 +80,4 @@ export default function AddPersonChipInput({
       )}
     </Box>
   );
-}
+};

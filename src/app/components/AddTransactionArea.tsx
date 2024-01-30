@@ -1,21 +1,24 @@
-import { Box, FormHelperText, InputAdornment, TextField } from "@mui/material";
+"use client";
+import { Box, FormHelperText } from "@mui/material";
 import React, { useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { addTransaction, getParticipants } from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
-import AddPersonChipInput from "./AddPersonChipInput";
+import { AddPersonChipInput } from "./AddPersonChipInput";
 import { PersonChip } from "./PersonChip";
-import { NumericFormat } from "react-number-format";
+import { NumericInput } from "./NumericInput";
 
+// Constants and types
 const MISSING_PARTICIPANTS_ERROR = "Must select at least one participant";
+const INVALID_NUMBER_ERROR = "Amount must be a valid number";
+const NEGATIVE_NUMBER_ERROR = "Amount must be positive";
 
 enum AddTransactionMode {
   INACTIVE,
   ACTIVE,
-  EXPANDED,
 }
 
-export default function AddTransactionArea() {
+export const AddTransactionArea = () => {
   const dispatch = useAppDispatch();
   const possibleParticipants = useSelector(getParticipants);
 
@@ -36,14 +39,33 @@ export default function AddTransactionArea() {
     inputRef.current?.focus();
   };
 
-  // Run validation checks
-  const validate = (amount: number, selectedParticipants: string[]) => {
+  const updateItemAmount = (strAmount: string) => {
+    const hasNumericError =
+      error === INVALID_NUMBER_ERROR || error === NEGATIVE_NUMBER_ERROR;
+    if (hasNumericError) {
+      if (numericValidation(Number(strAmount))) {
+        setError(undefined);
+      }
+    }
+    setItemAmount(strAmount);
+  };
+
+  // Run numeric-specific validation
+  const numericValidation = (amount: number): boolean => {
     if (isNaN(amount)) {
-      setError("Amount must be a valid number");
+      setError(INVALID_NUMBER_ERROR);
       return false;
     }
-    if (amount === 0) {
-      setError("Amount must be positive");
+    if (amount <= 0) {
+      setError(NEGATIVE_NUMBER_ERROR);
+      return false;
+    }
+    return true;
+  };
+
+  // Run all validation checks
+  const validate = (amount: number, selectedParticipants: string[]) => {
+    if (!numericValidation(amount)) {
       return false;
     }
     if (selectedParticipants.length === 0) {
@@ -75,18 +97,23 @@ export default function AddTransactionArea() {
   };
 
   const setParticipantSelected = (participantId: string) => {
-    if (error === MISSING_PARTICIPANTS_ERROR) setError(undefined);
+    if (error === MISSING_PARTICIPANTS_ERROR) {
+      setError(undefined);
+    }
 
+    // If the participant was previously part of the transaction, remove them
     if (selectedParticipants.includes(participantId)) {
       setSelectedParticipants(
         selectedParticipants.filter((value) => value !== participantId)
       );
     } else {
+      // Set the participant to be part of the transaction
       setSelectedParticipants([...selectedParticipants, participantId]);
     }
   };
 
   const handleOnClick = (participantId: string) => {
+    // When a participant is selected, try to submit the form
     if (!submitFormHandler([...selectedParticipants, participantId])) {
       // If the form did not submit, we want to make sure the
       // selected participants array is updated
@@ -94,55 +121,39 @@ export default function AddTransactionArea() {
     }
   };
 
-  const renderAmountInput = () => {
-    return (
-      <NumericFormat
-        customInput={TextField}
-        name="itemAmount"
-        placeholder="amount"
-        size="small"
-        InputProps={{
-          startAdornment: <InputAdornment position="start">$</InputAdornment>,
-          inputProps: {
-            inputMode: "decimal",
-          },
-        }}
-        valueIsNumericString
-        decimalScale={2}
-        allowNegative={false}
-        value={itemAmount}
-        onFocus={() => setMode(AddTransactionMode.ACTIVE)}
-        onChange={(e) => setItemAmount(e.currentTarget.value)}
-        onKeyDown={(event) => {
-          if (event.key === "Enter") {
-            submitFormHandler(selectedParticipants);
-          }
-        }}
-        inputRef={inputRef}
-        autoComplete="off"
-      />
-    );
-  };
+  const AmountInput = (
+    <NumericInput
+      itemAmount={itemAmount}
+      onFocus={() => setMode(AddTransactionMode.ACTIVE)}
+      onChange={(e) => updateItemAmount(e.currentTarget.value)}
+      onKeyDown={(event) => {
+        if (event.key === "Enter") {
+          submitFormHandler(selectedParticipants);
+        }
+      }}
+      inputRef={inputRef}
+    />
+  );
 
-  if (mode === AddTransactionMode.INACTIVE) {
+  const Wrapper = (props: { children: React.ReactNode }) => {
     return (
       <Box
         sx={{
           paddingLeft: { sm: "16px" },
         }}
       >
-        {renderAmountInput()}
+        {props.children}
       </Box>
     );
+  };
+
+  if (mode === AddTransactionMode.INACTIVE) {
+    return <Wrapper>{AmountInput}</Wrapper>;
   }
 
   return (
-    <Box
-      sx={{
-        paddingLeft: { sm: "16px" },
-      }}
-    >
-      {renderAmountInput()}
+    <Wrapper>
+      {AmountInput}
       <br />
       <Box
         sx={{
@@ -166,6 +177,6 @@ export default function AddTransactionArea() {
         <AddPersonChipInput setParticipantSelected={handleOnClick} />
       </Box>
       <FormHelperText error>{error}</FormHelperText>
-    </Box>
+    </Wrapper>
   );
-}
+};
