@@ -61,7 +61,7 @@ export const BillEntry: React.FC = () => {
       />
       <TransactionList items={transactions} participants={participants} />
       <AddTransactionArea />
-      {transactions.length ? <hr /> : null}
+      {transactions.length ? <Divider /> : null}
       <ErrorMessage message={error} triggerError={setError} />
       <SubtotalView
         transactions={transactions}
