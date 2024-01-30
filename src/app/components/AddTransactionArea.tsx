@@ -18,6 +18,18 @@ enum AddTransactionMode {
   ACTIVE,
 }
 
+const Wrapper = (props: { children: React.ReactNode }) => {
+  return (
+    <Box
+      sx={{
+        paddingLeft: { sm: "16px" },
+      }}
+    >
+      {props.children}
+    </Box>
+  );
+};
+
 export const AddTransactionArea = () => {
   const dispatch = useAppDispatch();
   const possibleParticipants = useSelector(getParticipants);
@@ -134,18 +146,6 @@ export const AddTransactionArea = () => {
       inputRef={inputRef}
     />
   );
-
-  const Wrapper = (props: { children: React.ReactNode }) => {
-    return (
-      <Box
-        sx={{
-          paddingLeft: { sm: "16px" },
-        }}
-      >
-        {props.children}
-      </Box>
-    );
-  };
 
   if (mode === AddTransactionMode.INACTIVE) {
     return <Wrapper>{AmountInput}</Wrapper>;
