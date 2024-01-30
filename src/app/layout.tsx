@@ -1,6 +1,6 @@
 "use client";
 import "./globals.css";
-import StoreProvider from "./StoreProvider";
+import { StoreProvider } from "./StoreProvider";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { Container, CssBaseline, Paper, useMediaQuery } from "@mui/material";
 import "@fontsource/roboto/300.css";

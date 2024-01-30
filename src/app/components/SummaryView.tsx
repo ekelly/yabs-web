@@ -1,5 +1,5 @@
+"use client";
 import * as React from "react";
-import { useSelector } from "react-redux";
 import type { RootState } from "~/lib/store";
 import { getHistoricalBill } from "~/lib/features/history";
 import {
@@ -13,24 +13,32 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from "@mui/material";
-import VenmoButton from "./VenmoButton";
-import ShareButton from "./ShareButton";
+import { VenmoButton } from "./VenmoButton";
+import { ShareButton } from "./ShareButton";
 import { shareText } from "~/lib/features/api/share";
 import ShareIcon from "@mui/icons-material/Share";
 import { calculateBillShares } from "~/lib/features/core/billMath";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import TransactionListItem from "~/app/components/TransactionListItemV2";
+import { TransactionListItem } from "~/app/components/TransactionListItem";
 import { getDisplayableTransactions } from "~/lib/features/history/utils";
 import { ErrorMessage } from "./ErrorMessage";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useAppSelector } from "~/lib/hooks";
+
+const CANNOT_FIND_BILL_ERROR = "Error finding bill details";
+const TOTAL_EXCEEDS_COST_ERROR = "Total bill split exceeds total cost";
 
 interface SummaryViewProps {
   id?: string | null;
 }
 
-export default function SummaryView({ id }: SummaryViewProps) {
-  const [errorMessage, triggerError] = React.useState("");
-  const billDetails = useSelector((state: RootState) => {
+/**
+ * This component is the "root" page for the summary view.
+ * It provides a read-only view of a historical bill.
+ */
+export const SummaryView: React.FC<SummaryViewProps> = ({ id }) => {
+  const [errorMessage, triggerError] = useState("");
+  const billDetails = useAppSelector((state: RootState) => {
     return id ? getHistoricalBill(state, id) : null;
   });
 
@@ -39,15 +47,16 @@ export default function SummaryView({ id }: SummaryViewProps) {
     [billDetails]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!displayableBill && id) {
-      triggerError("Error finding bill details");
+      triggerError(CANNOT_FIND_BILL_ERROR);
     } else if (displayableBill?.totalSharesExceedsTotal) {
-      triggerError("Total bill split exceeds total cost");
+      triggerError(TOTAL_EXCEEDS_COST_ERROR);
     }
   }, [displayableBill, id, triggerError]);
 
   if (!id) {
+    // TODO: This should display an error message (404?)
     return null;
   }
 
@@ -166,4 +175,4 @@ export default function SummaryView({ id }: SummaryViewProps) {
       </Container>
     </>
   );
-}
+};

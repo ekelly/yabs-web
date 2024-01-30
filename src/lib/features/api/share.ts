@@ -1,7 +1,8 @@
+"use client";
 import { SettingKey, getSetting } from "../settings";
 import { getVenmoPayDeeplink } from "./venmo";
 
-export const supportsNativeShare = () =>
+const supportsNativeShare = () =>
   typeof navigator.share !== "undefined" && navigator.share;
 
 async function nativeShare(title: string, description: string) {

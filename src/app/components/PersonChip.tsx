@@ -1,3 +1,4 @@
+"use client";
 import { styled, useMediaQuery, useTheme } from "@mui/material";
 import Chip, { ChipProps } from "@mui/material/Chip";
 
@@ -14,6 +15,10 @@ type PersonChipProps = {
   };
 };
 
+/**
+ * This is a Chip component to represent a person within a transaction.
+ * It is effectively a pre-styled Chip component.
+ */
 export const PersonChip = styled(Chip)<ChipProps & PersonChipProps>(
   ({ variant, id, onClick, colorOverrides }) => {
     const theme = useTheme();

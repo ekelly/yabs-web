@@ -1,9 +1,8 @@
 "use client";
 import { Box, FormHelperText } from "@mui/material";
-import React, { useState, useRef } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useRef, useCallback } from "react";
 import { addTransaction, getParticipants } from "~/lib/features/core";
-import { useAppDispatch } from "~/lib/hooks";
+import { useAppDispatch, useAppSelector } from "~/lib/hooks";
 import { AddPersonChipInput } from "./AddPersonChipInput";
 import { PersonChip } from "./PersonChip";
 import { NumericInput } from "./NumericInput";
@@ -32,8 +31,9 @@ const Wrapper = (props: { children: React.ReactNode }) => {
 
 export const AddTransactionArea = () => {
   const dispatch = useAppDispatch();
-  const possibleParticipants = useSelector(getParticipants);
 
+  // Transaction Area state
+  const possibleParticipants = useAppSelector(getParticipants);
   const [selectedParticipants, setSelectedParticipants] = useState<string[]>(
     []
   );

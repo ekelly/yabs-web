@@ -1,3 +1,4 @@
+"use client";
 import type { RootState } from "~/lib/store";
 import type { IAdjustment, ITransaction } from "./types";
 

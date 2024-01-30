@@ -1,7 +1,7 @@
 "use client";
 
-import HistoryView from "../components/HistoryView";
+import { HistoryView } from "../components/HistoryView";
 
 export default function Page() {
-    return <HistoryView />;
+  return <HistoryView />;
 }

@@ -1,8 +1,9 @@
-import { TextField, InputAdornment, FormHelperText } from "@mui/material";
+"use client";
+import { FormHelperText } from "@mui/material";
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
-import { NumericFormat } from "react-number-format";
 import { updateTransactionAmount } from "~/lib/features/core";
 import { useAppDispatch } from "~/lib/hooks";
+import { NumericInput } from "./NumericInput";
 
 type TransactionCostInputProps = {
   transactionId: string;
@@ -16,6 +17,10 @@ interface TransactionCostInputRef {
   setErrorMessage: (message: string) => void;
 }
 
+/**
+ * This component allows editing individual transaction
+ * amounts.
+ */
 export const TransactionCostInput = forwardRef<
   TransactionCostInputRef,
   TransactionCostInputProps
@@ -77,21 +82,8 @@ export const TransactionCostInput = forwardRef<
 
   return (
     <>
-      <NumericFormat
-        customInput={TextField}
-        name="itemAmount"
-        placeholder={initialAmount}
-        size="small"
-        InputProps={{
-          startAdornment: <InputAdornment position="start">$</InputAdornment>,
-          inputProps: {
-            inputMode: "decimal",
-          },
-        }}
-        valueIsNumericString
-        decimalScale={2}
-        allowNegative={false}
-        value={itemAmount}
+      <NumericInput
+        itemAmount={itemAmount}
         onBlur={handleOnBlur}
         onChange={(e) => setItemAmount(e.currentTarget.value)}
         onKeyDown={(event) => {
@@ -100,6 +92,7 @@ export const TransactionCostInput = forwardRef<
           }
         }}
         inputRef={inputRef}
+        placeholder={initialAmount}
       />
       <FormHelperText error>{error}</FormHelperText>
     </>

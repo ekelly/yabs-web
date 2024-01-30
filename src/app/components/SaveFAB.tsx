@@ -1,15 +1,20 @@
+"use client";
 import { Box, Fab, Zoom, useTheme } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
+import React from "react";
 
 interface SaveFABProps {
   hasTransactions: boolean;
   doneHandler: () => void;
 }
 
-export default function SaveFAB({
+/**
+ * This is a Floating Action Button for the save action.
+ */
+export const SaveFAB: React.FC<SaveFABProps> = ({
   doneHandler,
   hasTransactions,
-}: SaveFABProps) {
+}) => {
   const theme = useTheme();
   const transitionDuration = {
     enter: theme.transitions.duration.enteringScreen,
@@ -45,4 +50,4 @@ export default function SaveFAB({
       </Zoom>
     </Box>
   );
-}
+};

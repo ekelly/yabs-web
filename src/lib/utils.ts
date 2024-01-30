@@ -1,3 +1,5 @@
+"use client";
+
 // Options to determine if we are on a touch-capable device:
 // let isTouch1 = window.matchMedia("(pointer: coarse)").matches;
 // let isTouch2 = navigator.maxTouchPoints > 0;

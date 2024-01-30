@@ -1,3 +1,4 @@
+"use client";
 import type { RootState } from "~/lib/store";
 import type { IHistoryItem } from "./types";
 import { calculateBillShares, type IDisplayableBill } from "../core/billMath";

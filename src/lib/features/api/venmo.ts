@@ -1,3 +1,5 @@
+"use client";
+
 const DEFAULT_DESCRIPTION = encodeURIComponent(
   "Settling up with Yet Another Bill Splitter"
 );

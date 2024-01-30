@@ -1,3 +1,5 @@
+"use client";
+
 import { IAdjustment, IBillState, ITransaction } from "./types";
 
 export type IDisplayableBill = {
@@ -7,6 +9,10 @@ export type IDisplayableBill = {
   totalSharesExceedsTotal: boolean;
   participants: { name: string; share: string; total: string; id: string }[];
 };
+
+/**
+ * Calculates displayable values from the bill state.
+ */
 export const calculateBillShares = (
   billState: IBillState
 ): IDisplayableBill | null => {
@@ -52,6 +58,14 @@ export const calculateBillShares = (
   };
 };
 
+/**
+ * When removing a participant from a transaction, all other
+ * participants within the transaction need their % of the transaction
+ * updated so that the percentage adds up to 100%
+ * @param transaction The transaction to modify
+ * @param participantToRemove The ID of the participant to remove
+ * @returns Updated Transaction
+ */
 export const adjustTransactionPercentagesAfterRemovingParticipant = (
   transaction: ITransaction,
   participantToRemove: string
@@ -96,6 +110,10 @@ export type IPersonTotals = {
     total: number;
   };
 };
+
+/**
+ * Calculates the total per person from the bill state.
+ */
 export const calculatePersonTotals = (billState: IBillState): IPersonTotals => {
   return Object.values(billState.participants)
     .map((p) => {

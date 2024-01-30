@@ -22,6 +22,11 @@ interface Props {
   }>;
 }
 
+/**
+ * This is the "App bar" header component which stretches
+ * across the top of the screen. It has the logo and navigation
+ * elements built into it.
+ */
 export const YabsAppBar: React.FC<Props> = ({ children, navItems }) => {
   return (
     <Box sx={{ display: "flex", width: "100%" }}>

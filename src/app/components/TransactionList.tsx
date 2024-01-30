@@ -1,5 +1,6 @@
+"use client";
 import * as React from "react";
-import TransactionListItem from "./TransactionListItemV2";
+import { TransactionListItem } from "./TransactionListItem";
 import {
   removeTransaction,
   type IBillState,
@@ -14,12 +15,17 @@ interface TransactionListProps {
   participants: IBillState["participants"];
 }
 
-export default function TransactionList({
+/**
+ * This component represents a list of transactions
+ * within a bill.
+ */
+export const TransactionList: React.FC<TransactionListProps> = ({
   items,
   participants,
-}: TransactionListProps) {
+}) => {
   const dispatch = useAppDispatch();
 
+  // Delete the transaction
   const deleteHandler = useCallback(
     (index: number) => {
       const item = items[index];
@@ -47,4 +53,4 @@ export default function TransactionList({
       generateKey={(item: IDisplayableTransaction) => item.id}
     />
   );
-}
+};

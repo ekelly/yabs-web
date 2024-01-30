@@ -1,3 +1,4 @@
+"use client";
 import { Slide, Paper, Box, Typography } from "@mui/material";
 import * as React from "react";
 import {
@@ -19,10 +20,18 @@ type SubtotalViewProps = {
   personTotals: IPersonTotals;
 };
 
-export default function SubtotalView(props: SubtotalViewProps) {
-  const { transactions, participants, personTotals } = props;
+/**
+ * This component provides the subtotal of all the transactions,
+ * and allows for the deletion of participants.
+ */
+export const SubtotalView: React.FC<SubtotalViewProps> = ({
+  transactions,
+  participants,
+  personTotals,
+}) => {
   const dispatch = useAppDispatch();
 
+  // Whether or not the participants can be edited
   const [editMode, setEditMode] = useState(false);
 
   const clickHandler = () => {
@@ -93,4 +102,4 @@ export default function SubtotalView(props: SubtotalViewProps) {
       </Paper>
     </Slide>
   );
-}
+};

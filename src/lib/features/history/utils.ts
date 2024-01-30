@@ -1,3 +1,4 @@
+"use client";
 import { IAdjustment, ITransaction } from "../core/types";
 import { IHistoryItem } from "./types";
 

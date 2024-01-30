@@ -1,3 +1,4 @@
+"use client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type {
   IAdjustment,
@@ -9,6 +10,8 @@ import type {
 } from "./types";
 import { v4 as uuidv4 } from "uuid";
 import { adjustTransactionPercentagesAfterRemovingParticipant } from "./billMath";
+
+// Initial state
 
 const createInitialParticipants = () => {
   const participants: Record<PersonId, IPerson> = {};
@@ -30,6 +33,8 @@ const createInitialState: () => IBillState = () => ({
 
 const initialState: IBillState = createInitialState();
 
+// Types
+
 type RemoveParticipantFromTransactionPayload = {
   transactionId: TransactionId;
   participantId: PersonId;
@@ -47,6 +52,8 @@ type UpdateTransactionAmountPayload = {
   transactionId: TransactionId;
   amount: number;
 };
+
+// Slice
 
 export const slice = createSlice({
   name: "slice-name",

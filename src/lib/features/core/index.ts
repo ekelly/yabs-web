@@ -1,3 +1,4 @@
+"use client";
 import reducer from "./billSlice";
 export {
   removePerson,

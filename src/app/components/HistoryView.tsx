@@ -1,5 +1,5 @@
+"use client";
 import * as React from "react";
-import { useSelector } from "react-redux";
 import { getHistory, removeFromHistory } from "~/lib/features/history";
 import {
   Card,
@@ -10,26 +10,31 @@ import {
   IconButton,
   CardActionArea,
   Link,
-  Snackbar,
-  Alert,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Typography } from "@mui/material";
 import SwipeableList from "material-swipeable-list";
-import { useAppDispatch } from "~/lib/hooks";
+import { useAppDispatch, useAppSelector } from "~/lib/hooks";
 import { isTouchEnabled } from "~/lib/utils";
 import NextLink from "next/link";
 import type { IDisplayableHistoricalBill } from "~/lib/features/history/selectors";
 import { shareText } from "~/lib/features/api/share";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { InfoMessage } from "./InfoMessage";
 
 interface HistoryCardProps {
   historyItem: IDisplayableHistoricalBill;
   triggerInfoPopup: () => void;
 }
 
-const HistoryCard = (props: HistoryCardProps) => {
-  const { historyItem, triggerInfoPopup } = props;
+/**
+ * This is an individual history "entry" in the list
+ * of history items.
+ */
+const HistoryCard: React.FC<HistoryCardProps> = ({
+  historyItem,
+  triggerInfoPopup,
+}) => {
   const dispatch = useAppDispatch();
 
   const handleDelete = () => {
@@ -102,12 +107,18 @@ const HistoryCard = (props: HistoryCardProps) => {
   );
 };
 
-export default function HistoryView() {
-  const history = useSelector(getHistory);
-  const [message, setMessage] = useState("");
+/**
+ * This is the 'root' component for seeing the history
+ */
+export const HistoryView: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const deleteHandler = React.useCallback(
+  // The data that drives this component
+  const history = useAppSelector(getHistory);
+  const [message, setMessage] = useState("");
+
+  // Swiping away individual history items will delete them
+  const deleteHandler = useCallback(
     (index: number) => {
       const item = history[index];
       dispatch(removeFromHistory(item.id));
@@ -137,17 +148,7 @@ export default function HistoryView() {
 
   return (
     <>
-      <Snackbar
-        open={!!message}
-        autoHideDuration={4000}
-        onClose={handleClose}
-        message={message}
-        sx={{ bottom: { xs: 90, sm: 0 } }}
-      >
-        <Alert onClose={handleClose} severity="info" sx={{ width: "100%" }}>
-          {message}
-        </Alert>
-      </Snackbar>
+      <InfoMessage message={message} handleClose={handleClose} />
       <SwipeableList
         items={history}
         onChange={deleteHandler}
@@ -162,4 +163,4 @@ export default function HistoryView() {
       />
     </>
   );
-}
+};
