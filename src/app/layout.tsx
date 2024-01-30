@@ -41,10 +41,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="manifest" href="manifest.json" />
-        <link rel="apple-touch-icon" href="ios/120.png" />
-        <link rel="apple-touch-icon" sizes="152x152" href="ios/152.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="ios/180.png" />
-        <link rel="apple-touch-icon" sizes="167x167" href="ios/167.png" />
+        <link rel="apple-touch-icon" href="maskable/maskable_icon.png" />
         <meta name="apple-mobile-web-app-title" content="YABS" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
