@@ -1,6 +1,6 @@
 "use client";
 import { Box, FormHelperText } from "@mui/material";
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef } from "react";
 import { addTransaction, getParticipants } from "~/lib/features/core";
 import { useAppDispatch, useAppSelector } from "~/lib/hooks";
 import { AddPersonChipInput } from "./AddPersonChipInput";
