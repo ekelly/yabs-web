@@ -38,13 +38,10 @@ export const BillEntry: React.FC = () => {
       setError("Bill must have transactions");
       return;
     }
-    if (
-      transactions.reduce((acc, t) => acc || t.participants.length === 0, false)
-    ) {
+    if (!transactions.every((t) => t.participants.length > 0)) {
       setError("All transactions need participants");
       return;
     }
-    console.log("Saving bill state");
     setError(undefined);
     dispatch(addToHistory());
     dispatch(clearBill());
